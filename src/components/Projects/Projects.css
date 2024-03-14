@@ -1,0 +1,8 @@
+.project-wrapper {
+    width: 90%;
+    transition: box-shadow .3s ease-out;
+}
+
+.project-wrapper:hover {
+    box-shadow:10px 10px 10px black;
+}

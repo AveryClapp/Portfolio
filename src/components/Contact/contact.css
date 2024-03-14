@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0rem;
+    padding-top: 10%;
+    height: 100vh;
+    width: 100%;
+}
+
+.wrapper h1 {
+    text-decoration: underline;
+    padding-bottom: 4vh;
+}
+
+.name {
+    width: 80%;
+}
+
+.email {
+    width: 80%;
+}
+
+.message {
+    width: 80%;
+    height: 80%;
+}

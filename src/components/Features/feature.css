@@ -1,0 +1,22 @@
+.main {
+    position: absolute;
+    display: flex;
+    margin-top: 5%;
+    background-color: white;
+    width: 25%;
+    height: 50vh;
+    border: thick double black;
+    justify-content: space-evenly;
+}
+
+.main p {
+    position: absolute;
+    font-weight: bolder;
+    font-size: 2em;
+}
+
+img {
+    transform: scale(0.3);
+    image-rendering: -webkit-optimize-contrast;
+}
+

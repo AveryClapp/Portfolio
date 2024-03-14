@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+.Header {
+    position: fixed;
+    z-index: 99;
+    font-family: Fjalla One, sans-serif;
+    display: flex;
+    align-items: center;
+    height: 20vh;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    width: 100%;
+    flex-direction: row;
+    padding-bottom: 2.5%;
+    background:  linear-gradient(aqua, white);
+    color: black;
+}
+
+.Header2 {
+    position: fixed;
+    z-index: 99;
+    font-family: Fjalla One, sans-serif;
+    display: flex;
+    align-items: center;
+    height: 10;
+    width: 100%;
+    flex-direction: row;
+    padding-bottom: 2.5%;
+    background:  linear-gradient(aqua, white);
+    color: black;
+}
+
+.Header > .Name {
+    position: absolute;
+    padding-left: 5%;
+    font-weight: bolder;
+    font-size: 3rem;
+}
+
+/* .dropdown {
+    font-family: Fjalla One, sans-serif;
+    display: flex;
+    position: relative;
+    left: 300px;
+    bottom: 15px;
+    height: 3rem;
+    width: 10rem;
+    justify-content: center;
+}
+
+.drop-btn {
+    font-family: Fjalla One, sans-serif;
+    text-wrap: nowrap;
+    background-color: white;
+    color: black;
+    background-color: aqua;
+    border-color: black;
+    padding: 16px;
+    border-radius: 25px;
+    width: 150px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    font-family: Fjalla One, sans-serif;
+    display: none;
+    position: absolute;
+    left: 18.5%;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+.dropdown-content a {
+    font-family: Fjalla One, sans-serif;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+} */
+
+/* .dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: black;
+} */
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.Header > .Contact {
+    position: absolute;
+    left: 54%;
+    font-weight: 600;
+    font-size: large;
+}
+
+.Header > .Projects {
+    position: absolute;
+    left: 64.5%;
+    font-weight: 600;
+    font-size:large;
+}
+
+.Header > .dropdown {
+    position: absolute;
+    left: 80%;
+    font-weight: 600;
+    font-size:large;
+}
