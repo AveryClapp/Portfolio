@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Github,
   Linkedin,
@@ -13,10 +13,10 @@ import Sidebar from "../Sidebar/Sidebar";
 import { motion } from "framer-motion";
 
 const Section = ({ id, title, children, bgColor = "bg-white" }) => (
-  <section id={id} className={`py-20 ${bgColor}`}>
+  <section id={id} className={`py-24 ${bgColor}`}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <motion.h2
-        className="text-3xl font-extrabold text-gray-900 mb-10"
+        className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 tracking-tight"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -32,30 +32,48 @@ const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 font-sans">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       <div className="flex-1 flex flex-col">
         <main className="flex-1 overflow-y-auto">
           <Section id="welcome" title="Welcome to My Portfolio">
             <motion.div
-              className="prose lg:prose-xl"
+              className="prose lg:prose-xl max-w-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <p>
-                Hello! I'm [Your Name], a passionate frontend developer with a
-                keen eye for creating beautiful and functional web experiences.
+              <p className="text-xl md:text-2xl text-gray-700 leading-relaxed mb-6">
+                Hello! I'm{" "}
+                <span className="font-semibold text-indigo-600">
+                  [Your Name]
+                </span>
+                , a passionate frontend developer with a keen eye for creating
+                beautiful and functional web experiences.
               </p>
-              <p>On this site, you'll find:</p>
-              <ul>
-                <li>An overview of my technical skills and projects</li>
-                <li>Insights into my professional experience</li>
-                <li>A glimpse into my personal interests and hobbies</li>
-                <li>Ways to get in touch with me</li>
+              <p className="text-lg md:text-xl text-gray-600 mb-4">
+                On this site, you'll find:
+              </p>
+              <ul className="list-none space-y-2 text-gray-700">
+                <li className="flex items-center">
+                  <span className="text-indigo-500 mr-2">•</span> An overview of
+                  my technical skills and projects
+                </li>
+                <li className="flex items-center">
+                  <span className="text-indigo-500 mr-2">•</span> Insights into
+                  my professional experience
+                </li>
+                <li className="flex items-center">
+                  <span className="text-indigo-500 mr-2">•</span> A glimpse into
+                  my personal interests and hobbies
+                </li>
+                <li className="flex items-center">
+                  <span className="text-indigo-500 mr-2">•</span> Ways to get in
+                  touch with me
+                </li>
               </ul>
-              <p>
+              <p className="text-lg md:text-xl text-gray-700 mt-6">
                 I'm excited to share my journey with you and potentially
                 collaborate on future projects!
               </p>
@@ -69,78 +87,104 @@ const Home = () => {
           >
             <div className="grid md:grid-cols-2 gap-8">
               <motion.div
-                className="bg-white p-6 rounded-lg shadow-md"
-                whileHover={{ scale: 1.05 }}
+                className="bg-white p-8 rounded-lg shadow-md"
+                whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                  <Code className="mr-2" /> Tech Stack
+                <h3 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                  <Code className="mr-3 text-indigo-500" /> Tech Stack
                 </h3>
-                <ul className="list-disc list-inside">
-                  <li>React.js</li>
-                  <li>Next.js</li>
-                  <li>TypeScript</li>
-                  <li>Tailwind CSS</li>
-                  {/* Add more technologies */}
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-center">
+                    <span className="text-indigo-500 mr-2">▹</span> React.js
+                  </li>
+                  <li className="flex items-center">
+                    <span className="text-indigo-500 mr-2">▹</span> Next.js
+                  </li>
+                  <li className="flex items-center">
+                    <span className="text-indigo-500 mr-2">▹</span> TypeScript
+                  </li>
+                  <li className="flex items-center">
+                    <span className="text-indigo-500 mr-2">▹</span> Tailwind CSS
+                  </li>
                 </ul>
               </motion.div>
               <motion.div
-                className="bg-white p-6 rounded-lg shadow-md"
-                whileHover={{ scale: 1.05 }}
+                className="bg-white p-8 rounded-lg shadow-md"
+                whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                  <Briefcase className="mr-2" /> Work Experience
+                <h3 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+                  <Briefcase className="mr-3 text-indigo-500" /> Work Experience
                 </h3>
-                <ul className="space-y-2">
+                <ul className="space-y-4">
                   <li>
-                    <strong>Frontend Developer</strong> - Company Name
+                    <h4 className="font-semibold text-lg text-gray-800">
+                      Frontend Developer
+                    </h4>
+                    <p className="text-indigo-600">Company Name</p>
                     <p className="text-sm text-gray-600">2020 - Present</p>
                   </li>
-                  {/* Add more work experiences */}
                 </ul>
               </motion.div>
             </div>
             <motion.div
-              className="mt-8 bg-white p-6 rounded-lg shadow-md"
+              className="mt-12 bg-white p-8 rounded-lg shadow-md"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-xl font-semibold mb-4">Personal Projects</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="border p-4 rounded">
-                  <h4 className="font-medium">Project Name</h4>
-                  <p className="text-sm text-gray-600">
+              <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+                Personal Projects
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="border border-gray-200 p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg text-gray-800 mb-2">
+                    Project Name
+                  </h4>
+                  <p className="text-gray-600 mb-4">
                     Brief description of the project
                   </p>
                   <a
                     href="#"
-                    className="text-indigo-600 hover:text-indigo-800 text-sm"
+                    className="text-indigo-600 hover:text-indigo-800 font-medium"
                   >
-                    View Project
+                    View Project →
                   </a>
                 </div>
-                {/* Add more project cards */}
               </div>
             </motion.div>
           </Section>
 
           <Section id="personal" title="Hobbies & Interests">
             <motion.div
-              className="prose lg:prose-xl"
+              className="prose lg:prose-xl max-w-none"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <p>When I'm not coding, you can find me:</p>
-              <ul>
-                <li>Exploring nature trails and hiking</li>
-                <li>Reading science fiction novels</li>
-                <li>Experimenting with new cooking recipes</li>
-                <li>Playing strategy board games with friends</li>
+              <p className="text-xl text-gray-700 mb-6">
+                When I'm not coding, you can find me:
+              </p>
+              <ul className="space-y-4 text-gray-700">
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-3 mt-1">◆</span>
+                  <span>Exploring nature trails and hiking</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-3 mt-1">◆</span>
+                  <span>Reading science fiction novels</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-3 mt-1">◆</span>
+                  <span>Experimenting with new cooking recipes</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-indigo-500 mr-3 mt-1">◆</span>
+                  <span>Playing strategy board games with friends</span>
+                </li>
               </ul>
-              <p>
+              <p className="text-lg text-gray-700 mt-8">
                 These hobbies not only provide a great work-life balance but
                 also inspire creativity in my professional work.
               </p>
@@ -154,11 +198,11 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <form className="space-y-4">
+              <form className="space-y-6">
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 mb-1"
                   >
                     Name
                   </label>
@@ -166,13 +210,13 @@ const Home = () => {
                     type="text"
                     id="name"
                     name="name"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    className="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 mb-1"
                   >
                     Email
                   </label>
@@ -180,13 +224,13 @@ const Home = () => {
                     type="email"
                     id="email"
                     name="email"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    className="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 mb-1"
                   >
                     Message
                   </label>
@@ -194,13 +238,13 @@ const Home = () => {
                     id="message"
                     name="message"
                     rows="4"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    className="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   ></textarea>
                 </div>
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
                   >
                     Send Message
                   </button>
@@ -209,20 +253,29 @@ const Home = () => {
             </motion.div>
           </Section>
 
-          <footer className="bg-gray-800 text-white py-8">
+          <footer className="bg-gray-800 text-white py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-center space-x-6 mb-4">
-                <a href="#" className="hover:text-gray-300">
-                  <Github />
+              <div className="flex justify-center space-x-8 mb-6">
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition duration-150 ease-in-out"
+                >
+                  <Github size={24} />
                 </a>
-                <a href="#" className="hover:text-gray-300">
-                  <Linkedin />
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition duration-150 ease-in-out"
+                >
+                  <Linkedin size={24} />
                 </a>
-                <a href="#" className="hover:text-gray-300">
-                  <Mail />
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition duration-150 ease-in-out"
+                >
+                  <Mail size={24} />
                 </a>
               </div>
-              <p className="text-center text-sm">
+              <p className="text-center text-gray-400 text-sm">
                 © 2024 Your Name. All rights reserved.
               </p>
             </div>
