@@ -22,17 +22,20 @@ const Home = () => {
             className="p-2 bg-indigo-600 rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             <span className="sr-only">Open sidebar</span>
-            <Menu className="h-6 w-6" aria-hidden="true" />
+            {!isSidebarOpen && <Menu className="h-6 w-6" aria-hidden="true" />}
           </button>
         </div>
 
-        <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
-            <Welcome />
-            <About />
-            <Hobbies />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Welcome />
+
+          <About />
+
+          <Hobbies />
+
+          <section id="contact" className="mb-20">
             <Contact />
-          </div>
+          </section>
         </main>
 
         <Footer />

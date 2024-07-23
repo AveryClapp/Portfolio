@@ -8,23 +8,23 @@ const Footer = () => {
     {
       name: "LinkedIn",
       icon: Linkedin,
-      url: "https://www.linkedin.com/in/your-linkedin-profile",
+      url: "https://www.linkedin.com/in/avery-clapp-062289245/",
     },
     {
       name: "GitHub",
       icon: Github,
-      url: "https://github.com/your-github-username",
+      url: "https://github.com/AveryClapp",
     },
     {
       name: "LeetCode",
       icon: Code,
-      url: "https://leetcode.com/your-leetcode-username",
+      url: "https://leetcode.com/u/AveryClapp/",
     },
   ];
 
   return (
-    <footer className="bg-gray-800 text-white py-8">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-gray-900 text-white py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="flex space-x-4">
             {socialLinks.map((link) => (

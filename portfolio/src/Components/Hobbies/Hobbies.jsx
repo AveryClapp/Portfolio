@@ -1,33 +1,46 @@
 import React from "react";
-import { Heart } from "lucide-react";
+import { Music, Users } from "lucide-react";
+import { FaSwimmer } from "react-icons/fa";
+
+const HobbyCard = ({ icon: Icon, title, description }) => (
+  <div className="card">
+    <div className="flex items-center mb-4">
+      <Icon className="text-indigo-500 mr-3" size={24} />
+      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+    </div>
+    <p className="text-gray-600">{description}</p>
+  </div>
+);
 
 const Hobbies = () => {
   const hobbies = [
-    "Exploring nature trails and hiking",
-    "Reading science fiction novels",
-    "Experimenting with new cooking recipes",
-    "Playing strategy board games with friends",
+    {
+      icon: FaSwimmer,
+      title: "Swimming",
+      description:
+        "I am on the varsity swim team at Johns Hopkins specializing in short to mid-distance backstroke and butterfly events.",
+    },
+    {
+      icon: Music,
+      title: "Playing Guitar",
+      description:
+        "Music is my passion, and I enjoy playing guitar in my free time. It's a creative outlet that balances my technical work.",
+    },
+    {
+      icon: Users,
+      title: "Hanging Out with Friends",
+      description:
+        "I value my social connections and enjoy spending time with friends, whether it's game nights, outdoor activities, or just casual hangouts.",
+    },
   ];
 
   return (
-    <section id="hobbies" className="mb-16">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-        Hobbies
-      </h2>
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <p className="text-lg text-gray-600 mb-4">
-            When I'm not coding, you can find me:
-          </p>
-          <ul className="space-y-2">
-            {hobbies.map((hobby, index) => (
-              <li key={index} className="flex items-center">
-                <Heart className="flex-shrink-0 mr-3 h-5 w-5 text-indigo-500" />
-                <span className="text-sm text-gray-600">{hobby}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <section id="hobbies" className="py-20">
+      <h2 className="section-title">Hobbies & Interests</h2>
+      <div className="grid md:grid-cols-3 gap-8">
+        {hobbies.map((hobby, index) => (
+          <HobbyCard key={index} {...hobby} />
+        ))}
       </div>
     </section>
   );
