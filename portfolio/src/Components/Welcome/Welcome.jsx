@@ -25,20 +25,13 @@ const Welcome = () => {
           <p className="text-lg">
             Name: Avery Clapp
             <br />
-            Status: Rising Junior at Johns Hopkins University
+            Class: Rising Junior at Johns Hopkins University
             <br />
             Major: Computer Science and Economics
             <br />
-            Focus: Full Stack Development | Financial Technology
+            Interests: FinTech Applications, Data Driven Solutions, Scalable Web
+            Development
             <br />
-            Skills: Python, JavaScript, C++, SQL, React.js, Node.js
-            <br />
-            Interests: Algorithmic Trading, Web Development, Data Analysis
-            <br />
-            Current Project: Developing a crypto trading platform with ML
-            integration
-            <br />
-            Goal: To innovate at the intersection of finance and technology
           </p>
         </CommandOutput>
 

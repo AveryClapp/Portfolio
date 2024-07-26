@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, Terminal } from "lucide-react";
+import { useInView } from "react-intersection-observer";
 import Sidebar from "../Sidebar/Sidebar";
 import Welcome from "../Welcome/Welcome";
 import Hobbies from "../Hobbies/Hobbies";
@@ -9,7 +10,66 @@ import Footer from "../Footer/Footer";
 import TechStack from "../Technical/TechStack";
 import Projects from "../Technical/Projects";
 import Experience from "../Technical/Experience";
-import { useInView } from "react-intersection-observer";
+
+const MatrixBackground = ({
+  fontSize = 15,
+  charColor = "#0F0",
+  fadeSpeed = 0.05,
+  frameRate = 30,
+}) => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const columns = canvas.width / fontSize;
+    const drops = new Array(Math.floor(columns)).fill(1);
+
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?";
+
+    const draw = () => {
+      ctx.fillStyle = `rgba(0, 0, 0, ${fadeSpeed})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = charColor;
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    };
+
+    const interval = setInterval(draw, 1000 / frameRate);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("resize", resizeCanvas);
+    };
+  }, [fontSize, charColor, fadeSpeed, frameRate]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full z-0 opacity-30"
+    />
+  );
+};
 
 const TerminalWindow = ({ title, children }) => {
   const [command, ...titleParts] = title.split(" ");
@@ -20,10 +80,12 @@ const TerminalWindow = ({ title, children }) => {
       <div className="bg-green-900 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center">
           <Terminal size={16} className="mr-2 text-green-500" />
-          <span className="text-green-500 font-mono font-bold mr-2">
+          <span className="text-green-500 font-mono font-black text-xl mr-2">
             {command}
           </span>
-          <span className="text-green-300 font-mono">{restOfTitle}</span>
+          <span className="text-green-300 font-mono font-bolder">
+            {restOfTitle}
+          </span>
         </div>
       </div>
       <div className="p-4 font-mono text-green-500">{children}</div>
@@ -98,14 +160,18 @@ const Home = () => {
     return `Last login: ${day} ${month} ${date} ${hours}:${minutes}:${seconds} on avery-portfolio-1`;
   };
   const loginMessage = generateLoginMessage();
+
   return (
-    <div className="min-h-screen bg-black text-green-500 font-mono">
+    <div className="relative min-h-screen bg-black text-green-500 font-mono">
+      <MatrixBackground
+        fontSize={20}
+        charColor="#00FF00"
+        fadeSpeed={0.03}
+        frameRate={24}
+      />
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      {/* Subtle grid background */}
-      <div className="fixed inset-0 bg-grid-green/10" />
-
-      <main className="relative z-10 flex-1 lg:ml-64">
+      <main className="relative z-20 flex-1 lg:ml-64">
         {/* Mobile menu button */}
         <button
           onClick={() => setIsSidebarOpen(true)}

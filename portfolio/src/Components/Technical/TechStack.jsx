@@ -16,7 +16,7 @@ const TechStackItem = ({ icon: Icon, name, level }) => (
 );
 
 const CommandOutput = ({ children }) => (
-  <div className="bg-black border border-green-500 rounded-lg p-4 mt-2 mb-4">
+  <div className="bg-black border border-green-500 rounded-lg p-4 mt-2">
     {children}
   </div>
 );
@@ -42,11 +42,12 @@ const TechStack = () => {
           ))}
         </div>
       </CommandOutput>
-      <div className="text-green-500 mb-2">$ techstack --summary</div>
+      <div className="text-green-500 my-4">$ techstack --summary</div>
       <CommandOutput>
         <p>
-          Full stack developer with focus on fintech. Proficient in multiple
-          languages and frameworks.
+          Full-Stack developer with passion and interest with FinTech. Capable
+          of solving complex problems with a variety of languages and
+          frameworks.
         </p>
       </CommandOutput>
     </div>

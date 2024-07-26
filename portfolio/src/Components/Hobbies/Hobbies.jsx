@@ -23,21 +23,21 @@ const Hobbies = () => {
       filename: "hobby_swimming.txt",
       title: "Swimming",
       description:
-        "I am on the varsity swim team at Johns Hopkins specializing in short to mid-distance backstroke and butterfly events.",
+        "Swimming has been one of the biggest parts of my life for over 4 years now, I train daily during the school year as a part of the varsity team at Johns Hopkins. I specialize in Butterfly and Backstroke races.",
     },
     {
       icon: Music,
       filename: "hobby_guitar.txt",
       title: "Playing Guitar",
       description:
-        "Music is my passion, and I enjoy playing guitar in my free time. It's a creative outlet that balances my technical work.",
+        "After a rough relationship with band for most of my life, I picked up the guitar over a year ago and have really enjoyed learning how to play.",
     },
     {
       icon: Users,
       filename: "hobby_friends.txt",
       title: "Hanging Out with Friends",
       description:
-        "I value my social connections and enjoy spending time with friends, whether it's game nights, outdoor activities, or just casual hangouts.",
+        "I really enjoy spending time with friends as a way to destress and have a good time.",
     },
   ];
 
