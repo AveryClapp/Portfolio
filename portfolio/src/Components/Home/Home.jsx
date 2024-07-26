@@ -49,7 +49,7 @@ const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-green-500 font-mono">
+    <div className="min-h-screen bg-black text-green-500 font-mono">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       {/* Subtle grid background */}
