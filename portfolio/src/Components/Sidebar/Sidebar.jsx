@@ -13,7 +13,6 @@ const MenuItem = ({ icon: Icon, label, href }) => (
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const [openMenus, setOpenMenus] = useState({});
-
   const menuItems = [
     { icon: Home, label: "Home", href: "#home" },
     { icon: Code, label: "Tech Stack", href: "#tech-stack" },
@@ -22,11 +21,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { icon: Heart, label: "Hobbies", href: "#hobbies" },
     { icon: Mail, label: "Contact", href: "#contact" },
   ];
-
   const toggleMenu = (index) => {
     setOpenMenus((prev) => ({ ...prev, [index]: !prev[index] }));
   };
-
   return (
     <>
       {/* Overlay for mobile */}

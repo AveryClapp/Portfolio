@@ -59,7 +59,7 @@ const Experience = () => {
 
   return (
     <section id="experience" className="">
-      <h2 className="section-title">Experience</h2>
+      <h2 className="text-3xl font-bold mb-8 text-indigo-400">Experience</h2>
       <div className="space-y-8">
         {experiences.map((exp, index) => (
           <ExperienceItem key={index} {...exp} />

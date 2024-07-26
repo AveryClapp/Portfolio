@@ -229,9 +229,7 @@ const About = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <section id="tech-stack" className="pt-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          Tech Stack
-        </h2>
+        <h2 className="text-3xl font-bold mb-8 text-indigo-400">Tech Stack</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {techStack.map((tech, index) => (
             <TechStackItem key={index} {...tech} />
@@ -240,9 +238,7 @@ const About = () => {
       </section>
 
       <section id="projects" className="my-36">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          Projects
-        </h2>
+        <h2 className="text-3xl font-bold mb-8 text-indigo-400">Projects</h2>
         <div className="max-w-3xl mx-auto">
           <Carousel projects={projects} onProjectClick={setSelectedProject} />
         </div>
