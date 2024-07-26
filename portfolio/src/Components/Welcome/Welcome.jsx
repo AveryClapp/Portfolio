@@ -8,7 +8,7 @@ const Welcome = () => {
         <div className="mb-6">
           <p className="text-sm mb-2">$ ./welcome.sh</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 typing-animation">
-            Welcome to My Portfolo
+            Welcome to My Portfolio
           </h1>
         </div>
         <div className="mb-6">
