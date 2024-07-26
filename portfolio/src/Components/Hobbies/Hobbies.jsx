@@ -39,7 +39,6 @@ const Hobbies = () => {
   return (
     <section id="hobbies" className="font-mono">
       <div className="mb-8">
-        <p className="text-green-500 text-sm mb-2">$ grep 'hobbies' life.txt</p>
         <h2 className="text-3xl font-bold text-green-500">
           Hobbies & Interests
         </h2>

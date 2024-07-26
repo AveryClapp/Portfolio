@@ -21,7 +21,6 @@ const Contact = () => {
   return (
     <section id="contact" className="font-mono">
       <div className="mb-8">
-        <p className="text-green-500 text-sm mb-2">$ ./contact.sh</p>
         <h2 className="text-3xl font-bold text-green-500">Get in Touch</h2>
       </div>
       <div className="max-w-4xl mx-auto bg-black border border-green-500 rounded-md p-6">

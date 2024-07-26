@@ -60,7 +60,6 @@ const Experience = () => {
   return (
     <section id="experience" className="font-mono">
       <div className="mb-8">
-        <p className="text-green-500 text-sm mb-2">$ cat experience.log</p>
         <h2 className="text-3xl font-bold text-green-500">Experience</h2>
       </div>
       <div className="space-y-8">

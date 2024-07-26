@@ -29,7 +29,6 @@ const TechStack = () => {
   return (
     <section id="tech-stack" className="">
       <div className="mb-8">
-        <p className="text-green-500 font-mono text-sm mb-2">$ ls tech-stack</p>
         <h2 className="text-3xl font-bold text-green-500 font-mono">
           Tech Stack
         </h2>
@@ -43,7 +42,8 @@ const TechStack = () => {
         <p>$ echo $SKILLS_SUMMARY</p>
         <p className="mt-2">
           Proficient in multiple programming languages and frameworks, with a
-          focus on web development and data analysis.
+          focus on full stack development and a strong passion for financial
+          technology.
         </p>
       </div>
     </section>

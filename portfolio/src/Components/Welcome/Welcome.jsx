@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 const Welcome = () => {
   return (
     <section id="home" className="text-green-500 py-20 mb-0">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto ">
         <div className="mb-6">
           <p className="text-sm mb-2">$ ./welcome.sh</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 typing-animation">

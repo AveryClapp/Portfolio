@@ -73,7 +73,7 @@ const Home = () => {
             transition={{ duration: 0.5 }}
           >
             <TerminalWindow title="Welcome.exe">
-              <TypewriterEffect text="Initializing Avery's Portfolio..." />
+              <TypewriterEffect text="Innitializing Avery's Portfolio..." />
               <Welcome />
             </TerminalWindow>
           </motion.section>
@@ -86,6 +86,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <TerminalWindow title="TechStack.sh">
+              <TypewriterEffect text="$  grep tech-stack" />
               <TechStack />
             </TerminalWindow>
           </motion.section>
@@ -98,6 +99,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <TerminalWindow title="Projects.json">
+              <TypewriterEffect text="$  ls projects" />
               <Projects />
             </TerminalWindow>
           </motion.section>
@@ -110,6 +112,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <TerminalWindow title="Experience.log">
+              <TypewriterEffect text="$  cat experience.log" />
               <Experience />
             </TerminalWindow>
           </motion.section>
@@ -122,6 +125,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.8 }}
           >
             <TerminalWindow title="Hobbies.txt">
+              <TypewriterEffect text="$  grep 'hobbies' life.txt" />
               <Hobbies />
             </TerminalWindow>
           </motion.section>
@@ -134,6 +138,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 1 }}
           >
             <TerminalWindow title="Contact.py">
+              <TypewriterEffect text="$  ./contact.sh" />
               <Contact />
             </TerminalWindow>
           </motion.section>

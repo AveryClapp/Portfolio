@@ -26,13 +26,13 @@ const Carousel = ({ projects, onProjectClick }) => {
             }`}
           >
             <div className="absolute inset-0 bg-black bg-opacity-75 p-6 ">
-              <div className="flex flex-direction-row w-full">
-                <h3 className="text-green-500 text-2xl font-bold mb-2 font-mono justify-self-start">
+              <div className="flex justify-between items-start w-full">
+                <h3 className="text-green-500 text-2xl font-bold mb-2 font-mono">
                   {project.title}
-                </h3>{" "}
+                </h3>
                 <button
                   onClick={() => onProjectClick(projects[currentIndex])}
-                  className="bg-green-500 text-black px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 font-mono justify-self-end"
+                  className="bg-green-500 text-black px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 font-mono"
                 >
                   View Details
                 </button>
@@ -188,7 +188,6 @@ const Projects = () => {
     <div className="font-mono">
       <section id="projects" className="">
         <div className="mb-8">
-          <p className="text-green-500 text-sm mb-2">$ ls projects</p>
           <h2 className="text-3xl font-bold text-green-500">Projects</h2>
         </div>
         <div className="max-w-3xl mx-auto">
