@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Home,
-  Briefcase,
-  Code,
-  Heart,
-  Mail,
-  ChevronRight,
-  X,
-} from "lucide-react";
+import { Home, Briefcase, Code, Heart, Mail, X } from "lucide-react";
 
 const MenuItem = ({ icon: Icon, label, href, isActive }) => (
   <a
@@ -16,12 +8,11 @@ const MenuItem = ({ icon: Icon, label, href, isActive }) => (
   >
     <Icon className="w-5 h-5 mr-3" />
     <span className="text-sm flex-grow font-mono">{label}</span>
-    {isActive && <ChevronRight className="w-4 h-4" />}
   </a>
 );
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("");
   const menuItems = [
     { icon: Home, label: "Home", href: "#home" },
     { icon: Code, label: "Tech_Stack", href: "#tech-stack" },
