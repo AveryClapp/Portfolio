@@ -11,15 +11,25 @@ import Projects from "../Technical/Projects";
 import Experience from "../Technical/Experience";
 import { useInView } from "react-intersection-observer";
 
-const TerminalWindow = ({ title, children }) => (
-  <div className="bg-black border border-green-500 rounded-lg overflow-hidden mb-6 shadow-lg shadow-green-500/20">
-    <div className="bg-green-900 px-4 py-2 flex items-center">
-      <Terminal size={16} className="mr-2 text-green-500" />
-      <span className="text-green-500 font-mono">{title}</span>
+const TerminalWindow = ({ title, children }) => {
+  const [command, ...titleParts] = title.split(" ");
+  const restOfTitle = titleParts.join(" ");
+
+  return (
+    <div className="bg-black border border-green-500 rounded-lg overflow-hidden mb-6 shadow-lg shadow-green-500/20">
+      <div className="bg-green-900 px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center">
+          <Terminal size={16} className="mr-2 text-green-500" />
+          <span className="text-green-500 font-mono font-bold mr-2">
+            {command}
+          </span>
+          <span className="text-green-300 font-mono">{restOfTitle}</span>
+        </div>
+      </div>
+      <div className="p-4 font-mono text-green-500">{children}</div>
     </div>
-    <div className="p-4 font-mono text-green-500">{children}</div>
-  </div>
-);
+  );
+};
 
 const TypewriterEffect = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -86,7 +96,7 @@ const Home = () => {
             transition={{ duration: 0.5 }}
           >
             <TerminalWindow title="Welcome.exe">
-              <TypewriterEffect text="Innitializing Avery's Portfolio..." />
+              <TypewriterEffect text="Initializing Avery's Portfolio..." />
               <Welcome />
             </TerminalWindow>
           </motion.section>
@@ -151,7 +161,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 1 }}
           >
             <TerminalWindow title="Contact.py">
-              <TypewriterEffect text="$ ./contact.sh" />
+              <TypewriterEffect text="$ mail -s 'New Contact' aclapp1@jh.edu" />
               <Contact />
             </TerminalWindow>
           </motion.section>

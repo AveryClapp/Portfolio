@@ -1,5 +1,5 @@
 import React from "react";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin, FileText, ChevronRight } from "lucide-react";
 
 const ExperienceItem = ({
   title,
@@ -8,22 +8,29 @@ const ExperienceItem = ({
   location,
   responsibilities,
 }) => (
-  <div className="bg-black border border-green-500 p-4 rounded-md mb-4">
-    <h3 className="text-xl font-bold text-green-500 mb-2 font-mono">{title}</h3>
-    <p className="text-green-400 font-semibold mb-1 font-mono">{company}</p>
-    <div className="flex items-center text-green-300 mb-4 font-mono">
-      <Calendar className="mr-2" size={16} />
-      <span className="mr-4">{period}</span>
-      <MapPin className="mr-2" size={16} />
-      <span>{location}</span>
+  <div className=" border border-green-500 rounded-md mb-4 overflow-hidden">
+    <div className="bg-green-800 px-4 py-2 flex items-center">
+      <FileText className="mr-2 text-green-300" size={16} />
+      <span className="text-green-300 font-semibold">{title}.md</span>
     </div>
-    <ul className="list-disc list-inside text-green-300 space-y-2 font-mono">
-      {responsibilities.map((resp, idx) => (
-        <li key={idx} className="text-sm">
-          {resp}
-        </li>
-      ))}
-    </ul>
+    <div className="p-4">
+      <h3 className="text-xl font-bold text-green-500 mb-2">{title}</h3>
+      <p className="text-green-400 font-semibold mb-1">{company}</p>
+      <div className="flex items-center text-green-300 mb-4 text-sm">
+        <Calendar className="mr-2" size={14} />
+        <span className="mr-4">{period}</span>
+        <MapPin className="mr-2" size={14} />
+        <span>{location}</span>
+      </div>
+      <ul className="space-y-2 text-green-300">
+        {responsibilities.map((resp, idx) => (
+          <li key={idx} className="flex items-start">
+            <ChevronRight className="mr-2 mt-1 flex-shrink-0" size={14} />
+            <span className="text-sm">{resp}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 );
 
@@ -58,10 +65,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="font-mono">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-green-500">Experience</h2>
-      </div>
+    <section id="experience" className="font-mono pt-4">
       <div className="space-y-8">
         {experiences.map((exp, index) => (
           <ExperienceItem key={index} {...exp} />
