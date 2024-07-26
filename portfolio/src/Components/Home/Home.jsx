@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, Terminal } from "lucide-react";
 import Sidebar from "../Sidebar/Sidebar";
@@ -9,6 +9,7 @@ import Footer from "../Footer/Footer";
 import TechStack from "../Technical/TechStack";
 import Projects from "../Technical/Projects";
 import Experience from "../Technical/Experience";
+import { useInView } from "react-intersection-observer";
 
 const TerminalWindow = ({ title, children }) => (
   <div className="bg-black border border-green-500 rounded-lg overflow-hidden mb-6 shadow-lg shadow-green-500/20">
@@ -22,25 +23,37 @@ const TerminalWindow = ({ title, children }) => (
 
 const TypewriterEffect = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const intervalRef = useRef(null);
 
   useEffect(() => {
-    let i = 0;
-    const typingInterval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayedText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 50);
+    if (inView && text && typeof text === "string") {
+      let i = 0;
 
-    return () => clearInterval(typingInterval);
-  }, [text]);
+      const typeChar = () => {
+        if (i <= text.length) {
+          setDisplayedText(text.slice(0, i));
+          i++;
+        } else {
+          clearInterval(intervalRef.current);
+        }
+      };
+
+      intervalRef.current = setInterval(typeChar, 50);
+
+      return () => clearInterval(intervalRef.current);
+    }
+  }, [inView, text]);
 
   return (
-    <span>
+    <span ref={ref}>
       {displayedText}
-      <span className="animate-pulse">▋</span>
+      {displayedText.length < text.length && (
+        <span className="animate-pulse">▋</span>
+      )}
     </span>
   );
 };
@@ -112,7 +125,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
           >
             <TerminalWindow title="Experience.log">
-              <TypewriterEffect text="$  cat experience.log" />
+              <TypewriterEffect text="$ cat experience.log" />
               <Experience />
             </TerminalWindow>
           </motion.section>
@@ -125,7 +138,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.8 }}
           >
             <TerminalWindow title="Hobbies.txt">
-              <TypewriterEffect text="$  grep 'hobbies' life.txt" />
+              <TypewriterEffect text="$ grep 'hobbies' life.txt" />
               <Hobbies />
             </TerminalWindow>
           </motion.section>
@@ -138,7 +151,7 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 1 }}
           >
             <TerminalWindow title="Contact.py">
-              <TypewriterEffect text="$  ./contact.sh" />
+              <TypewriterEffect text="$ ./contact.sh" />
               <Contact />
             </TerminalWindow>
           </motion.section>
