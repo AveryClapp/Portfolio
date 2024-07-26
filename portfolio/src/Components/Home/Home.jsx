@@ -157,7 +157,7 @@ const Home = () => {
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const seconds = now.getSeconds().toString().padStart(2, "0");
 
-    return `Last login: ${day} ${month} ${date} ${hours}:${minutes}:${seconds} on avery-portfolio-1`;
+    return `Last login: ${day} ${month} ${date} ${hours}:${minutes}:${seconds} on server: avery-portfolio-1`;
   };
   const loginMessage = generateLoginMessage();
 
@@ -166,8 +166,8 @@ const Home = () => {
       <MatrixBackground
         fontSize={20}
         charColor="#00FF00"
-        fadeSpeed={0.03}
-        frameRate={24}
+        fadeSpeed={0.1}
+        frameRate={15}
       />
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
