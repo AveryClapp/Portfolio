@@ -3,12 +3,14 @@ import { Music, Users } from "lucide-react";
 import { FaSwimmer } from "react-icons/fa";
 
 const HobbyCard = ({ icon: Icon, title, description }) => (
-  <div className="card">
+  <div className="bg-black border border-green-500 p-4 rounded-md">
     <div className="flex items-center mb-4">
-      <Icon className="text-indigo-500 mr-3" size={24} />
-      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+      <Icon className="text-green-500 mr-3" size={24} />
+      <h3 className="text-xl font-semibold text-green-400 font-mono">
+        {title}
+      </h3>
     </div>
-    <p className="text-gray-600">{description}</p>
+    <p className="text-green-300 font-mono">{description}</p>
   </div>
 );
 
@@ -35,8 +37,13 @@ const Hobbies = () => {
   ];
 
   return (
-    <section id="hobbies" className="py-20">
-      <h2 className="section-title">Hobbies & Interests</h2>
+    <section id="hobbies" className="font-mono">
+      <div className="mb-8">
+        <p className="text-green-500 text-sm mb-2">$ grep 'hobbies' life.txt</p>
+        <h2 className="text-3xl font-bold text-green-500">
+          Hobbies & Interests
+        </h2>
+      </div>
       <div className="grid md:grid-cols-3 gap-8">
         {hobbies.map((hobby, index) => (
           <HobbyCard key={index} {...hobby} />
