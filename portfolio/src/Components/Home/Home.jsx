@@ -70,7 +70,34 @@ const TypewriterEffect = ({ text }) => {
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const generateLoginMessage = () => {
+    const now = new Date();
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
+    const day = days[now.getDay()];
+    const month = months[now.getMonth()];
+    const date = now.getDate().toString().padStart(2, "0");
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+
+    return `Last login: ${day} ${month} ${date} ${hours}:${minutes}:${seconds} on avery-portfolio-1`;
+  };
+  const loginMessage = generateLoginMessage();
   return (
     <div className="min-h-screen bg-black text-green-500 font-mono">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
@@ -95,8 +122,8 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <TerminalWindow title="Welcome.exe">
-              <TypewriterEffect text="Initializing Avery's Portfolio..." />
+            <TerminalWindow title="Welcome">
+              <TypewriterEffect text={loginMessage} />
               <Welcome />
             </TerminalWindow>
           </motion.section>
@@ -108,8 +135,8 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <TerminalWindow title="TechStack.sh">
-              <TypewriterEffect text="$  grep tech-stack" />
+            <TerminalWindow title="Tech-Stack">
+              <TypewriterEffect text="$ techstack --list --verbose" />
               <TechStack />
             </TerminalWindow>
           </motion.section>
@@ -121,8 +148,8 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <TerminalWindow title="Projects.json">
-              <TypewriterEffect text="$  ls projects" />
+            <TerminalWindow title="Personal Projects">
+              <TypewriterEffect text="$ ls -l ~/projects/" />
               <Projects />
             </TerminalWindow>
           </motion.section>
@@ -134,8 +161,8 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <TerminalWindow title="Experience.log">
-              <TypewriterEffect text="$ cat experience.log" />
+            <TerminalWindow title="Experience">
+              <TypewriterEffect text="$ grep -H '' experience/*.md" />
               <Experience />
             </TerminalWindow>
           </motion.section>
@@ -147,8 +174,8 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.8 }}
           >
-            <TerminalWindow title="Hobbies.txt">
-              <TypewriterEffect text="$ grep 'hobbies' life.txt" />
+            <TerminalWindow title="Hobbies">
+              <TypewriterEffect text="$ cat /home/avery/hobbies/*" />
               <Hobbies />
             </TerminalWindow>
           </motion.section>
@@ -160,7 +187,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
           >
-            <TerminalWindow title="Contact.py">
+            <TerminalWindow title="Contact">
               <TypewriterEffect text="$ mail -s 'New Contact' aclapp1@jh.edu" />
               <Contact />
             </TerminalWindow>

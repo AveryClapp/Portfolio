@@ -1,59 +1,86 @@
 import React from "react";
 import { Github, Linkedin, Mail } from "lucide-react";
 
+const CommandOutput = ({ command, children }) => (
+  <div className="mb-6 w-full">
+    <p className="text-sm text-green-400 mb-2">$ {command}</p>
+    <div className="bg-black border border-green-500 rounded-lg p-4 w-full">
+      {children}
+    </div>
+  </div>
+);
+
 const Welcome = () => {
   return (
-    <section id="home" className="text-green-500 py-20 mb-0">
-      <div className="max-w-4xl mx-auto ">
-        <div className="mb-6">
-          <p className="text-sm mb-2">$ ./welcome.sh</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 typing-animation">
-            Welcome to My Portfolio
+    <section id="home" className="text-green-300 font-mono pt-8 w-full">
+      <div className="w-full">
+        <CommandOutput command="./welcome.sh">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-green-500">
+            Welcome to Avery's Portfolio
           </h1>
-        </div>
-        <div className="mb-6">
-          <p className="text-sm mb-2">$ cat about.txt</p>
-          <p className="text-lg md:text-xl mb-4">
-            I'm Avery, a rising Junior at Johns Hopkins University studying
-            Computer Science and Economics.
+          <p className="text-lg">[System] Initializing portfolio... Done.</p>
+        </CommandOutput>
+
+        <CommandOutput command="cat about.txt">
+          <p className="text-lg">
+            Name: Avery Clapp
+            <br />
+            Status: Rising Junior at Johns Hopkins University
+            <br />
+            Major: Computer Science and Economics
+            <br />
+            Focus: Full Stack Development | Financial Technology
+            <br />
+            Skills: Python, JavaScript, C++, SQL, React.js, Node.js
+            <br />
+            Interests: Algorithmic Trading, Web Development, Data Analysis
+            <br />
+            Current Project: Developing a crypto trading platform with ML
+            integration
+            <br />
+            Goal: To innovate at the intersection of finance and technology
           </p>
-        </div>
-        <div className="mb-8">
-          <p className="text-sm mb-2">$ ls social-links</p>
-          <div className="flex justify-start space-x-4">
+        </CommandOutput>
+
+        <CommandOutput command="ls -l social-links/">
+          <div className="flex flex-col space-y-2">
             <a
               href="https://github.com/AveryClapp"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-green-500 text-green-500 p-2 rounded-md hover:bg-green-500 hover:text-black transition duration-300"
+              className="flex items-center hover:text-green-500 transition-colors duration-300"
             >
-              <Github size={24} />
+              <Github size={20} className="mr-2" />
+              <span>github.com/AveryClapp</span>
             </a>
             <a
               href="https://www.linkedin.com/in/avery-clapp-062289245/"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-green-500 text-green-500 p-2 rounded-md hover:bg-green-500 hover:text-black transition duration-300"
+              className="flex items-center hover:text-green-500 transition-colors duration-300"
             >
-              <Linkedin size={24} />
+              <Linkedin size={20} className="mr-2" />
+              <span>linkedin.com/in/avery-clapp-062289245</span>
             </a>
             <a
               href="mailto:aclapp1@jh.edu"
-              className="border border-green-500 text-green-500 p-2 rounded-md hover:bg-green-500 hover:text-black transition duration-300"
+              className="flex items-center hover:text-green-500 transition-colors duration-300"
             >
-              <Mail size={24} />
+              <Mail size={20} className="mr-2" />
+              <span>aclapp1@jh.edu</span>
             </a>
           </div>
-        </div>
-        <div>
-          <p className="text-sm mb-2">$ ./contact.sh</p>
+        </CommandOutput>
+
+        <CommandOutput command="./contact.sh">
+          <p className="mb-2">Initializing contact form...</p>
           <a
             href="#contact"
-            className="inline-block border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-black transition duration-300"
+            className="inline-block bg-green-500 text-black px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
           >
-            Get in Touch
+            Open Contact Form
           </a>
-        </div>
+        </CommandOutput>
       </div>
     </section>
   );

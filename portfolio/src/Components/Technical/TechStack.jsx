@@ -7,46 +7,49 @@ import {
   SiTailwindcss,
 } from "react-icons/si";
 
-const TechStackItem = ({ icon: Icon, name }) => (
-  <div className="flex items-center p-3 bg-black border border-green-500 rounded-md">
-    <Icon className="text-green-500 text-2xl mr-3" />
-    <span className="text-green-500 font-mono">{name}</span>
+const TechStackItem = ({ icon: Icon, name, level }) => (
+  <div className="flex items-center text-green-300 font-mono mb-1">
+    <Icon className="text-green-500 mr-2 flex-shrink-0" size={16} />
+    <span className="w-28 mr-2 truncate">{name}</span>
+    <span className="flex-shrink-0">{level}</span>
+  </div>
+);
+
+const CommandOutput = ({ children }) => (
+  <div className="bg-black border border-green-500 rounded-lg p-4 mt-2 mb-4">
+    {children}
   </div>
 );
 
 const TechStack = () => {
   const techStack = [
-    { name: "Python", icon: FaPython },
-    { name: "JavaScript", icon: FaJs },
-    { name: "TypeScript", icon: SiTypescript },
-    { name: "C++", icon: SiCplusplus },
-    { name: "SQL", icon: SiMysql },
-    { name: "HTML", icon: FaHtml5 },
-    { name: "Tailwind CSS", icon: SiTailwindcss },
-    { name: "Rust", icon: FaRust },
+    { name: "Python", icon: FaPython, level: "Advanced" },
+    { name: "JavaScript", icon: FaJs, level: "Advanced" },
+    { name: "TypeScript", icon: SiTypescript, level: "Intermediate" },
+    { name: "C++", icon: SiCplusplus, level: "Intermediate" },
+    { name: "SQL", icon: SiMysql, level: "Advanced" },
+    { name: "HTML", icon: FaHtml5, level: "Advanced" },
+    { name: "TailwindCSS", icon: SiTailwindcss, level: "Intermediate" },
+    { name: "Rust", icon: FaRust, level: "Beginner" },
   ];
 
   return (
-    <section id="tech-stack" className="">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-green-500 font-mono">
-          Tech Stack
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {techStack.map((tech, index) => (
-          <TechStackItem key={index} {...tech} />
-        ))}
-      </div>
-      <div className="mt-8 text-green-500 font-mono">
-        <p>$ echo $SKILLS_SUMMARY</p>
-        <p className="mt-2">
-          Proficient in multiple programming languages and frameworks, with a
-          focus on full stack development and a strong passion for financial
-          technology.
+    <div className="font-mono text-green-300">
+      <CommandOutput>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+          {techStack.map((tech, index) => (
+            <TechStackItem key={index} {...tech} />
+          ))}
+        </div>
+      </CommandOutput>
+      <div className="text-green-500 mb-2">$ techstack --summary</div>
+      <CommandOutput>
+        <p>
+          Full stack developer with focus on fintech. Proficient in multiple
+          languages and frameworks.
         </p>
-      </div>
-    </section>
+      </CommandOutput>
+    </div>
   );
 };
 
