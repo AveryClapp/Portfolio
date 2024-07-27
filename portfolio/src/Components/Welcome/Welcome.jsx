@@ -16,7 +16,7 @@ const Welcome = () => {
       <div className="w-full">
         <CommandOutput command="./welcome.sh">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-green-500">
-            Welcome to Avery's Portfolio
+            Welcome to My Portfolio
           </h1>
           <p className="text-lg">[System] Initializing portfolio... Done.</p>
         </CommandOutput>
