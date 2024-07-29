@@ -25,12 +25,12 @@ const TechStack = () => {
   const techStack = [
     { name: "Python", icon: FaPython, level: "Advanced" },
     { name: "JavaScript", icon: FaJs, level: "Advanced" },
-    { name: "TypeScript", icon: SiTypescript, level: "Intermediate" },
-    { name: "C++", icon: SiCplusplus, level: "Intermediate" },
-    { name: "SQL", icon: SiMysql, level: "Advanced" },
     { name: "HTML", icon: FaHtml5, level: "Advanced" },
+    { name: "C++", icon: SiCplusplus, level: "Intermediate" },
+    { name: "TypeScript", icon: SiTypescript, level: "Intermediate" },
     { name: "TailwindCSS", icon: SiTailwindcss, level: "Intermediate" },
     { name: "Rust", icon: FaRust, level: "Beginner" },
+    { name: "SQL", icon: SiMysql, level: "Beginner" },
   ];
 
   return (
