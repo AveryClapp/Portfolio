@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import BlogPost from "@/components/BlogList/BlogPost";
+import BlogPost from "@/Components/BlogList/BlogPost";
 
 async function getPost(slug) {
   const filePath = path.join(process.cwd(), "src/Blogs", `${slug}.md`);
