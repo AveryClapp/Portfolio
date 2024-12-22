@@ -1,5 +1,13 @@
 import '@/app/globals.css'
 
+export const metadata = {
+  title: "Avery's Portfolio",
+  icons: {
+    icon: 'favicon.ico', // Path to your icon in public/
+  },
+};
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
