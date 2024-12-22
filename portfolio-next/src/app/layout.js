@@ -3,7 +3,7 @@ import '@/app/globals.css'
 export const metadata = {
   title: "Avery's Portfolio",
   icons: {
-    icon: 'favicon.ico', // Path to your icon in public/
+    icon: '/file.svg', // Path to your icon in public/
   },
 };
 
