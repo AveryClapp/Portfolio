@@ -1,5 +1,4 @@
 import React from "react";
-import { Calendar, MapPin, FileText, ChevronRight } from "lucide-react";
 
 const ExperienceItem = ({
   title,
@@ -8,65 +7,59 @@ const ExperienceItem = ({
   location,
   responsibilities,
 }) => (
-  <div className=" border border-green-500 rounded-md mb-4 overflow-hidden">
-    <div className="bg-green-800 px-4 py-2 flex items-center">
-      <FileText className="mr-2 text-green-300" size={16} />
-      <span className="text-green-300 font-semibold">{title}.md</span>
-    </div>
-    <div className="p-4">
-      <h3 className="text-xl font-bold text-green-500 mb-2">{title}</h3>
-      <p className="text-green-400 font-semibold mb-1">{company}</p>
-      <div className="flex items-center text-green-300 mb-4 text-sm">
-        <Calendar className="mr-2" size={14} />
-        <span className="mr-4">{period}</span>
-        <MapPin className="mr-2" size={14} />
-        <span>{location}</span>
-      </div>
-      <ul className="space-y-2 text-green-300">
-        {responsibilities.map((resp, idx) => (
-          <li key={idx} className="flex items-start">
-            <ChevronRight className="mr-2 mt-1 flex-shrink-0" size={14} />
-            <span className="text-sm">{resp}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <div className="mb-8 rounded-md bg-stone-100">
+    {/* Title */}
+    <h3 className="mb-2 text-xl font-semibold text-neutral-900">
+      {title} <span className="text-base"> @ {company}</span>
+    </h3>
+
+    {/* Responsibilities */}
+    <ul className="text-sm text-neutral-700">
+      {responsibilities.map((resp, idx) => (
+        <li key={idx}>{resp}</li>
+      ))}
+    </ul>
   </div>
 );
 
 const Experience = () => {
   const experiences = [
     {
-      title: "Software Engineering Intern",
-      company: "NaviStone Inc.",
-      period: "May 2024 – Present",
-      location: "Cincinnati, Ohio",
+      title: "Machine Learning Researcher",
+      company: "Johns Hopkins Whiting School of Engineering",
+      period: "September 2024 - Present",
+      location: "Baltoimore, Maryland",
       responsibilities: [
-        "Enhanced client data visualization by revamping a web application, improving user engagement and data access.",
-        "Boosted team efficiency by incorporating agile methodologies, resulting in faster task and sprint completions.",
-        "Facilitated collaboration between product managers and designers, aiding in development of user-facing features.",
-        "Strengthened code quality and reduced bugs by conducting thorough unit testing and robust debugging processes.",
-        "Streamlined development process, cutting project delivery time by 40% by effective use of Jira, Git, and Coda.",
+        "At the forefront of my research, I'm developing an innovative GPU-based Masked Matrix Multiplication algorithm in C++, aiming to double the performance of Transformer AI workloads while reducing calculation overhead by 75%. By implementing sophisticated mathematical and linear algebra techniques for large-scale matrix operations, I've achieved a 65% boost in computational efficiency through optimized decomposition methods. This project involves close collaboration with PhD students, post-doctoral researchers, and the Computer Science Department Head.",
       ],
     },
     {
-      title: "Quantitative Researcher",
-      company:
-        "Institute For Applied Economics, Global Health, and the Study of Business Enterprise",
+      title: "Software Engineering Intern",
+      company: "NaviStone Inc.",
+      period: "May 2024 – August 2024",
+      location: "Cincinnati, Ohio",
+      responsibilities: [
+        "In this role, I led the revitalization of a web application's data visualization capabilities, which significantly enhanced client engagement and data accessibility. By implementing agile methodologies, I helped boost team efficiency and accelerate sprint completion rates. I served as a key liaison between product managers and designers, facilitating effective collaboration in the development of user-facing features. Through the implementation of comprehensive unit testing and robust debugging processes, I elevated code quality and reduced bug occurrences. Additionally, I optimized the development workflow through strategic use of tools like Jira, Git, and Coda, resulting in a notable 40% reduction in project delivery time.",
+      ],
+    },
+    {
+      title: "Quantitative Developer",
+      company: "Institute For Applied Economics",
       period: "May 2023 – January 2024",
       location: "Baltimore, Maryland",
       responsibilities: [
-        "Managed and upgraded a web crawler analyzing 20 Google articles hourly to calculate gold market sentiment.",
-        "Enhanced trading strategy performance by creating 15+ algorithms using sentiment score and gold price change data.",
-        "Boosted algorithm returns by 275% through quantitative research and data visualization tools to refine trading strategy.",
-        "Expanded subscriber base to 100+ paying users by developing a Telegram Bot delivering real-time trade updates.",
+        "During my role, I spearheaded the development and maintenance of a sophisticated web crawler that analyzed 20 Google articles per hour to gauge gold market sentiment. I created and implemented over 15 trading algorithms that leveraged both sentiment analysis data and gold price movements to optimize trading decisions. Through rigorous quantitative research and the implementation of data visualization tools, I successfully refined our trading strategy, resulting in a significant 275% improvement in algorithm returns. To enhance user engagement and accessibility, I developed a Telegram Bot that delivered real-time trade updates, which helped grow our subscriber base to more than 100 paying users.",
       ],
     },
   ];
 
   return (
-    <section id="experience" className="font-mono pt-4">
-      <div className="space-y-8">
+    <section id="experience" className="max-w-3xl px-4">
+      <h2 className="mb-2 text-2xl font-semibold text-neutral-900">
+        Experience
+      </h2>
+
+      <div>
         {experiences.map((exp, index) => (
           <ExperienceItem key={index} {...exp} />
         ))}

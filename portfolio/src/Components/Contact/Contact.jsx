@@ -9,43 +9,48 @@ const Contact = () => {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // Here you would typically send the form data to a server
+    // TODO: Integrate EmailJS or another service
   };
 
   return (
-    <div className="mt-4 font-mono text-green-300 bg-black border border-green-500 rounded-lg p-6 shadow-lg shadow-green-500/20">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-green-500 mb-2">
-          contact.config
-        </h2>
-        <div className="border-b border-green-500 pb-2">
-          <p className="flex items-center">
-            <Mail className="h-4 w-4 mr-2 text-green-500" />
-            <span className="text-green-400">EMAIL=</span>aclapp1@jh.edu
-          </p>
-          <p className="flex items-center">
-            <Phone className="h-4 w-4 mr-2 text-green-500" />
-            <span className="text-green-400">PHONE=</span>+1 (513) 212-8500
-          </p>
-          <p className="flex items-center">
-            <MapPin className="h-4 w-4 mr-2 text-green-500" />
-            <span className="text-green-400">LOCATION=</span>Baltimore, MD
-          </p>
-        </div>
+    <div className="max-w-xl mx-auto p-6 bg-white border border-neutral-200 rounded-md shadow-sm">
+      {/* Heading */}
+      <h2 className="text-2xl font-semibold text-neutral-900 mb-4">Contact</h2>
+
+      {/* Contact Info */}
+      <div className="mb-6 space-y-2 text-sm text-neutral-700">
+        <p className="flex items-center gap-2">
+          <Mail size={16} className="text-neutral-500" />
+          <span className="font-medium">Email:</span> aclapp1@jh.edu
+        </p>
+        <p className="flex items-center gap-2">
+          <Phone size={16} className="text-neutral-500" />
+          <span className="font-medium">Phone:</span> +1 (513) 212-8500
+        </p>
+        <p className="flex items-center gap-2">
+          <MapPin size={16} className="text-neutral-500" />
+          <span className="font-medium">Location:</span> Baltimore, MD
+        </p>
       </div>
+
+      {/* Contact Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name */}
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-green-400 mb-1"
+            className="block text-sm font-medium text-neutral-800 mb-1"
           >
-            NAME=
+            Name
           </label>
           <input
             type="text"
@@ -53,16 +58,20 @@ const Contact = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-black border border-green-500 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 text-green-300"
             placeholder="John Doe"
+            className="w-full rounded-md border border-neutral-200 px-3 py-2 
+                       text-neutral-900 focus:outline-none focus:ring-1 
+                       focus:ring-neutral-300 focus:border-neutral-300"
           />
         </div>
+
+        {/* Email */}
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-green-400 mb-1"
+            className="block text-sm font-medium text-neutral-800 mb-1"
           >
-            EMAIL=
+            Email
           </label>
           <input
             type="email"
@@ -70,16 +79,20 @@ const Contact = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-black border border-green-500 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 text-green-300"
             placeholder="john@example.com"
+            className="w-full rounded-md border border-neutral-200 px-3 py-2 
+                       text-neutral-900 focus:outline-none focus:ring-1 
+                       focus:ring-neutral-300 focus:border-neutral-300"
           />
         </div>
+
+        {/* Message */}
         <div>
           <label
             htmlFor="message"
-            className="block text-sm font-medium text-green-400 mb-1"
+            className="block text-sm font-medium text-neutral-800 mb-1"
           >
-            MESSAGE=
+            Message
           </label>
           <textarea
             id="message"
@@ -87,16 +100,22 @@ const Contact = () => {
             rows="4"
             value={formData.message}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-black border border-green-500 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 text-green-300"
             placeholder="Your message here..."
-          ></textarea>
+            className="w-full rounded-md border border-neutral-200 px-3 py-2 
+                       text-neutral-900 focus:outline-none focus:ring-1 
+                       focus:ring-neutral-300 focus:border-neutral-300"
+          />
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-green-600 text-black py-2 px-4 rounded-md hover:bg-green-500 transition duration-300 flex items-center justify-center"
+          className="inline-flex items-center justify-center w-full 
+                     bg-neutral-900 text-white font-medium py-2 px-4 rounded-md 
+                     hover:bg-neutral-800 transition-colors duration-200"
         >
-          <Send className="h-4 w-4 mr-2" />
-          Execute contact.sh
+          <Send size={16} className="mr-2" />
+          Send
         </button>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Linkedin, Github, Code } from "lucide-react";
+import { Linkedin, Mail, Github } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -16,14 +16,14 @@ const Footer = () => {
       url: "https://github.com/AveryClapp",
     },
     {
-      name: "LeetCode",
-      icon: Code,
-      url: "https://leetcode.com/u/AveryClapp/",
+      name: "Email",
+      icon: Mail,
+      url: "mailto:aclapp1@jh.edu",
     },
   ];
 
   return (
-    <footer className="text-white pb-10">
+    <footer className="text-black pb-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="flex space-x-4">
@@ -33,7 +33,7 @@ const Footer = () => {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-300"
+                className="text-black hover:text-black-300 transition-colors duration-300"
                 aria-label={link.name}
               >
                 <link.icon className="h-6 w-6" />
