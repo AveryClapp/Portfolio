@@ -1,20 +1,23 @@
 "use client"; // Add this since we're using client-side ReactMarkdown
-import Note from "@/Components/Note/Note"; // Fix capitalization
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
+import Note from "@/Components/Note/Note"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import Header from "@/Components/Header/Header"
+import Footer from "@/Components/Footer/Footer"
 const BlogPost = ({ post }) => {
   if (!post) {
     return <div>Post not found</div>;
   }
 
   return (
-    <div className="flex">
+    <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans"> 
+	<Header className="mb-6" />
+    <main className="flex pb-6 mb-6 border-b border-neutral-200">
       {/* Main content - 3/5 width */}
       <div className="w-3/5 px-4 ml-32">
         <article className="prose max-w-none text-black">
-          <h1>{post.title}</h1>
-          <p className="text-sm">{post.date}</p>
+          <h1 className="text-xl font-bold">{post.title}</h1>
+          <p className="text-sm mb-6">{post.date}</p>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
@@ -40,6 +43,8 @@ const BlogPost = ({ post }) => {
             />
           ))}
       </div>
+	  </main>
+	  <Footer />
     </div>
   );
 };

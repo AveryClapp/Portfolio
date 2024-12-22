@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
-      <main className="relative z-20 flex-1">
+      <main className="mb-6 relative z-20 flex-1">
         <div className="flex">
           {/* Left column - 3/5 width */}
           <div className="px-4 ml-32 w-3/5">

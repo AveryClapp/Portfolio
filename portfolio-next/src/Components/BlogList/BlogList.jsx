@@ -7,7 +7,7 @@ const BlogList = ({ blogPosts }) => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
-      <main className="relative z-20 flex-1">
+      <main className="relative z-20 flex-1 mb-6">
         <div className="flex">
           {/* Main content - 3/5 width */}
           <div className="w-3/5 px-4 ml-32">
