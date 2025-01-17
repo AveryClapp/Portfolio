@@ -28,12 +28,15 @@ const Experience = () => {
       company: "Garda Capital Partners",
       period: "June 2025 - August 2025",
       location: "New York City, New York",
+      responsibilities: [
+        "TBD",
+      ],
     },
     {
       title: "Machine Learning Researcher",
       company: "Johns Hopkins Whiting School of Engineering",
       period: "September 2024 - Present",
-      location: "Baltoimore, Maryland",
+      location: "Baltimore, Maryland",
       responsibilities: [
         "At the forefront of my research, I'm developing an innovative GPU-based Masked Matrix Multiplication algorithm in C++, aiming to double the performance of Transformer AI workloads while reducing calculation overhead by 75%. By implementing sophisticated mathematical and linear algebra techniques for large-scale matrix operations, I've achieved a 65% boost in computational efficiency through optimized decomposition methods. This project involves close collaboration with PhD students, post-doctoral researchers, and the Computer Science Department Head.",
       ],
