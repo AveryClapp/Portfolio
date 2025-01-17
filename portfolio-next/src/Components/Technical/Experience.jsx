@@ -24,7 +24,7 @@ const ExperienceItem = ({
 const Experience = () => {
   const experiences = [
     { 
-      title: "Incoming Software Engineer",
+      title: "Incoming Software Engineer Intern",
       company: "Garda Capital Partners",
       period: "June 2025 - August 2025",
       location: "New York City, New York",
