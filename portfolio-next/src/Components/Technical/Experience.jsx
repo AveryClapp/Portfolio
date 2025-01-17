@@ -33,7 +33,7 @@ const Experience = () => {
       ],
     },
     {
-      title: "Machine Learning Researcher",
+      title: "Undergraduate Research Assistant",
       company: "Johns Hopkins Whiting School of Engineering",
       period: "September 2024 - Present",
       location: "Baltimore, Maryland",
