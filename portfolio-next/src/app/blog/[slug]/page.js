@@ -7,8 +7,7 @@ async function getPost(slug) {
   const filePath = path.join(process.cwd(), "src/Blogs", `${slug}.md`);
   const fileContents = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContents);
-
-  return {
+  return { 
     ...data,
     content,
   };
