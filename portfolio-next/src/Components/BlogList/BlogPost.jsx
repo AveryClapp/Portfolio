@@ -18,16 +18,25 @@ const BlogPost = ({ post }) => {
         <article className="prose max-w-none text-black">
           <h1 className="text-xl font-bold">{post.title}</h1>
           <p className="text-sm mb-6">{post.date}</p>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              img: ({ node, ...props }) => (
-                <img {...props} className="rounded-lg shadow-sm" />
-              ),
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+		        <ReactMarkdown
+		          remarkPlugins={[remarkGfm]}
+		          components={{
+						            img: ({ node, ...props }) => (
+											            <img {...props} className="rounded-lg shadow-lg" alt="" />
+											          ),
+								            code: ({ node, inline, className, children, ...props }) => {
+													            return !inline ? (
+																		              <pre>
+																		                <code {...props}>{children}</code>
+																		              </pre>
+																		            ) : (
+																							              <code {...props}>{children}</code>
+																							            );
+													          },
+								          }}
+		        >
+		          {post.content}
+		        </ReactMarkdown>
         </article>
       </div>
 

@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import BlogList from "@/Components/BlogList/BlogList";
 
 async function getPostData() {
+  console.log("Here");
   const postsDirectory = path.join(process.cwd(), "src/Blogs");
   const files = fs.readdirSync(postsDirectory);
 
@@ -23,5 +24,6 @@ async function getPostData() {
 
 export default async function BlogPage() {
   const posts = await getPostData();
+    console.log(posts); // Debugging posts
   return <BlogList blogPosts={posts} />;
 }
