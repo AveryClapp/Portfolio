@@ -2,6 +2,9 @@ title: "Pilot"
 date: "01-19-2024"
 preview: "A personal introduction and what to expect"
 slug: "Intro"
+- number: 1
+		title: "test"
+		content: "test"	
 ---
 ## Pilot
 
