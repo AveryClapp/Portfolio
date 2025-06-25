@@ -3,6 +3,7 @@ title: "On Intelligence and Knowledge"
 date: "05-16-2025"
 preview: "What does it mean to intelligent?"
 slug: "on-intelligence-and-knowledge"
+tag: "Misc"
 ---
 ### Intro
 
