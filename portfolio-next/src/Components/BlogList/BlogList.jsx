@@ -7,11 +7,10 @@ import Footer from "@/Components/Footer/Footer";
 const BlogList = ({ blogPosts }) => {
   const [selectedTag, setSelectedTag] = useState('all');
 
-  const allTags = ['all', ...new Set(blogPosts.map(post => post.tag).filter(Boolean))];
-
+  const allTags = ['all', ...new Set(blogPosts.flatMap(post => post.tags || []))];
   const filteredPosts = selectedTag === 'all'
     ? blogPosts
-    : blogPosts.filter(post => post.tag === selectedTag);
+    : blogPosts.filter(post => post.tags && post.tags.includes(selectedTag));
 
   useEffect(() => {
   }, []);
@@ -59,14 +58,11 @@ const BlogList = ({ blogPosts }) => {
                     </h2>
                     <div className="flex items-center gap-3 text-sm text-neutral-500 mb-3">
                       <span>{post.date}</span>
-                      {post.tag && (
-                        <>
-                          <span>•</span>
-                          <span className="px-2 py-1 bg-neutral-200 rounded-md text-xs">
-                            {post.tag}
-                          </span>
-                        </>
-                      )}
+                      {post.tags && post.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-neutral-200 rounded-md text-xs mr-1">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                     <p className="text-neutral-700">{post.preview}</p>
                   </article>
