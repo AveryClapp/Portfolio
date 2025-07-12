@@ -3,11 +3,13 @@ import Welcome from "@/Components/Welcome/Welcome"
 import Footer from "@/Components/Footer/Footer"
 import Projects from "@/Components/Technical/Projects"
 import Experience from "@/Components/Technical/Experience"
+import { Analytics } from "@vercel/analytics/next"
 import Image from 'next/image'
 
 const Home = () => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
+      <Analytics />
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
         <div className="flex">
@@ -29,8 +31,8 @@ const Home = () => {
               src="/headshot.png"
               alt={"Me" || "Profile picture"}
               className="rounded-lg w-auto h-80 object-cover shadow-sm"
-		      width={220} 
-		   	  height={320}
+              width={220}
+              height={320}
             />
           </div>
         </div>
