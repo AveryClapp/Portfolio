@@ -1,3 +1,4 @@
+// src/Components/BlogList/BlogPost.jsx
 "use client";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
@@ -45,7 +46,7 @@ const BlogPost = ({ post }) => {
 		const containerTop = notesContainerRef.current.getBoundingClientRect().top;
 		const noteElements = notesContainerRef.current.querySelectorAll('.note-card');
 
-		const noteGap = 4; // Small gap between notes
+		const noteGap = 4;
 		let lastBottom = 0;
 
 		markers.forEach((marker, index) => {
@@ -96,7 +97,7 @@ const BlogPost = ({ post }) => {
 					return (
 						<sup
 							key={i}
-							className="text-neutral-800 font-semibold note-marker text-xs cursor-pointer hover:text-neutral-900 hover:bg-neutral-100 px-0.5 rounded-sm transition-colors duration-150"
+							className="hidden lg:inline text-neutral-800 font-semibold note-marker text-xs cursor-pointer hover:text-neutral-900 hover:bg-neutral-100 px-0.5 rounded-sm transition-colors duration-150"
 							data-note-id={num}
 						>
 							{num}
@@ -127,8 +128,8 @@ const BlogPost = ({ post }) => {
 	return (
 		<div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
 			<Header className="mb-6" />
-			<main className="flex pb-6 mb-6 border-b border-neutral-200" style={{ minHeight: minHeight ? `${minHeight}px` : 'auto' }}>
-				<div className="w-3/5 px-4 ml-32" ref={contentRef}>
+			<main className="flex flex-col lg:flex-row pb-6 mb-6 border-b border-neutral-200" style={{ minHeight: minHeight ? `${minHeight}px` : 'auto' }}>
+				<div className="w-full lg:w-3/5 px-4 lg:ml-32" ref={contentRef}>
 					<article className="prose max-w-none text-black">
 						<h1 className="text-xl font-bold">{post.title}</h1>
 						<p className="text-sm mb-6">{post.date}</p>
@@ -171,7 +172,8 @@ const BlogPost = ({ post }) => {
 					</article>
 				</div>
 
-				<div className="w-2/5 px-4 relative" ref={notesContainerRef}>
+				{/* Hide notes on mobile */}
+				<div className="hidden lg:block lg:w-2/5 px-4 relative" ref={notesContainerRef}>
 					{notes.map((note) => (
 						<div
 							key={note.id}
