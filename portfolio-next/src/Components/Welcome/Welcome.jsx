@@ -10,15 +10,14 @@ const Welcome = () => {
         {/* Portfolio Heading */}
         <div>
           <p className="mb-4 text-xl font-semibold text-neutral-900 md:text-4xl">
-            My name is Avery Clapp
+            Hi, my name is Avery Clapp
           </p>
         </div>
 
         {/* Introduction */}
         <div>
           <p className="text-sm text-neutral-700">
-            I am a Junior at Johns Hopkins University with a passion for
-            creating efficient, scalable solutions. I enjoy working on
+            I am a rising Senior at Johns Hopkins University where I study Computer Science and Economics. I enjoy working on
             cutting-edge projects, honing my problem-solving skills, and
             collaborating with like-minded professionals.
           </p>
