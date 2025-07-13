@@ -24,6 +24,10 @@ const BlogPost = ({ post }) => {
 	const contentRef = useRef(null);
 	const notesContainerRef = useRef(null);
 
+	// Add a global counter for unique keys
+	const keyCounterRef = useRef(0);
+	const getUniqueKey = () => `key_${++keyCounterRef.current}`;
+
 	useEffect(() => {
 		if (post?.content) {
 			const noteRegex = /\^(\d+)\[([^\]]+)\]/g;
@@ -106,15 +110,18 @@ const BlogPost = ({ post }) => {
 		return <div>Post not found</div>;
 	}
 
-	const processTextWithNotes = (child) => {
+	const processTextWithNotes = (child, parentKey = '') => {
 		if (typeof child === 'string') {
 			const parts = child.split(/(\^\d+)/);
 			return parts.map((part, i) => {
+				// Create unique key using parent context + local index
+				const uniqueKey = `${parentKey}_part_${i}`;
+
 				if (part.match(/^\^\d+$/)) {
 					const num = part.substring(1);
 					return (
 						<sup
-							key={i}
+							key={uniqueKey} // ✅ Now using unique keys
 							className="hidden lg:inline text-neutral-800 font-semibold note-marker text-xs cursor-pointer hover:text-neutral-900 hover:bg-neutral-100 px-0.5 rounded-sm transition-colors duration-150"
 							data-note-id={num}
 						>
@@ -122,24 +129,37 @@ const BlogPost = ({ post }) => {
 						</sup>
 					);
 				}
-				return part;
+				return <React.Fragment key={uniqueKey}>{part}</React.Fragment>;
 			});
 		}
 		return child;
 	};
 
-	const processChildren = (children) => {
-		return Array.isArray(children)
-			? children.map(processTextWithNotes).flat()
-			: processTextWithNotes(children);
+	const processChildren = (children, parentKey = '') => {
+		if (Array.isArray(children)) {
+			return children.map((child, index) => {
+				const childKey = `${parentKey}_child_${index}`;
+				const processed = processTextWithNotes(child, childKey);
+
+				// If processTextWithNotes returns an array, wrap it in a Fragment with a key
+				if (Array.isArray(processed)) {
+					return <React.Fragment key={childKey}>{processed}</React.Fragment>;
+				}
+				return processed;
+			});
+		}
+		return processTextWithNotes(children, parentKey);
 	};
 
 	const createProcessedComponent = (Component, className) => {
-		return ({ children, ...props }) => (
-			<Component className={className} {...props}>
-				{processChildren(children)}
-			</Component>
-		);
+		return ({ children, ...props }) => {
+			const componentKey = getUniqueKey();
+			return (
+				<Component className={className} {...props}>
+					{processChildren(children, componentKey)}
+				</Component>
+			);
+		};
 	};
 
 	const CustomImage = ({ src, alt, title, ...props }) => {
@@ -162,17 +182,19 @@ const BlogPost = ({ post }) => {
 				React.isValidElement(child) && (child.type === 'img' || child.type === CustomImage)
 			);
 
+		const paragraphKey = getUniqueKey();
+
 		if (hasOnlyImage) {
 			return (
 				<div className="my-6 flex justify-center" {...props}>
-					{processChildren(children)}
+					{processChildren(children, paragraphKey)}
 				</div>
 			);
 		}
 
 		return (
 			<p className="mb-4 leading-relaxed" {...props}>
-				{processChildren(children)}
+				{processChildren(children, paragraphKey)}
 			</p>
 		);
 	};
@@ -190,10 +212,13 @@ const BlogPost = ({ post }) => {
 			}, 0);
 			return `code-${Math.abs(hash)}`;
 		}, [codeString]);
+
+		const codeKey = getUniqueKey();
+
 		if (inline) {
 			return (
 				<code className="bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
-					{processChildren(children)}
+					{processChildren(children, codeKey)}
 				</code>
 			);
 		}
@@ -279,11 +304,14 @@ const BlogPost = ({ post }) => {
 								img: CustomImage,
 								code: CustomCodeBlock,
 								pre: ({ children }) => <>{children}</>, // Remove default pre wrapper since SyntaxHighlighter handles it
-								a: ({ node, children, ...props }) => (
-									<a className="text-blue-600 hover:underline" {...props}>
-										{processChildren(children)}
-									</a>
-								),
+								a: ({ node, children, ...props }) => {
+									const linkKey = getUniqueKey();
+									return (
+										<a className="text-blue-600 hover:underline" {...props}>
+											{processChildren(children, linkKey)}
+										</a>
+									);
+								},
 							}}
 						>
 							{processedContent}
