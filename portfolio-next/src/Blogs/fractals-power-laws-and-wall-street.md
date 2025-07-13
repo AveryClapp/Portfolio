@@ -18,4 +18,4 @@ $$
 $$
 D = 1.26
 $$
-Thus, the fractal dimension of the Snowflake Curve is 1.26^3[An interesting idea about the value of the fractal dimension is that it is an indicator of the complexity of a figure]. This is cool and all, but you may be wondering: "Does this have any real-world use or are these things just cool shapes?"
+Thus, the fractal dimension of the Snowflake Curve is 1.26^3[An interesting interpretation of the value of the fractal dimension is that it is an indicator of the complexity of a figure]. This is cool and all, but you may be wondering: "Does this have any real-world use or are these things just cool shapes?"
