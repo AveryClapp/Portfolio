@@ -1,5 +1,9 @@
+// src/Components/NoteSystem/NoteWrapper.jsx
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { renderToStaticMarkup } from 'react-dom/server';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 const NoteWrapper = ({ children, content }) => {
     const [processedContent, setProcessedContent] = useState("");
@@ -8,6 +12,35 @@ const NoteWrapper = ({ children, content }) => {
     const [minHeight, setMinHeight] = useState(0);
     const contentRef = useRef(null);
     const notesContainerRef = useRef(null);
+
+    // Function to render math in notes
+    const renderMathInText = (text) => {
+        // Handle inline math: $...$
+        let processedText = text.replace(/\$([^$]+)\$/g, (match, mathContent) => {
+            try {
+                return katex.renderToString(mathContent, {
+                    throwOnError: false,
+                    displayMode: false
+                });
+            } catch (e) {
+                return match; // Return original if math fails to render
+            }
+        });
+
+        // Handle display math: $$...$$
+        processedText = processedText.replace(/\$\$([^$]+)\$\$/g, (match, mathContent) => {
+            try {
+                return katex.renderToString(mathContent, {
+                    throwOnError: false,
+                    displayMode: true
+                });
+            } catch (e) {
+                return match; // Return original if math fails to render
+            }
+        });
+
+        return processedText;
+    };
 
     useEffect(() => {
         if (content) {
@@ -19,7 +52,8 @@ const NoteWrapper = ({ children, content }) => {
             while ((match = noteRegex.exec(content)) !== null) {
                 foundNotes.push({
                     id: match[1],
-                    text: match[2]
+                    text: match[2], // Keep original text for math processing
+                    processedText: renderMathInText(match[2]) // Add processed version
                 });
             }
 
@@ -97,7 +131,12 @@ const NoteWrapper = ({ children, content }) => {
                             position: notePositions[note.id] ? 'absolute' : 'static'
                         }}
                     >
-                        <p className="text-neutral-600 text-xs">{note.id}. {note.text}</p>
+                        <div
+                            className="text-neutral-600 text-xs"
+                            dangerouslySetInnerHTML={{
+                                __html: `${note.id}. ${note.processedText}`
+                            }}
+                        />
                     </div>
                 ))}
             </div>

@@ -1,13 +1,19 @@
 // src/Components/BlogList/BlogPost.jsx
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypeRaw from 'rehype-raw';
+import rehypeKatex from "rehype-katex";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 
+// Import KaTeX CSS
+import 'katex/dist/katex.min.css';
+
 const BlogPost = ({ post }) => {
+	// ... all your existing state and effects remain the same ...
 	const [processedContent, setProcessedContent] = useState("");
 	const [notes, setNotes] = useState([]);
 	const [notePositions, setNotePositions] = useState({});
@@ -66,9 +72,8 @@ const BlogPost = ({ post }) => {
 
 		setNotePositions(newPositions);
 
-		// Calculate minimum height needed for notes
 		if (lastBottom > 0) {
-			setMinHeight(lastBottom + 100); // Add some padding at the bottom
+			setMinHeight(lastBottom + 100);
 		}
 	};
 
@@ -87,7 +92,7 @@ const BlogPost = ({ post }) => {
 		return <div>Post not found</div>;
 	}
 
-	// Shared function to process text and convert ^n to superscript
+	// ... all your existing helper functions remain the same ...
 	const processTextWithNotes = (child) => {
 		if (typeof child === 'string') {
 			const parts = child.split(/(\^\d+)/);
@@ -116,12 +121,46 @@ const BlogPost = ({ post }) => {
 			: processTextWithNotes(children);
 	};
 
-	// Create a wrapper component that processes children for any element
 	const createProcessedComponent = (Component, className) => {
 		return ({ children, ...props }) => (
 			<Component className={className} {...props}>
 				{processChildren(children)}
 			</Component>
+		);
+	};
+
+	const CustomImage = ({ src, alt, title, ...props }) => {
+		const imageSrc = src.startsWith('/') ? src : `/${src}`;
+
+		return (
+			<img
+				src={imageSrc}
+				alt={alt || 'Blog image'}
+				title={title}
+				className="blog-image rounded-lg shadow-sm w-full max-w-lg h-auto mx-auto block my-7"
+				{...props}
+			/>
+		);
+	};
+
+	const CustomParagraph = ({ children, ...props }) => {
+		const hasOnlyImage = React.Children.count(children) === 1 &&
+			React.Children.toArray(children).some(child =>
+				React.isValidElement(child) && (child.type === 'img' || child.type === CustomImage)
+			);
+
+		if (hasOnlyImage) {
+			return (
+				<div className="my-6 flex justify-center" {...props}>
+					{processChildren(children)}
+				</div>
+			);
+		}
+
+		return (
+			<p className="mb-4 leading-relaxed" {...props}>
+				{processChildren(children)}
+			</p>
 		);
 	};
 
@@ -134,14 +173,14 @@ const BlogPost = ({ post }) => {
 						<h1 className="text-xl font-bold">{post.title}</h1>
 						<p className="text-sm mb-6">{post.date}</p>
 						<ReactMarkdown
-							remarkPlugins={[remarkGfm]}
-							rehypePlugins={[rehypeRaw]}
+							remarkPlugins={[remarkGfm, remarkMath]}
+							rehypePlugins={[rehypeRaw, rehypeKatex]}
 							className="prose prose-blue"
 							components={{
 								h1: createProcessedComponent('h1', 'text-3xl font-bold mt-8 mb-4'),
 								h2: createProcessedComponent('h2', 'text-2xl font-bold mt-6 mb-3'),
 								h3: createProcessedComponent('h3', 'text-xl font-bold mt-4 mb-2'),
-								p: createProcessedComponent('p', 'mb-4 leading-relaxed'),
+								p: CustomParagraph,
 								li: createProcessedComponent('li', 'mb-2'),
 								td: createProcessedComponent('td', 'px-4 py-2'),
 								th: createProcessedComponent('th', 'px-4 py-2 font-semibold'),
@@ -150,6 +189,7 @@ const BlogPost = ({ post }) => {
 								em: createProcessedComponent('em', 'italic'),
 								ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-4" {...props} />,
 								ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-4" {...props} />,
+								img: CustomImage,
 								code: ({ node, inline, children, ...props }) =>
 									inline ? (
 										<code className="bg-gray-100 rounded px-1 py-0.5" {...props}>
@@ -172,7 +212,6 @@ const BlogPost = ({ post }) => {
 					</article>
 				</div>
 
-				{/* Hide notes on mobile */}
 				<div className="hidden lg:block lg:w-2/5 px-4 relative" ref={notesContainerRef}>
 					{notes.map((note) => (
 						<div
