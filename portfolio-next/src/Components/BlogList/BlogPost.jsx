@@ -6,18 +6,21 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeRaw from 'rehype-raw';
 import rehypeKatex from "rehype-katex";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
+import { Copy, Check } from "lucide-react";
 
 // Import KaTeX CSS
 import 'katex/dist/katex.min.css';
 
 const BlogPost = ({ post }) => {
-	// ... all your existing state and effects remain the same ...
 	const [processedContent, setProcessedContent] = useState("");
 	const [notes, setNotes] = useState([]);
 	const [notePositions, setNotePositions] = useState({});
 	const [minHeight, setMinHeight] = useState(0);
+	const [copiedCode, setCopiedCode] = useState(null);
 	const contentRef = useRef(null);
 	const notesContainerRef = useRef(null);
 
@@ -88,11 +91,21 @@ const BlogPost = ({ post }) => {
 		};
 	}, [notes]);
 
+	// Copy code function
+	const copyToClipboard = async (text, id) => {
+		try {
+			await navigator.clipboard.writeText(text);
+			setCopiedCode(id);
+			setTimeout(() => setCopiedCode(null), 2000);
+		} catch (err) {
+			console.error('Failed to copy code:', err);
+		}
+	};
+
 	if (!post) {
 		return <div>Post not found</div>;
 	}
 
-	// ... all your existing helper functions remain the same ...
 	const processTextWithNotes = (child) => {
 		if (typeof child === 'string') {
 			const parts = child.split(/(\^\d+)/);
@@ -164,6 +177,80 @@ const BlogPost = ({ post }) => {
 		);
 	};
 
+	// Enhanced Code Block Component
+	const CustomCodeBlock = ({ node, inline, className, children, ...props }) => {
+		const match = /language-(\w+)/.exec(className || '');
+		const language = match ? match[1] : '';
+		const codeString = String(children).replace(/\n$/, '');
+		// Create a stable ID based on code content hash
+		const codeId = React.useMemo(() => {
+			const hash = codeString.split('').reduce((a, b) => {
+				a = ((a << 5) - a) + b.charCodeAt(0);
+				return a & a;
+			}, 0);
+			return `code-${Math.abs(hash)}`;
+		}, [codeString]);
+		if (inline) {
+			return (
+				<code className="bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+					{processChildren(children)}
+				</code>
+			);
+		}
+
+		return (
+			<div className="relative group mb-6">
+				{/* Language label and copy button */}
+				<div className="flex items-center justify-between bg-neutral-800 text-white px-4 py-2 rounded-t-lg text-sm">
+					<span className="font-mono text-neutral-300">
+						{language || 'code'}
+					</span>
+					<button
+						onClick={() => copyToClipboard(codeString, codeId)}
+						className="flex items-center gap-1 px-2 py-1 bg-neutral-700 hover:bg-neutral-600 rounded text-xs transition-colors"
+						title="Copy to clipboard"
+					>
+						{copiedCode === codeId ? (
+							<>
+								<Check size={12} />
+								Copied!
+							</>
+						) : (
+							<>
+								<Copy size={12} />
+								Copy
+							</>
+						)}
+					</button>
+				</div>
+
+				{/* Code content */}
+				<SyntaxHighlighter
+					style={oneDark}
+					language={language || 'text'}
+					PreTag="div"
+					customStyle={{
+						margin: 0,
+						borderTopLeftRadius: 0,
+						borderTopRightRadius: 0,
+						borderBottomLeftRadius: '0.5rem',
+						borderBottomRightRadius: '0.5rem',
+						fontSize: '0.875rem',
+						lineHeight: '1.5',
+					}}
+					codeTagProps={{
+						style: {
+							fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+						}
+					}}
+					{...props}
+				>
+					{codeString}
+				</SyntaxHighlighter>
+			</div>
+		);
+	};
+
 	return (
 		<div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
 			<Header className="mb-6" />
@@ -190,16 +277,8 @@ const BlogPost = ({ post }) => {
 								ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-4" {...props} />,
 								ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-4" {...props} />,
 								img: CustomImage,
-								code: ({ node, inline, children, ...props }) =>
-									inline ? (
-										<code className="bg-gray-100 rounded px-1 py-0.5" {...props}>
-											{processChildren(children)}
-										</code>
-									) : (
-										<code className="block bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto" {...props}>
-											{children}
-										</code>
-									),
+								code: CustomCodeBlock,
+								pre: ({ children }) => <>{children}</>, // Remove default pre wrapper since SyntaxHighlighter handles it
 								a: ({ node, children, ...props }) => (
 									<a className="text-blue-600 hover:underline" {...props}>
 										{processChildren(children)}
