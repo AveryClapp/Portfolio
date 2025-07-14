@@ -19,11 +19,6 @@ const Footer = () => {
       icon: Mail,
       url: "mailto:aclapp1@jh.edu",
     },
-    {
-      name: "Resume",
-      icon: Newspaper,
-      url: "Avery-Clapp-Resume.pdf",
-    },
   ];
 
   return (
