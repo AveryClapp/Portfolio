@@ -1,4 +1,4 @@
-import { Linkedin, Mail, Github } from "lucide-react"
+import { Linkedin, Mail, Github, Newspaper } from "lucide-react"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -18,6 +18,11 @@ const Footer = () => {
       name: "Email",
       icon: Mail,
       url: "mailto:aclapp1@jh.edu",
+    },
+    {
+      name: "Resume",
+      icon: Newspaper,
+      url: "Avery-Clapp-Resume.pdf",
     },
   ];
 
