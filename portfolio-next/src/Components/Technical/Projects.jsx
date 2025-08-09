@@ -7,6 +7,22 @@ const Projects = () => {
 
       <div class="mb-4">
         <h3 class="text-lg font-semibold text-neutral-900">
+          High-Frequency Orderbook Engine
+        </h3>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+          A performance-critical C++ trading system designed for ultra-low latency order matching and execution.
+        </p>
+        <a
+          href="https://github.com/AveryClapp/Orderbook"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block text-sm font-medium text-black hover:text-blue-500"
+        >
+          View Project →
+        </a>
+      </div>
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold text-neutral-900">
           Network Analyzer
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
