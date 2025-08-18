@@ -12,7 +12,6 @@ const NoteWrapper = ({
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [notePositions, setNotePositions] = useState({});
-  const [minHeight, setMinHeight] = useState(0);
   const contentRef = useRef(null);
   const notesContainerRef = useRef(null);
 
@@ -49,19 +48,28 @@ const NoteWrapper = ({
       },
     );
 
+    // Handle images: ![alt text](image_url)
+    processedText = processedText.replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (match, alt, src) => {
+        // Handle relative paths
+        const imageSrc = src.startsWith("/") ? src : `/${src}`;
+        return `<img src="${imageSrc}" alt="${alt || "Sidenote image"}" style="width: 100%; max-width: 128px; height: auto; border-radius: 6px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); margin-top: 8px; margin-bottom: 4px;" />`;
+      },
+    );
+
     // Handle basic markdown formatting
-    // Bold: **text** or __text__ (more explicit patterns)
+    // Bold: **text** or __text__
     processedText = processedText.replace(
       /\*\*([^*]+?)\*\*/g,
       "<strong>$1</strong>",
     );
-
     processedText = processedText.replace(
       /__([^_]+?)__/g,
       "<strong>$1</strong>",
     );
 
-    // Italic: *text* or _text_ (simpler patterns)
+    // Italic: *text* or _text_
     processedText = processedText.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
     processedText = processedText.replace(/_([^_]+?)_/g, "<em>$1</em>");
 
@@ -82,22 +90,58 @@ const NoteWrapper = ({
 
   useEffect(() => {
     if (content) {
-      const noteRegex = /\^(\d+)\[([^\]]+)\]/g;
       const foundNotes = [];
       let modifiedContent = content;
 
-      let match;
-      while ((match = noteRegex.exec(content)) !== null) {
-        foundNotes.push({
-          id: match[1],
-          text: match[2], // Keep original text
-          processedText: renderMarkdownInText(match[2]), // Add processed version
-        });
-      }
+      // Custom function to find sidenotes with proper bracket matching
+      const findSidenotes = (text) => {
+        const results = [];
+        const regex = /\^(\d+)\[/g;
+        let match;
 
-      // Only show note markers on desktop
-      modifiedContent = modifiedContent.replace(noteRegex, (match, id) => {
-        return `<sup class="hidden lg:inline text-neutral-800 font-semibold note-marker text-xs cursor-pointer hover:text-neutral-900 hover:bg-neutral-100 px-0.5 rounded-sm transition-colors duration-150" data-note-id="${id}">${id}</sup>`;
+        while ((match = regex.exec(text)) !== null) {
+          const id = match[1];
+          const startIndex = match.index + match[0].length;
+          let bracketCount = 1;
+          let endIndex = startIndex;
+
+          // Find the matching closing bracket
+          while (endIndex < text.length && bracketCount > 0) {
+            if (text[endIndex] === "[") {
+              bracketCount++;
+            } else if (text[endIndex] === "]") {
+              bracketCount--;
+            }
+            endIndex++;
+          }
+
+          if (bracketCount === 0) {
+            const content = text.substring(startIndex, endIndex - 1);
+            results.push({
+              id,
+              text: content,
+              fullMatch: text.substring(match.index, endIndex),
+              processedText: renderMarkdownInText(content),
+            });
+          }
+        }
+
+        return results;
+      };
+
+      const sidenotes = findSidenotes(content);
+
+      // Replace sidenotes in content
+      sidenotes.forEach((note) => {
+        modifiedContent = modifiedContent.replace(
+          note.fullMatch,
+          `<sup class="hidden lg:inline text-neutral-800 font-semibold note-marker text-xs cursor-pointer hover:text-neutral-900 hover:bg-neutral-100 px-0.5 rounded-sm transition-colors duration-150" data-note-id="${note.id}">${note.id}</sup>`,
+        );
+        foundNotes.push({
+          id: note.id,
+          text: note.text,
+          processedText: note.processedText,
+        });
       });
 
       // Process main content as markdown if requested
@@ -115,33 +159,19 @@ const NoteWrapper = ({
 
     const newPositions = {};
     const markers = contentRef.current.querySelectorAll(".note-marker");
-    const containerTop = notesContainerRef.current.getBoundingClientRect().top;
-    const noteElements =
-      notesContainerRef.current.querySelectorAll(".note-card");
-
-    const noteGap = 4;
-    let lastBottom = 0;
+    const contentRect = contentRef.current.getBoundingClientRect();
+    const notesRect = notesContainerRef.current.getBoundingClientRect();
 
     markers.forEach((marker, index) => {
       const id = marker.getAttribute("data-note-id");
       const markerRect = marker.getBoundingClientRect();
-      const noteElement = noteElements[index];
-      const noteHeight = noteElement ? noteElement.offsetHeight : 100;
 
-      const markerTop = markerRect.top - containerTop;
-      const idealTop = markerTop - noteHeight / 2;
-
-      const actualTop = Math.max(idealTop, lastBottom);
-      newPositions[id] = actualTop;
-
-      lastBottom = actualTop + noteHeight + noteGap;
+      // Calculate position relative to the notes container, not trying to avoid overlaps
+      const relativeTop = markerRect.top - notesRect.top;
+      newPositions[id] = Math.max(0, relativeTop - 20); // Small offset to align nicely
     });
 
     setNotePositions(newPositions);
-
-    if (lastBottom > 0) {
-      setMinHeight(lastBottom + 100);
-    }
   };
 
   useEffect(() => {
@@ -156,10 +186,8 @@ const NoteWrapper = ({
   }, [notes]);
 
   return (
-    <div
-      className="flex flex-col lg:flex-row"
-      style={{ minHeight: minHeight ? `${minHeight}px` : "auto" }}
-    >
+    <div className="flex flex-col lg:flex-row">
+      {/* Main content - flows naturally */}
       <div className="w-full lg:w-3/5" ref={contentRef}>
         {content ? (
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
@@ -167,30 +195,30 @@ const NoteWrapper = ({
           children
         )}
       </div>
-      {/* Hide notes container on mobile, show on desktop */}
-      <div
-        className="hidden lg:block lg:w-2/5 px-4 relative"
-        ref={notesContainerRef}
-      >
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className="note-card text-xs p-4 absolute w-3/4 transition-all duration-300"
-            style={{
-              top: notePositions[note.id]
-                ? `${notePositions[note.id]}px`
-                : "auto",
-              position: notePositions[note.id] ? "absolute" : "static",
-            }}
-          >
+      {/* Notes container - completely independent, allows overlaps */}
+      <div className="hidden lg:block lg:w-2/5 px-4" ref={notesContainerRef}>
+        <div className="relative">
+          {notes.map((note) => (
             <div
-              className="text-neutral-600 text-xs"
-              dangerouslySetInnerHTML={{
-                __html: `${note.id}. ${note.processedText}`,
+              key={note.id}
+              className="note-card text-xs p-4 absolute w-3/4 transition-all duration-300"
+              style={{
+                top: notePositions[note.id]
+                  ? `${notePositions[note.id]}px`
+                  : "auto",
+                position: "absolute",
+                zIndex: 10,
               }}
-            />
-          </div>
-        ))}
+            >
+              <div
+                className="text-neutral-600 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: `${note.id}. ${note.processedText}`,
+                }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

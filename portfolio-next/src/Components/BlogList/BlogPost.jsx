@@ -19,7 +19,6 @@ const BlogPost = ({ post }) => {
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [notePositions, setNotePositions] = useState({});
-  const [minHeight, setMinHeight] = useState(0);
   const [copiedCode, setCopiedCode] = useState(null);
   const contentRef = useRef(null);
   const notesContainerRef = useRef(null);
@@ -33,6 +32,51 @@ const BlogPost = ({ post }) => {
     let processedText = text;
 
     console.log("Processing sidenote text:", text);
+
+    // Handle KaTeX math first (before other processing)
+    // Display math: $$...$$
+    processedText = processedText.replace(
+      /\$\$([^$]+)\$\$/g,
+      (match, mathContent) => {
+        try {
+          const katex = require("katex");
+          return katex.renderToString(mathContent, {
+            throwOnError: false,
+            displayMode: true,
+          });
+        } catch (e) {
+          console.error("KaTeX display math error:", e);
+          return match; // Return original if math fails to render
+        }
+      },
+    );
+
+    // Inline math: $...$
+    processedText = processedText.replace(
+      /\$([^$]+)\$/g,
+      (match, mathContent) => {
+        try {
+          const katex = require("katex");
+          return katex.renderToString(mathContent, {
+            throwOnError: false,
+            displayMode: false,
+          });
+        } catch (e) {
+          console.error("KaTeX inline math error:", e);
+          return match; // Return original if math fails to render
+        }
+      },
+    );
+
+    // Handle images: ![alt text](image_url)
+    processedText = processedText.replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (match, alt, src) => {
+        // Handle relative paths
+        const imageSrc = src.startsWith("/") ? src : `/${src}`;
+        return `<img src="${imageSrc}" alt="${alt || "Sidenote image"}" style="width: 100%; max-width: 128px; height: auto; border-radius: 6px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); margin-top: 8px; margin-bottom: 4px;" />`;
+      },
+    );
 
     // Handle basic markdown formatting
     // Bold: **text** or __text__
@@ -67,21 +111,58 @@ const BlogPost = ({ post }) => {
 
   useEffect(() => {
     if (post?.content) {
-      const noteRegex = /\^(\d+)\[([^\]]+)\]/g;
       const foundNotes = [];
       let modifiedContent = post.content;
 
-      let match;
-      while ((match = noteRegex.exec(post.content)) !== null) {
-        foundNotes.push({
-          id: match[1],
-          text: match[2],
-          processedText: renderMarkdownInText(match[2]), // Add processed version
-        });
-      }
+      // Custom function to find sidenotes with proper bracket matching
+      const findSidenotes = (text) => {
+        const results = [];
+        const regex = /\^(\d+)\[/g;
+        let match;
 
-      modifiedContent = modifiedContent.replace(noteRegex, (match, id) => {
-        return `^${id}`;
+        while ((match = regex.exec(text)) !== null) {
+          const id = match[1];
+          const startIndex = match.index + match[0].length;
+          let bracketCount = 1;
+          let endIndex = startIndex;
+
+          // Find the matching closing bracket
+          while (endIndex < text.length && bracketCount > 0) {
+            if (text[endIndex] === "[") {
+              bracketCount++;
+            } else if (text[endIndex] === "]") {
+              bracketCount--;
+            }
+            endIndex++;
+          }
+
+          if (bracketCount === 0) {
+            const content = text.substring(startIndex, endIndex - 1);
+            results.push({
+              id,
+              text: content,
+              fullMatch: text.substring(match.index, endIndex),
+              processedText: renderMarkdownInText(content),
+            });
+          }
+        }
+
+        return results;
+      };
+
+      const sidenotes = findSidenotes(post.content);
+
+      // Replace sidenotes in content
+      sidenotes.forEach((note) => {
+        modifiedContent = modifiedContent.replace(
+          note.fullMatch,
+          `^${note.id}`,
+        );
+        foundNotes.push({
+          id: note.id,
+          text: note.text,
+          processedText: note.processedText,
+        });
       });
 
       setNotes(foundNotes);
@@ -94,33 +175,19 @@ const BlogPost = ({ post }) => {
 
     const newPositions = {};
     const markers = contentRef.current.querySelectorAll(".note-marker");
-    const containerTop = notesContainerRef.current.getBoundingClientRect().top;
-    const noteElements =
-      notesContainerRef.current.querySelectorAll(".note-card");
-
-    const noteGap = 4;
-    let lastBottom = 0;
+    const contentRect = contentRef.current.getBoundingClientRect();
+    const notesRect = notesContainerRef.current.getBoundingClientRect();
 
     markers.forEach((marker, index) => {
       const id = marker.getAttribute("data-note-id");
       const markerRect = marker.getBoundingClientRect();
-      const noteElement = noteElements[index];
-      const noteHeight = noteElement ? noteElement.offsetHeight : 100;
 
-      const markerTop = markerRect.top - containerTop;
-      const idealTop = markerTop - noteHeight / 2;
-
-      const actualTop = Math.max(idealTop, lastBottom);
-      newPositions[id] = actualTop;
-
-      lastBottom = actualTop + noteHeight + noteGap;
+      // Calculate position relative to the notes container, not trying to avoid overlaps
+      const relativeTop = markerRect.top - notesRect.top;
+      newPositions[id] = Math.max(0, relativeTop - 20); // Small offset to align nicely
     });
 
     setNotePositions(newPositions);
-
-    if (lastBottom > 0) {
-      setMinHeight(lastBottom + 100);
-    }
   };
 
   useEffect(() => {
@@ -325,10 +392,8 @@ const BlogPost = ({ post }) => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
-      <main
-        className="flex flex-col lg:flex-row pb-6 mb-6 border-b border-neutral-200"
-        style={{ minHeight: minHeight ? `${minHeight}px` : "auto" }}
-      >
+      <main className="flex flex-col lg:flex-row pb-6 mb-6 border-b border-neutral-200">
+        {/* Main content - flows naturally */}
         <div className="w-full lg:w-3/5 px-4 lg:ml-32" ref={contentRef}>
           <article className="prose max-w-none text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
@@ -384,29 +449,30 @@ const BlogPost = ({ post }) => {
           </article>
         </div>
 
-        <div
-          className="hidden lg:block lg:w-2/5 px-4 relative"
-          ref={notesContainerRef}
-        >
-          {notes.map((note) => (
-            <div
-              key={note.id}
-              className="note-card text-xs p-4 absolute w-3/4 transition-all duration-300"
-              style={{
-                top: notePositions[note.id]
-                  ? `${notePositions[note.id]}px`
-                  : "auto",
-                position: notePositions[note.id] ? "absolute" : "static",
-              }}
-            >
+        {/* Notes container - completely independent, allows overlaps */}
+        <div className="hidden lg:block lg:w-2/5 px-4" ref={notesContainerRef}>
+          <div className="relative">
+            {notes.map((note) => (
               <div
-                className="text-neutral-600 text-xs"
-                dangerouslySetInnerHTML={{
-                  __html: `${note.id}. ${note.processedText || note.text}`,
+                key={note.id}
+                className="note-card text-xs p-4 absolute w-3/4 transition-all duration-300"
+                style={{
+                  top: notePositions[note.id]
+                    ? `${notePositions[note.id]}px`
+                    : "auto",
+                  position: "absolute",
+                  zIndex: 10,
                 }}
-              />
-            </div>
-          ))}
+              >
+                <div
+                  className="text-neutral-600 text-sm"
+                  dangerouslySetInnerHTML={{
+                    __html: `${note.id}. ${note.processedText || note.text}`,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </main>
       <Footer />

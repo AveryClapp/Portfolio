@@ -1,11 +1,11 @@
 // src/Components/Home/Home.jsx
-import Header from "@/Components/Header/Header"
-import Welcome from "@/Components/Welcome/Welcome"
-import Footer from "@/Components/Footer/Footer"
-import Projects from "@/Components/Technical/Projects"
-import Experience from "@/Components/Technical/Experience"
-import { Analytics } from "@vercel/analytics/next"
-import Image from 'next/image'
+import Header from "@/Components/Header/Header";
+import Welcome from "@/Components/Welcome/Welcome";
+import Footer from "@/Components/Footer/Footer";
+import Projects from "@/Components/Technical/Projects";
+import Experience from "@/Components/Technical/Experience";
+import { Analytics } from "@vercel/analytics/next";
+import Image from "next/image";
 
 const Home = () => {
   return (
@@ -25,16 +25,6 @@ const Home = () => {
             <section id="projects">
               <Projects />
             </section>
-          </div>
-          {/* Profile image - responsive positioning */}
-          <div className="px-4 mt-8 lg:mt-0 lg:absolute lg:top-0 lg:right-32">
-            <Image
-              src="/headshot.png"
-              alt={"Me" || "Profile picture"}
-              className="rounded-lg w-full max-w-[220px] mx-auto lg:mx-0 h-auto lg:h-80 object-cover shadow-sm"
-              width={220}
-              height={320}
-            />
           </div>
         </div>
       </main>

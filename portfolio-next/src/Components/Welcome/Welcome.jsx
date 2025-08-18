@@ -7,7 +7,7 @@ const Welcome = () => {
       <div class="max-w-5xl px-0 lg:px-4">
         <div>
           <p class="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
-            Hi, my name is Avery Clapp
+            Hi, my name is Avery Clapp^1[![](/headshot.png)]
           </p>
         </div>
         <div>
@@ -25,4 +25,3 @@ const Welcome = () => {
 };
 
 export default Welcome;
-
