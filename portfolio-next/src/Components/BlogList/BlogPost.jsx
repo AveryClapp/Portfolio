@@ -31,8 +31,6 @@ const BlogPost = ({ post }) => {
   const renderMarkdownInText = (text) => {
     let processedText = text;
 
-    console.log("Processing sidenote text:", text);
-
     // Handle KaTeX math first (before other processing)
     // Display math: $$...$$
     processedText = processedText.replace(
@@ -105,7 +103,6 @@ const BlogPost = ({ post }) => {
       '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>',
     );
 
-    console.log("Processed result:", processedText);
     return processedText;
   };
 
@@ -178,14 +175,44 @@ const BlogPost = ({ post }) => {
     const contentRect = contentRef.current.getBoundingClientRect();
     const notesRect = notesContainerRef.current.getBoundingClientRect();
 
+    // First pass: calculate base positions
+    const basePositions = [];
     markers.forEach((marker, index) => {
       const id = marker.getAttribute("data-note-id");
       const markerRect = marker.getBoundingClientRect();
-
-      // Calculate position relative to the notes container, not trying to avoid overlaps
       const relativeTop = markerRect.top - notesRect.top;
-      newPositions[id] = Math.max(0, relativeTop - 20); // Small offset to align nicely
+
+      basePositions.push({
+        id,
+        originalTop: Math.max(0, relativeTop - 20),
+        finalTop: Math.max(0, relativeTop - 20),
+      });
     });
+
+    // Second pass: resolve collisions
+    const NOTE_HEIGHT = 0; // Approximate height of a note card
+    const MIN_SPACING = 40; // Minimum spacing between notes
+
+    // Sort by original position to process top-to-bottom
+    basePositions.sort((a, b) => a.originalTop - b.originalTop);
+
+    for (let i = 0; i < basePositions.length; i++) {
+      const currentNote = basePositions[i];
+
+      // Check for collisions with previous notes
+      for (let j = 0; j < i; j++) {
+        const previousNote = basePositions[j];
+        const distance = currentNote.finalTop - previousNote.finalTop;
+
+        // If notes are too close, push current note down
+        if (distance < NOTE_HEIGHT + MIN_SPACING) {
+          currentNote.finalTop =
+            previousNote.finalTop + NOTE_HEIGHT + MIN_SPACING;
+        }
+      }
+
+      newPositions[currentNote.id] = currentNote.finalTop;
+    }
 
     setNotePositions(newPositions);
   };

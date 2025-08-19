@@ -1,6 +1,6 @@
 ---
-title: "Dijkstras++"
-date: "08-18-2025"
+title: "Dijkstras++ (WIP)"
+date: "08-19-2025"
 preview: "Breaking the lower bound for SSSP Algorithms"
 slug: "dijkstras-plus-plus"
 tags: ["Algorithms"]
@@ -31,4 +31,6 @@ Given an arbitrary upper bound $B$, we can define $U$ as the set of all vertices
 
 When $S$ is too large, it can be decreased by $k$ iterations of Bellman-Ford from vertices in $S$. By doing so, all vertices with a shortest path from a vertex in $S$ that has $< k$ edges will be "complete". This will leave $|U|/k$ vertices, or pivots^5[The vertices leftover are referred to as _pivots_ since the shortest path to other vertices depends on them], putting us at the same size frontier as the first conidition.
 
-To tie things together, once the frontier is reasonably small ($ < |U|/k$), the algorithm imploys a divide-and-conquer approach
+To tie things together, once the frontier is reasonably small ($ < |U|/k$), the algorithm imploys a recursive divide-and-conquer approach to handle the frontier. But what is it dividing and conquering? Suppose the set of vertices, $U$, is paritioned into $2^t$ pieces where the partitioned sets contain vertices of similar size. By recursively dividing these sets, the algorithm will reach the base case where each parition is a _singleton_^6[A set with size equal to 1] after $\frac{\log{n}}{t}$ levels. Every level is $\frac{n}{2^{kt}}$ size^7[This is obvious if you calculate the size of each partition for levels 1, 2, 3, etc.], where $k$ is the number of levels. Setting this relation equal to one and solving for $k$ gets the above result of $\frac{\log{n}}{t}$
+
+We're still missing one very large aspect of the algorithm, what exactly is $B$? All the way back at the start of this section, $U$ was defined as "the set of all vertices that have a minimum length of $< B$.
