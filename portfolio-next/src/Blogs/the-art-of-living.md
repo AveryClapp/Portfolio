@@ -3,7 +3,7 @@ title: "The Art of Living"
 date: "06-28-2025"
 preview: "Epictetus's guide to living a meaningful life"
 slug: "the-art-of-living"
-tags: ["Philosopy", "Stoicism"]
+tags: ["Philosophy"]
 ---
 
 ## Introduction
