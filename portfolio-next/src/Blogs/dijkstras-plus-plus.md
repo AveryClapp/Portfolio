@@ -42,3 +42,11 @@ We're still missing one very large aspect of the algorithm, what exactly is $B$?
 1. Frontier $S$, with invariant: $|S| \leq 2^{lt}$
 1. Bound $B$, with invariant: $B > max(\hat{d}(x))$ for $x$ in $S$
 1. Level $l$, with invariant: $0 \leq l \leq \frac{\log{n}}{t}$
+
+Given specific arguments, BMSSP will return $B`$, (where $B` \leq B$) as well as set $U`$ with where all vertices in $U`$ have a true distance less than $B`$. Furthermore, there are two cases here. First, $B` = B$, in which case the subroutine is complete. Otherwise, $B` < B$, in which case it will recurse further. Essentially, the algorithm is intialized with $B = \infty$ and $B`$ is progressively narrows and the frontier is progessively reduced until a shortest path is found.
+
+The beauty of divide-and-conquer approaches lies in the fact that you really only have to look at a couple of different cases. Recursion in general is very elegant because once you are able to get away from the overhead in thinking about it, it becomes a simple proof of induction, but I digress. A key function of this algorithm is that it has a _FindPivots()_ function that analyzes the frontier elements to look for pivots^8[The roots of the shortest-path trees currently being searched for] vertices.
+
+## Conclusion
+
+Combining all of these ideas together, along with some more complex mathematics and recurrence relationships out of the scope of this blog, we will get an algorithm that _deterministically_ finds the single-source shortest path in $O(m \log^\frac{2}{3}n)$ time. While this complexity only amounts to a (relatively) slow speedup, the intricacy is hard to deny. All of these techniques are designed to reduce the time spent at each vertex fron $\log{n}$ to a lower value, which is what we see here. As with many things in life, there is no substitute to interacting with with the material yourself with the paper [here](https://arxiv.org/pdf/2504.17033).
