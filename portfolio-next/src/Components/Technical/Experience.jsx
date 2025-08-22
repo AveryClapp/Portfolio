@@ -14,7 +14,6 @@ const Experience = () => {
             Quantitative Developer <span class="text-base font-normal text-neutral-600">@ Single Phase Capital | Aug 2025 - Present</span>
           </h3>
           <p class="text-sm text-neutral-700">
-            Proprietary systematic strategies. Alpha generation through quantitative research.
           </p>
         </div>
 
