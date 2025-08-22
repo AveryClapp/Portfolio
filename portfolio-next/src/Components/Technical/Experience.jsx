@@ -19,7 +19,7 @@ const Experience = () => {
 
         <div class="mb-4">
           <h3 class="text-xl font-semibold text-neutral-900 mb-2">
-            ML Research Assistant <span class="text-base font-normal text-neutral-600">@ Johns Hopkins University | September 2023 - Present</span>
+            ML Research Assistant <span class="text-base font-normal text-neutral-600">@ Johns Hopkins University | September 2024 - Present</span>
           </h3>
           <p class="text-sm text-neutral-700">
             CUDA C++ programming to overhaul GPU workloads by capitalizing on emergent matrix sparsity levels.
