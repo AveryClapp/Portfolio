@@ -43,7 +43,7 @@ const Projects = () => {
           Daily News Report
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A daily news aggregation system that curates top trending headlines from multiple sources. Designed to cut personal browsing time and keep you updated effortlessly.^1[This was my first coding project outside of the classroom]
+          A daily news aggregation system that curates top trending headlines from multiple sources. Designed to cut personal browsing time and keep you updated effortlessly.^2[This was my first coding project outside of the classroom]
         </p>
         <a
           href="https://github.com/AveryClapp/DailyNewsReport"

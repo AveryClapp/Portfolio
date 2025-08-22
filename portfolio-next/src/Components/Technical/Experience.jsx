@@ -8,7 +8,6 @@ const Experience = () => {
         Experience
       </h2>
 
-      <div class="space-y-4">
         <div class="mb-4">
           <h3 class="text-xl font-semibold text-neutral-900 mb-2">
             Quantitative Developer <span class="text-base font-normal text-neutral-600">@ Single Phase Capital | Aug 2025 - Present</span>
@@ -52,7 +51,6 @@ const Experience = () => {
             Automated gold trading algorithms architected on NLP and quantitative analysis. 
           </p>
         </div>
-      </div>
     </section>
   `;
 
