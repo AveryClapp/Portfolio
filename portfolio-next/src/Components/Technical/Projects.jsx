@@ -23,6 +23,23 @@ const Projects = () => {
       </div>
       <div class="mb-4">
         <h3 class="text-lg font-semibold text-neutral-900">
+          ArXiv Search Tool
+        </h3>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+          A robust overhaul of the ArXiv search system that enables more efficient and optimized querying of various research papers.
+        </p>
+        <a
+          href="https://github.com/AveryClapp/ArxivSearch"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block text-sm font-medium text-black hover:text-blue-500"
+        >
+          View Project →
+        </a>
+      </div>
+
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold text-neutral-900">
           Network Analyzer
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
@@ -55,22 +72,6 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-4">
-        <h3 class="text-lg font-semibold text-neutral-900">
-          Instagram Botting Suite
-        </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed">
-          An analytics tool that tracks over 1,000 Instagram accounts, offering insights into engagement, 'ghost' followers, and growth metrics.
-        </p>
-        <a
-          href="https://github.com/AveryClapp/InstagramAnalyzer"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-block text-sm font-medium text-black hover:text-blue-500"
-        >
-          View Project →
-        </a>
-      </div>
 
       <div class="mb-4">
         <h3 class="text-lg font-semibold text-neutral-900">
