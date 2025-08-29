@@ -30,7 +30,7 @@ const Experience = () => {
             Software Engineer Intern <span class="text-base font-normal text-neutral-600">@ Garda Capital Partners | May 2025 - August 2025</span>
           </h3>
           <p class="text-sm text-neutral-700">
-            Risk infrastructure && real-time data pipelines for global fixed-income assets.
+            Risk development & data-engineering for global quantitative strategies.
           </p>
         </div>
 
