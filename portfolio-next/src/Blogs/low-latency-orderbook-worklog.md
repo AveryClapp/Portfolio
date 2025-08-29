@@ -159,7 +159,11 @@ struct Order {
   Quantity quantity;   // 4 Bytes
   Direction direction; // 1 Byte
 };
-// Compiles to:
+```
+
+Which compiles to:
+
+```asm
 mov     QWORD PTR [rbp-32], w
 mov     DWORD PTR [rbp-24], x
 mov     DWORD PTR [rbp-20], y
@@ -175,6 +179,8 @@ if (condition) [[likely]] {
     unlikely_function();
 }
 ```
+
+Which compiles to:
 
 ```asm
 test    %rax, %rax
