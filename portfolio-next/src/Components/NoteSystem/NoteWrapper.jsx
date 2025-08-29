@@ -15,11 +15,9 @@ const NoteWrapper = ({
   const contentRef = useRef(null);
   const notesContainerRef = useRef(null);
 
-  // Function to render markdown in text
   const renderMarkdownInText = (text) => {
     let processedText = text;
 
-    // Handle KaTeX math first (inline and display)
     processedText = processedText.replace(
       /\$\$([^$]+)\$\$/g,
       (match, mathContent) => {
@@ -48,6 +46,47 @@ const NoteWrapper = ({
       },
     );
 
+    const codeBlockMarkers = [];
+    let markerIndex = 0;
+
+    processedText = processedText.replace(
+      /```(\w+)?\s*\n?([\s\S]*?)\n?\s*```/g,
+      (match, language, code) => {
+        const lang = language || "text";
+        const cleanCode = code.trim();
+        const marker = `__CODE_BLOCK_${markerIndex}__`;
+        codeBlockMarkers[markerIndex] = `<div class="code-block-wrapper mb-4">
+          <div class="code-header bg-neutral-800 text-white px-3 py-2 rounded-t-lg text-xs flex items-center">
+            <span class="font-mono text-neutral-300">${lang}</span>
+          </div>
+          <pre class="code-content bg-neutral-900 text-neutral-100 px-3 py-2 rounded-b-lg overflow-x-auto text-xs font-mono leading-relaxed"><code class="language-${lang}">${cleanCode.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
+        </div>`;
+        markerIndex++;
+        return marker;
+      },
+    );
+
+    processedText = processedText.replace(/```([^`\n]+)```/g, (match, code) => {
+      const marker = `__CODE_BLOCK_${markerIndex}__`;
+      codeBlockMarkers[markerIndex] =
+        `<code class="bg-neutral-800 text-neutral-100 px-2 py-1 rounded text-xs font-mono border">${code.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code>`;
+      markerIndex++;
+      return marker;
+    });
+
+    // Now handle inline code: `code` (single backticks only)
+    processedText = processedText.replace(/`([^`\n]+)`/g, (match, code) => {
+      return `<code class="bg-neutral-200 text-neutral-800 px-1 py-0.5 rounded text-xs font-mono">${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code>`;
+    });
+
+    // Restore code block markers
+    codeBlockMarkers.forEach((replacement, index) => {
+      processedText = processedText.replace(
+        `__CODE_BLOCK_${index}__`,
+        replacement,
+      );
+    });
+
     // Handle images: ![alt text](image_url)
     processedText = processedText.replace(
       /!\[([^\]]*)\]\(([^)]+)\)/g,
@@ -72,12 +111,6 @@ const NoteWrapper = ({
     // Italic: *text* or _text_
     processedText = processedText.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
     processedText = processedText.replace(/_([^_]+?)_/g, "<em>$1</em>");
-
-    // Code: `text`
-    processedText = processedText.replace(
-      /`([^`]+)`/g,
-      '<code class="bg-neutral-200 text-neutral-800 px-1 py-0.5 rounded text-xs font-mono">$1</code>',
-    );
 
     // Links: [text](url)
     processedText = processedText.replace(
