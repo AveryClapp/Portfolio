@@ -195,14 +195,6 @@ inline void Orderbook::handle_buy(Order *buy_order) {...}
 void Orderbook::handle_sell(Order *sell_order) {...}
 // To
 inline void Orderbook::handle_sell(Order *sell_order) {...}
-
-void OrderbookLevels::add_ask(Order *ask) {...}
-// To
-inline void OrderbookLevels::add_ask(Order *ask) {...}
-
-void OrderbookLevels::add_bid(Order *bid) {...}
-// To
-inline void OrderbookLevels::add_bid(Order *bid) {...}
 ```
 
 Finally, for the third and last iteration, the benchmarks report a total throughput of 1.89M orders per second.^6[Yup... all of that for a 2% increase]
