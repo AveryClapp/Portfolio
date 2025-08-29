@@ -309,13 +309,31 @@ const BlogPost = ({ post }) => {
     );
   };
 
-  const CustomParagraph = ({ children, ...props }) => {
+  const CustomParagraph = ({ children, node, ...props }) => {
     const hasOnlyImage =
       React.Children.count(children) === 1 &&
       React.Children.toArray(children).some(
         (child) =>
           React.isValidElement(child) &&
           (child.type === "img" || child.type === CustomImage),
+      );
+
+    // Check if this paragraph contains code blocks
+    const containsCodeBlock =
+      node?.children?.some(
+        (child) =>
+          child.type === "element" &&
+          child.tagName === "code" &&
+          (child.properties?.className?.some((cls) =>
+            cls.startsWith("language-"),
+          ) ||
+            !child.properties?.className), // This catches code blocks without language
+      ) ||
+      React.Children.toArray(children).some(
+        (child) =>
+          React.isValidElement(child) &&
+          typeof child.type === "function" &&
+          child.type.name === "CustomCodeBlock",
       );
 
     const paragraphKey = getUniqueKey();
@@ -328,6 +346,15 @@ const BlogPost = ({ post }) => {
       );
     }
 
+    // If paragraph contains a code block, render as div to avoid HTML nesting issues
+    if (containsCodeBlock) {
+      return (
+        <div className="mb-4 leading-relaxed code-block-container" {...props}>
+          {processChildren(children, paragraphKey)}
+        </div>
+      );
+    }
+
     return (
       <p className="mb-4 leading-relaxed" {...props}>
         {processChildren(children, paragraphKey)}
@@ -335,11 +362,12 @@ const BlogPost = ({ post }) => {
     );
   };
 
-  // Enhanced Code Block Component
+  // FIXED: Enhanced Code Block Component
   const CustomCodeBlock = ({ node, inline, className, children, ...props }) => {
     const match = /language-(\w+)/.exec(className || "");
     const language = match ? match[1] : "";
     const codeString = String(children).replace(/\n$/, "");
+
     // Create a stable ID based on code content hash
     const codeId = React.useMemo(() => {
       const hash = codeString.split("").reduce((a, b) => {
@@ -351,10 +379,18 @@ const BlogPost = ({ post }) => {
 
     const codeKey = getUniqueKey();
 
-    if (inline) {
+    // Enhanced inline detection - check multiple conditions
+    const isInlineCode =
+      inline ||
+      !className ||
+      className === "" || // No language class = inline
+      (!codeString.includes("\n") && codeString.length < 50 && !language); // Short, no newlines, no language
+
+    // CRITICAL FIX: Check if it's inline code FIRST
+    if (isInlineCode) {
       return (
         <code
-          className="bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded text-sm font-mono"
+          className="bg-neutral-200 text-neutral-800 px-1.5 py-0.5 rounded text-sm font-mono"
           {...props}
         >
           {processChildren(children, codeKey)}
@@ -362,58 +398,108 @@ const BlogPost = ({ post }) => {
       );
     }
 
-    return (
-      <div className="relative group mb-6">
+    // Code block styling aligned with site theme
+    const codeBlockContent = (
+      <div className="relative group mb-6 rounded-lg border border-neutral-300 shadow-sm overflow-hidden">
         {/* Language label and copy button */}
-        <div className="flex items-center justify-between bg-neutral-800 text-white px-4 py-2 rounded-t-lg text-sm">
-          <span className="font-mono text-neutral-300">
-            {language || "code"}
+        <div className="flex items-center justify-between bg-neutral-200 border-b border-neutral-300 px-4 py-2">
+          <span className="text-sm font-mono text-neutral-700 font-medium">
+            {language || "text"}
           </span>
           <button
             onClick={() => copyToClipboard(codeString, codeId)}
-            className="flex items-center gap-1 px-2 py-1 bg-neutral-700 hover:bg-neutral-600 rounded text-xs transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-neutral-300 hover:border-neutral-400 hover:bg-neutral-50 rounded text-xs font-medium text-neutral-700 transition-colors duration-200"
             title="Copy to clipboard"
           >
             {copiedCode === codeId ? (
               <>
-                <Check size={12} />
-                Copied!
+                <Check size={14} className="text-green-600" />
+                <span className="text-green-600">Copied!</span>
               </>
             ) : (
               <>
-                <Copy size={12} />
+                <Copy size={14} />
                 Copy
               </>
             )}
           </button>
         </div>
 
-        {/* Code content */}
-        <SyntaxHighlighter
-          style={oneDark}
-          language={language || "text"}
-          PreTag="div"
-          customStyle={{
-            margin: 0,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            borderBottomLeftRadius: "0.5rem",
-            borderBottomRightRadius: "0.5rem",
-            fontSize: "0.875rem",
-            lineHeight: "1.5",
-          }}
-          codeTagProps={{
-            style: {
+        {/* Code content with site-aligned styling */}
+        <div className="bg-neutral-100">
+          <SyntaxHighlighter
+            style={{
+              'code[class*="language-"]': {
+                color: "#1F2937",
+                background: "transparent",
+                fontFamily:
+                  'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                fontSize: "0.875rem",
+                lineHeight: "1.5",
+              },
+              'pre[class*="language-"]': {
+                color: "#1F2937",
+                background: "transparent",
+                padding: "1rem",
+                margin: "0",
+                overflow: "auto",
+              },
+              comment: { color: "#6B7280", fontStyle: "italic" },
+              keyword: { color: "#111827", fontWeight: "600" },
+              string: { color: "#047857" },
+              number: { color: "#B91C1C" },
+              function: { color: "#6B21A8" },
+              operator: { color: "#1F2937" },
+              punctuation: { color: "#4B5563" },
+              property: { color: "#0E7490" },
+              tag: { color: "#B91C1C" },
+              "attr-name": { color: "#6B21A8" },
+              "attr-value": { color: "#047857" },
+              namespace: { color: "#6B21A8" },
+              prolog: { color: "#6B7280" },
+              doctype: { color: "#6B7280" },
+              cdata: { color: "#6B7280" },
+              entity: { color: "#B91C1C" },
+              url: { color: "#0E7490" },
+              symbol: { color: "#B91C1C" },
+              boolean: { color: "#B91C1C" },
+              variable: { color: "#111827" },
+              constant: { color: "#B91C1C" },
+              selector: { color: "#047857" },
+              important: { color: "#B91C1C", fontWeight: "600" },
+              atrule: { color: "#6B21A8" },
+              builtin: { color: "#6B21A8" },
+              "class-name": { color: "#111827" },
+              regex: { color: "#047857" },
+              deleted: { color: "#B91C1C" },
+              inserted: { color: "#047857" },
+            }}
+            language={language || "text"}
+            PreTag="pre"
+            customStyle={{
+              margin: 0,
+              padding: "1rem",
+              background: "#F5F5F5",
+              fontSize: "0.875rem",
+              lineHeight: "1.5",
               fontFamily:
                 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-            },
-          }}
-          {...props}
-        >
-          {codeString}
-        </SyntaxHighlighter>
+            }}
+            codeTagProps={{
+              style: {
+                fontFamily:
+                  'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+              },
+            }}
+            {...props}
+          >
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
       </div>
     );
+
+    return codeBlockContent;
   };
 
   return (
@@ -460,7 +546,10 @@ const BlogPost = ({ post }) => {
                 ),
                 img: CustomImage,
                 code: CustomCodeBlock,
-                pre: ({ children }) => <>{children}</>, // Remove default pre wrapper since SyntaxHighlighter handles it
+                pre: ({ node, children, ...props }) => {
+                  // Handle pre elements that contain code blocks
+                  return <div className="not-prose">{children}</div>;
+                },
                 a: ({ node, children, ...props }) => {
                   const linkKey = getUniqueKey();
                   return (
