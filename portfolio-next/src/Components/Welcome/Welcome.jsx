@@ -12,9 +12,8 @@ const Welcome = () => {
         </div>
         <div>
           <p class="text-sm text-neutral-700">
-            I am a rising Senior at Johns Hopkins University where I study Computer Science and Economics. I enjoy working on
-            cutting-edge projects, honing my problem-solving skills, and
-            collaborating with like-minded professionals.
+            I am a senior at Johns Hopkins University where I study Computer Science and Economics. I enjoy working on
+            cutting-edge projects, honing my problem-solving skills, and researching cool topics.
           </p>
         </div>
       </div>

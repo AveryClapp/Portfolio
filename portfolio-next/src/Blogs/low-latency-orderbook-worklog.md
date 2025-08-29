@@ -46,7 +46,7 @@ struct Message {
 
 With this approach, receiving a `struct Message` and parsing it becomes as simple as checking the type and the corresponding data. An interesting thing to note here is that fields in a `union` in C++ `structs` all hold the same spot in memory, but only one member can be "active" at a time. This is a small and premature optimization in terms of the memory footprint of our program.
 
-Now that steps 1 and 2 are done, all that is left before we start optimizing is handling `Order` and `Cancel` messages. At a high level, when the book receives an order it should start trying to match existing ones. This means that if a user submits a bid at price 100, the book should match that against all asks that have a price $<= 100$. Canceling, on the other hand, is handled in O(1) time by an `unordered_map<ID, Order*>`, allowing us to query based on the provided ID and remove that Order from the book. With the current architecture, the Order throughput is around 635K per second.
+Now that steps 1 and 2 are done, all that is left before we start optimizing is handling `Order` and `Cancel` messages. At a high level, when the book receives an order it should start trying to match existing ones. This means that if a user submits a bid at price 100, the book should match that against all asks that have a price $<= 100$. Canceling, on the other hand, is handled in O(1) time by an `unordered_map<ID, Order*>`, allowing us to query based on the provided ID and remove that Order from the book. With the current architecture, the order throughput is around 635K per second.
 
 ## Iteration 1: Order Pooling
 
@@ -124,7 +124,7 @@ struct IDHash {
 std::unordered_map<ID, Order *, IDHash> order_map_
 ```
 
-With this next round of changes, the benchmarks report an Order throughput of 1.85M Orders per second.
+With this next round of changes, the benchmarks report an order throughput of 1.85M Orders per second.
 
 ## Iteration 3: Smaller Optimizations
 
@@ -160,10 +160,10 @@ struct Order {
   Direction direction; // 1 Byte
 };
 // Compiles to:
-mov     QWORD PTR [rbp-32], 12345
-mov     DWORD PTR [rbp-24], 1
-mov     DWORD PTR [rbp-20], 5000
-mov     BYTE PTR [rbp-16], 100
+mov     QWORD PTR [rbp-32], w
+mov     DWORD PTR [rbp-24], x
+mov     DWORD PTR [rbp-20], y
+mov     BYTE PTR [rbp-16], z
 ```
 
 This looks much better, and will save 3 bytes of excess padding for every Order, which adds up. Now, what about the concept of _branch prediction_? Essentially, branches^4[If-else blocks, for example] stop [instruction pipelining](https://www.geeksforgeeks.org/computer-organization-architecture/arithmetic-pipeline-and-instruction-pipeline/) because the CPU must wait for the condition to be evaluated before continuing. In an effort to get around this, CPUs start guessing which way the branch will go and start speculatively executing instructions on the most probable branch. As programmers, we can help the CPU along with `[[likely]]` and `[[unlikely]]` directives by compiling the likely block into the "fall-through path"
@@ -201,4 +201,4 @@ Finally, for the third and last iteration, the benchmarks report a total through
 
 # Iteration X: Final Results & Reflections
 
-It goes without saying that this is by no means the theoretical maximum throughput. HFT firms will go so far as to develop their own operating system tools to squeak out a few microseconds of edge against their competition. This project has been in the works for a while, partly because I redid it 4 times, but also because this is pretty neat stuff. The link to the GitHub is [here](https://github.com/AveryClapp/Orderbook). If I'm a bot and missed any low-hanging fruit, let me know or just create a PR. Thanks for reading!
+After it was all said and done, my order throughput capped at 1.89M per second. It goes without saying that this is by no means the theoretical maximum throughput. HFT firms will go so far as to develop their own operating system tools to squeak out a few microseconds of edge against their competition. This project has been in the works for a while, partly because I redid it 4 times, but also because this is pretty neat stuff. The link to the GitHub is [here](https://github.com/AveryClapp/Orderbook). If I'm a bot and missed any low-hanging fruit, let me know or just create a PR. Thanks for reading!
