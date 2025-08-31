@@ -7,7 +7,7 @@ const Projects = () => {
 
       <div class="mb-4">
         <h3 class="text-lg font-semibold text-neutral-900">
-          High-Frequency Orderbook Engine
+          C++ Orderbook
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
           A performance-critical C++ trading system designed for ultra-low latency order matching and execution.
