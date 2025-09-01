@@ -5,7 +5,7 @@ const Projects = () => {
     <section id="projects" class="max-w-3xl px-4 py-2">
       <h2 class="mb-2 text-2xl font-semibold text-neutral-900">Projects</h2>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           C++ Orderbook
         </h3>
@@ -21,7 +21,7 @@ const Projects = () => {
           View Project →
         </a>
       </div>
-      <div class="mb-4">
+      <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           ArXiv Search Tool
         </h3>
@@ -38,7 +38,7 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           Network Analyzer
         </h3>
@@ -55,7 +55,7 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           Daily News Report
         </h3>
@@ -73,7 +73,7 @@ const Projects = () => {
       </div>
 
 
-      <div class="mb-4">
+      <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           Crypto Trading Platform
         </h3>
