@@ -10,6 +10,11 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
+import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
+import {
+  italianGame,
+  sicilianDefense,
+} from "@/Components/BlogComponents/Chess/openings";
 import { Copy, Check } from "lucide-react";
 
 // Import KaTeX CSS
@@ -386,7 +391,6 @@ const BlogPost = ({ post }) => {
       className === "" || // No language class = inline
       (!codeString.includes("\n") && codeString.length < 50 && !language); // Short, no newlines, no language
 
-    // CRITICAL FIX: Check if it's inline code FIRST
     if (isInlineCode) {
       return (
         <code
@@ -557,6 +561,50 @@ const BlogPost = ({ post }) => {
                       {processChildren(children, linkKey)}
                     </a>
                   );
+                },
+                chessdemo: ({ opening = "italian" }) => {
+                  const openingData = {
+                    italian: italianGame,
+                    sicilian: sicilianDefense,
+                  }[opening];
+                  if (!openingData) {
+                    return (
+                      <div className="text-red-600 p-4 border border-red-300 rounded">
+                        Opening not found: {opening}
+                      </div>
+                    );
+                  }
+
+                  return <ChessSlideshow {...openingData} />;
+                },
+
+                chessposition: ({
+                  title,
+                  description,
+                  moves,
+                  initialBoard,
+                }) => {
+                  try {
+                    const parsedMoves = moves ? JSON.parse(moves) : [];
+                    const parsedBoard = initialBoard
+                      ? JSON.parse(initialBoard)
+                      : undefined;
+
+                    return (
+                      <ChessSlideshow
+                        title={title}
+                        description={description}
+                        moves={parsedMoves}
+                        initialBoard={parsedBoard}
+                      />
+                    );
+                  } catch (error) {
+                    return (
+                      <div className="text-red-600 p-4 border border-red-300 rounded">
+                        Error parsing chess data: {error.message}
+                      </div>
+                    );
+                  }
                 },
               }}
             >
