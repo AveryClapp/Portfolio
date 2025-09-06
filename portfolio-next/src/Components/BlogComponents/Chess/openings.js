@@ -16,7 +16,7 @@ export const italianGame = {
       strengths: ["Controls d5 and f5 squares", "Opens lines for development"],
       considerations: ["Commits to an open game"],
       boardChanges: [
-        { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "♙" },
+        { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "P" },
       ],
     },
     {
@@ -25,7 +25,7 @@ export const italianGame = {
       strengths: ["Equal central control", "Sound and principled"],
       considerations: ["Allows White to maintain initiative"],
       boardChanges: [
-        { from: { row: 1, col: 4 }, to: { row: 3, col: 4 }, piece: "♟" },
+        { from: { row: 1, col: 4 }, to: { row: 3, col: 4 }, piece: "p" },
       ],
     },
     {
@@ -34,7 +34,7 @@ export const italianGame = {
       strengths: ["Develops with tempo", "Attacks e5"],
       considerations: ["Doesn't defend e4"],
       boardChanges: [
-        { from: { row: 7, col: 6 }, to: { row: 5, col: 5 }, piece: "♘" },
+        { from: { row: 7, col: 6 }, to: { row: 5, col: 5 }, piece: "N" },
       ],
     },
     {
@@ -43,7 +43,7 @@ export const italianGame = {
       strengths: ["Defends e5", "Develops toward center"],
       considerations: ["Allows Bb5+ ideas"],
       boardChanges: [
-        { from: { row: 0, col: 1 }, to: { row: 2, col: 2 }, piece: "♞" },
+        { from: { row: 0, col: 1 }, to: { row: 2, col: 2 }, piece: "n" },
       ],
     },
     {
@@ -53,7 +53,7 @@ export const italianGame = {
       strengths: ["Rapid development", "Targets f7", "Prepares castling"],
       considerations: ["Bishop can become a target"],
       boardChanges: [
-        { from: { row: 7, col: 5 }, to: { row: 4, col: 2 }, piece: "♗" },
+        { from: { row: 7, col: 5 }, to: { row: 4, col: 2 }, piece: "B" },
       ],
     },
   ],
@@ -75,7 +75,7 @@ export const sicilianDefense = {
       strengths: ["Central control", "Quick development"],
       considerations: ["Allows sharp responses"],
       boardChanges: [
-        { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "♙" },
+        { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "P" },
       ],
     },
     {
@@ -89,7 +89,7 @@ export const sicilianDefense = {
       ],
       considerations: ["Complex theory", "Requires precise play"],
       boardChanges: [
-        { from: { row: 1, col: 2 }, to: { row: 3, col: 2 }, piece: "♟" },
+        { from: { row: 1, col: 2 }, to: { row: 3, col: 2 }, piece: "p" },
       ],
     },
   ],
