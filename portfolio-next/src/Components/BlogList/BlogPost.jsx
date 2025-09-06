@@ -226,9 +226,9 @@ const BlogPost = ({ post }) => {
     }
 
     return (
-      <p className="mb-4 leading-relaxed" {...props}>
+      <div className="mb-4 leading-relaxed" {...props}>
         {processChildren(children, paragraphKey)}
-      </p>
+      </div>
     );
   };
 

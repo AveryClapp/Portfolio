@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 
 const ChessSlideshow = ({
-  title,
-  moves,
+  title = "Chess board",
+  moves = [],
   initialBoard = [
     ["r", "n", "b", "q", "k", "b", "n", "r"], // Black pieces (row 8)
     ["p", "p", "p", "p", "p", "p", "p", "p"], // Black pawns (row 7)
@@ -138,9 +138,7 @@ const ChessSlideshow = ({
           <div className="font-semibold text-gray-800 mb-2 text-lg">
             {moves[currentMove]?.notation || "Starting Position"}
           </div>
-          <div className="text-gray-600">
-            {moves[currentMove]?.explanation || description}
-          </div>
+          <div className="text-gray-600">{moves[currentMove]?.explanation}</div>
         </div>
 
         {/* Navigation Controls */}
