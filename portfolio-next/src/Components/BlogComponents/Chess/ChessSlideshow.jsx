@@ -10,7 +10,6 @@ import {
 
 const ChessSlideshow = ({
   title,
-  description,
   moves,
   initialBoard = [
     ["r", "n", "b", "q", "k", "b", "n", "r"], // Black pieces (row 8)

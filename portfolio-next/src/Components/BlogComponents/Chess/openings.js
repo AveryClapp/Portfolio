@@ -1,20 +1,14 @@
 export const italianGame = {
-  title: "Italian Game - Classical Variation",
-  description:
-    "One of the oldest chess openings, focusing on rapid development and central control",
+  title: "Italian Game - Start",
   moves: [
     {
       notation: "Starting Position",
       explanation:
         "The game begins with both armies in their starting positions.",
-      strengths: ["Equal material", "All pieces available"],
-      considerations: ["Opening preparation is crucial"],
     },
     {
       notation: "1. e4",
       explanation: "White opens with the king's pawn, controlling the center.",
-      strengths: ["Controls d5 and f5 squares", "Opens lines for development"],
-      considerations: ["Commits to an open game"],
       boardChanges: [
         { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "P" },
       ],
@@ -22,8 +16,6 @@ export const italianGame = {
     {
       notation: "1... e5",
       explanation: "Black mirrors White's move, establishing central presence.",
-      strengths: ["Equal central control", "Sound and principled"],
-      considerations: ["Allows White to maintain initiative"],
       boardChanges: [
         { from: { row: 1, col: 4 }, to: { row: 3, col: 4 }, piece: "p" },
       ],
@@ -31,8 +23,6 @@ export const italianGame = {
     {
       notation: "2. Nf3",
       explanation: "White develops the knight, attacking e5.",
-      strengths: ["Develops with tempo", "Attacks e5"],
-      considerations: ["Doesn't defend e4"],
       boardChanges: [
         { from: { row: 7, col: 6 }, to: { row: 5, col: 5 }, piece: "N" },
       ],
@@ -40,8 +30,6 @@ export const italianGame = {
     {
       notation: "2... Nc6",
       explanation: "Black defends e5 while developing.",
-      strengths: ["Defends e5", "Develops toward center"],
-      considerations: ["Allows Bb5+ ideas"],
       boardChanges: [
         { from: { row: 0, col: 1 }, to: { row: 2, col: 2 }, piece: "n" },
       ],
@@ -50,12 +38,149 @@ export const italianGame = {
       notation: "3. Bc4",
       explanation:
         "The Italian Game begins! White develops the bishop actively.",
-      strengths: ["Rapid development", "Targets f7", "Prepares castling"],
-      considerations: ["Bishop can become a target"],
       boardChanges: [
         { from: { row: 7, col: 5 }, to: { row: 4, col: 2 }, piece: "B" },
       ],
     },
+  ],
+};
+
+// Italian Game - Classical Variation (Giuoco Piano)
+export const italianClassical = {
+  title: "Italian Game - Classical Variation (Giuoco Piano)",
+  moves: [
+    {
+      notation: "3... Bc5",
+      explanation:
+        "Black mirrors White's development, creating the Italian Game proper.",
+      boardChanges: [
+        { from: { row: 0, col: 5 }, to: { row: 3, col: 2 }, piece: "b" },
+      ],
+    },
+    {
+      notation: "4. c3",
+      explanation:
+        "The Classical approach - White prepares d4 to challenge the center.",
+      boardChanges: [
+        { from: { row: 6, col: 2 }, to: { row: 4, col: 2 }, piece: "P" },
+      ],
+    },
+    {
+      notation: "4... Nf6",
+      explanation: "Black develops with tempo, attacking e4.",
+      boardChanges: [
+        { from: { row: 0, col: 6 }, to: { row: 2, col: 5 }, piece: "n" },
+      ],
+    },
+    {
+      notation: "5. d3",
+      explanation: "White defends e4 and prepares steady development.",
+      boardChanges: [
+        { from: { row: 6, col: 3 }, to: { row: 5, col: 3 }, piece: "P" },
+      ],
+    },
+    {
+      notation: "5... d6",
+      explanation:
+        "Black solidifies the center and prepares further development.",
+      boardChanges: [
+        { from: { row: 1, col: 3 }, to: { row: 2, col: 3 }, piece: "p" },
+      ],
+    },
+    {
+      notation: "6. Be3",
+      explanation: "White develops and challenges Black's active bishop.",
+      boardChanges: [
+        { from: { row: 7, col: 2 }, to: { row: 5, col: 4 }, piece: "B" },
+      ],
+    },
+  ],
+  initialBoard: [
+    ["r", "n", "b", "q", "k", "b", "n", "r"],
+    ["p", "p", "p", "p", "", "p", "p", "p"],
+    ["", "", "n", "", "", "", "", ""],
+    ["", "", "", "", "p", "", "", ""],
+    ["", "", "B", "", "P", "", "", ""],
+    ["", "", "", "", "", "N", "", ""],
+    ["P", "P", "P", "P", "", "P", "P", "P"],
+    ["R", "N", "B", "Q", "K", "", "", "R"],
+  ],
+};
+
+// Italian Game - Italian Gambit
+export const italianGambit = {
+  title: "Italian Game - Italian Gambit",
+  moves: [
+    {
+      notation: "3... Bc5",
+      explanation:
+        "Black mirrors White's development, creating the Italian Game proper.",
+      boardChanges: [
+        { from: { row: 0, col: 5 }, to: { row: 3, col: 2 }, piece: "b" },
+      ],
+    },
+    {
+      notation: "4. f4",
+      explanation:
+        "The Italian Gambit! White immediately attacks the center with aggression.",
+      boardChanges: [
+        { from: { row: 6, col: 5 }, to: { row: 4, col: 5 }, piece: "P" },
+      ],
+    },
+    {
+      notation: "4... exf4",
+      explanation:
+        "Black accepts the gambit, winning material but allowing White initiative.",
+      boardChanges: [
+        {
+          from: { row: 3, col: 4 },
+          to: { row: 4, col: 5 },
+          piece: "p",
+          captures: "P",
+        },
+      ],
+    },
+    {
+      notation: "5. e5",
+      explanation: "White advances aggressively, gaining space and tempo.",
+      boardChanges: [
+        { from: { row: 4, col: 4 }, to: { row: 3, col: 4 }, piece: "P" },
+      ],
+    },
+    {
+      notation: "5... d5",
+      explanation:
+        "Black strikes back in the center, challenging White's advance.",
+      boardChanges: [
+        { from: { row: 1, col: 3 }, to: { row: 3, col: 3 }, piece: "p" },
+      ],
+    },
+    {
+      notation: "6. Bb5",
+      explanation:
+        "White develops with check, maintaining pressure and initiative.",
+      boardChanges: [
+        { from: { row: 4, col: 2 }, to: { row: 3, col: 1 }, piece: "B" },
+      ],
+    },
+    {
+      notation: "6... Ne4",
+      explanation:
+        "Black centralizes the knight aggressively, seeking counterplay.",
+      boardChanges: [
+        { from: { row: 2, col: 2 }, to: { row: 4, col: 4 }, piece: "n" },
+      ],
+    },
+  ],
+  initialBoard: [
+    ["r", "n", "b", "q", "k", "b", "", "r"],
+    ["p", "p", "p", "p", "", "p", "p", "p"],
+    ["", "", "n", "", "", "", "", ""],
+    ["", "", "", "", "p", "", "", ""],
+    ["", "", "B", "", "P", "", "", ""],
+    ["", "", "", "", "", "N", "", ""],
+    ["P", "P", "P", "P", "", "P", "P", "P"],
+    ["R", "N", "B", "Q", "K", "", "", "R"],
   ],
 };
 
@@ -66,14 +191,10 @@ export const sicilianDefense = {
     {
       notation: "Starting Position",
       explanation: "Standard starting position for all chess games.",
-      strengths: ["Balanced position"],
-      considerations: ["Theory knowledge important"],
     },
     {
       notation: "1. e4",
       explanation: "White's most popular opening move.",
-      strengths: ["Central control", "Quick development"],
-      considerations: ["Allows sharp responses"],
       boardChanges: [
         { from: { row: 6, col: 4 }, to: { row: 4, col: 4 }, piece: "P" },
       ],
@@ -82,12 +203,6 @@ export const sicilianDefense = {
       notation: "1... c5",
       explanation:
         "The Sicilian Defense! Black fights for central control asymmetrically.",
-      strengths: [
-        "Unbalanced positions",
-        "Counterplay on queenside",
-        "Statistical success",
-      ],
-      considerations: ["Complex theory", "Requires precise play"],
       boardChanges: [
         { from: { row: 1, col: 2 }, to: { row: 3, col: 2 }, piece: "p" },
       ],

@@ -13,6 +13,8 @@ import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
 import {
   italianGame,
+  italianClassical,
+  italianGambit,
   sicilianDefense,
 } from "@/Components/BlogComponents/Chess/openings";
 import { Copy, Check } from "lucide-react";
@@ -527,52 +529,13 @@ const BlogPost = ({ post }) => {
                   );
                 },
                 chessdemo: ({ opening }) => {
-                  const openingData = useMemo(
-                    () =>
-                      ({
-                        italian: italianGame,
-                        sicilian: sicilianDefense,
-                      })[opening],
-                    [opening],
-                  ); // only recompute if opening changes
-
-                  if (!openingData) {
-                    return (
-                      <div className="text-red-600 p-4 border border-red-300 rounded">
-                        Opening not found: {opening}
-                      </div>
-                    );
-                  }
-
+                  const openingData = {
+                    italian: italianGame,
+                    italianClassical: italianClassical,
+                    italianGambit: italianGambit,
+                    sicilian: sicilianDefense,
+                  }[opening];
                   return <ChessSlideshow {...openingData} />;
-                },
-                chessposition: ({
-                  title,
-                  description,
-                  moves,
-                  initialBoard,
-                }) => {
-                  try {
-                    const parsedMoves = moves ? JSON.parse(moves) : [];
-                    const parsedBoard = initialBoard
-                      ? JSON.parse(initialBoard)
-                      : undefined;
-
-                    return (
-                      <ChessSlideshow
-                        title={title}
-                        description={description}
-                        moves={parsedMoves}
-                        initialBoard={parsedBoard}
-                      />
-                    );
-                  } catch (error) {
-                    return (
-                      <div className="text-red-600 p-4 border border-red-300 rounded">
-                        Error parsing chess data: {error.message}
-                      </div>
-                    );
-                  }
                 },
               }}
             >
