@@ -1,6 +1,6 @@
 // src/Components/BlogList/BlogPost.jsx
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -562,11 +562,16 @@ const BlogPost = ({ post }) => {
                     </a>
                   );
                 },
-                chessdemo: ({ opening = "italian" }) => {
-                  const openingData = {
-                    italian: italianGame,
-                    sicilian: sicilianDefense,
-                  }[opening];
+                chessdemo: ({ opening }) => {
+                  const openingData = useMemo(
+                    () =>
+                      ({
+                        italian: italianGame,
+                        sicilian: sicilianDefense,
+                      })[opening],
+                    [opening],
+                  ); // only recompute if opening changes
+
                   if (!openingData) {
                     return (
                       <div className="text-red-600 p-4 border border-red-300 rounded">
@@ -577,7 +582,6 @@ const BlogPost = ({ post }) => {
 
                   return <ChessSlideshow {...openingData} />;
                 },
-
                 chessposition: ({
                   title,
                   description,

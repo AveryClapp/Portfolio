@@ -34,15 +34,14 @@ const ChessSlideshow = ({
         move.boardChanges.forEach((change) => {
           const { from, to, piece } = change;
           if (from) {
-            newBoard[from.row][from.col] = "";
+            newBoard[from.row][from.col] = null;
           }
           if (to) {
-            newBoard[to.row][to.col] = piece || "";
+            newBoard[to.row][to.col] = piece || null;
           }
         });
       }
     }
-    console.log(newBoard);
     return newBoard;
   }, [currentMove, moves, initialBoard]);
 
@@ -70,106 +69,115 @@ const ChessSlideshow = ({
 
   return (
     <div className="max-w-xl mx-auto p-2 sm:p-4">
-      {/* Main Container - Chess.com style */}
       <div className="">
-        {/* Board Container */}
-        <div className="relative">
-          {/* Coordinate Labels */}
-          <div className="absolute -left-6 top-0 h-full hidden sm:flex flex-col justify-around py-[2%]">
-            {ranks.map((rank) => (
-              <div
-                key={rank}
-                className="text-xs text-black font-bold h-[11%] flex items-center"
-              >
-                {rank}
-              </div>
-            ))}
-          </div>
-          <div className="absolute -bottom-6 left-0 w-full hidden sm:flex justify-around px-[2%]">
-            {files.map((file) => (
-              <div
-                key={file}
-                className="text-xs text-black font-bold w-[11%] text-center"
-              >
-                {file}
-              </div>
-            ))}
-          </div>
+        {/* Title and Description */}
+        <div className="flex justify-center">
+          <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
+        </div>
 
-          {/* Chess Board */}
-          <div className="aspect-square w-full rounded-md overflow-hidden shadow-lg">
-            <div className="grid grid-cols-8 h-full">
-              {currentBoard.map((row, rowIndex) =>
-                row.map((piece, colIndex) => {
-                  const isLight = (rowIndex + colIndex) % 2 === 0;
-                  const squareKey = `${rowIndex}-${colIndex}`;
+        {/* Chess Board with coordinates inside */}
+        <div className="aspect-square w-full rounded-md overflow-hidden shadow-lg border-2 border-gray-800">
+          <div className="grid grid-cols-8 h-full">
+            {currentBoard.map((row, rowIndex) =>
+              row.map((piece, colIndex) => {
+                const isLight = (rowIndex + colIndex) % 2 === 0;
+                const squareKey = `${rowIndex}-${colIndex}`;
 
-                  // Chess.com colors
-                  const lightSquare = "#ebecd0";
-                  const darkSquare = "#779556";
+                // Chess.com style colors - exactly matching the reference
+                const lightSquare = "#f0d9b5";
+                const darkSquare = "#b58863";
 
-                  return (
-                    <div
-                      key={squareKey}
-                      className="relative flex items-center justify-center aspect-square"
-                      style={{
-                        backgroundColor: isLight ? lightSquare : darkSquare,
-                      }}
-                    >
-                      <div className="w-[85%] h-[85%]">
-                        {renderPiece(piece)}
+                // Show rank number on the leftmost squares (a-file)
+                const showRank = colIndex === 0;
+                const rankNumber = ranks[rowIndex];
+
+                // Show file letter on the bottom row (rank 1)
+                const showFile = rowIndex === 7;
+                const fileLetter = files[colIndex];
+
+                return (
+                  <div
+                    key={squareKey}
+                    className="relative flex items-center justify-center aspect-square"
+                    style={{
+                      backgroundColor: isLight ? lightSquare : darkSquare,
+                    }}
+                  >
+                    {/* Rank numbers (left side) */}
+                    {showRank && (
+                      <div
+                        className="absolute top-1 left-1 text-xs font-bold"
+                        style={{ color: isLight ? darkSquare : lightSquare }}
+                      >
+                        {rankNumber}
                       </div>
-                    </div>
-                  );
-                }),
-              )}
-            </div>
+                    )}
+
+                    {/* File letters (bottom) */}
+                    {showFile && (
+                      <div
+                        className="absolute bottom-1 right-1 text-xs font-bold"
+                        style={{ color: isLight ? darkSquare : lightSquare }}
+                      >
+                        {fileLetter}
+                      </div>
+                    )}
+
+                    {/* Chess piece */}
+                    {piece && (
+                      <div className="w-4/5 h-4/5">{renderPiece(piece)}</div>
+                    )}
+                  </div>
+                );
+              }),
+            )}
           </div>
         </div>
 
-        {/* Move Information */}
-        <div className="mt-8 p-3 rounded-lg">
-          <h3 className="font-bold text-black text-lg mb-1">
-            {moves[currentMove].notation}
-          </h3>
-          <p className="text-black text-sm">{moves[currentMove].explanation}</p>
+        {/* Current Move Information */}
+        <div className="mt-4 p-3 rounded-lg">
+          <div className="font-semibold text-gray-800 mb-2 text-lg">
+            {moves[currentMove]?.notation || "Starting Position"}
+          </div>
+          <div className="text-gray-600">
+            {moves[currentMove]?.explanation || description}
+          </div>
         </div>
 
-        {/* Controls - Chess.com style */}
-        <div className="flex items-center justify-center gap-1 mt-4">
+        {/* Navigation Controls */}
+        <div className="flex items-center justify-between mt-4">
           <button
             onClick={handlePrevious}
             disabled={currentMove === 0}
-            className="p-2 rounded bg-[#262522] hover:bg-[#3d3a36] disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors"
-            aria-label="Previous move"
+            className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Previous
           </button>
+
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600">Move {currentMove}</span>
+            <div className="w-32 bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: `${(currentMove / (moves.length - 1)) * 100}%`,
+                }}
+              ></div>
+            </div>
+            <span className="text-sm text-gray-600">
+              {moves.length - 1} moves
+            </span>
+          </div>
 
           <button
             onClick={handleNext}
             disabled={currentMove === moves.length - 1}
-            className="p-2 rounded bg-[#262522] hover:bg-[#3d3a36] disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors"
-            aria-label="Next move"
+            className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ChevronRight className="w-5 h-5" />
+            Next
+            <ChevronRight className="w-4 h-4 ml-1" />
           </button>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mt-4">
-          <div className="flex justify-between text-xs text-gray-400 mb-1">
-            <span>Move {currentMove}</span>
-            <span>{moves.length - 1} moves</span>
-          </div>
-          <div className="w-full bg-[#262522] rounded-full h-1.5">
-            <div
-              className="bg-[#81b64c] h-1.5 rounded-full transition-all duration-300"
-              style={{
-                width: `${(currentMove / (moves.length - 1)) * 100}%`,
-              }}
-            />
-          </div>
         </div>
       </div>
     </div>
