@@ -111,143 +111,6 @@ const BlogPost = ({ post }) => {
     return processedText;
   };
 
-  useEffect(() => {
-    if (post?.content) {
-      const foundNotes = [];
-      let modifiedContent = post.content;
-
-      // Custom function to find sidenotes with proper bracket matching
-      const findSidenotes = (text) => {
-        const results = [];
-        const regex = /\^(\d+)\[/g;
-        let match;
-
-        while ((match = regex.exec(text)) !== null) {
-          const id = match[1];
-          const startIndex = match.index + match[0].length;
-          let bracketCount = 1;
-          let endIndex = startIndex;
-
-          // Find the matching closing bracket
-          while (endIndex < text.length && bracketCount > 0) {
-            if (text[endIndex] === "[") {
-              bracketCount++;
-            } else if (text[endIndex] === "]") {
-              bracketCount--;
-            }
-            endIndex++;
-          }
-
-          if (bracketCount === 0) {
-            const content = text.substring(startIndex, endIndex - 1);
-            results.push({
-              id,
-              text: content,
-              fullMatch: text.substring(match.index, endIndex),
-              processedText: renderMarkdownInText(content),
-            });
-          }
-        }
-
-        return results;
-      };
-
-      const sidenotes = findSidenotes(post.content);
-
-      // Replace sidenotes in content
-      sidenotes.forEach((note) => {
-        modifiedContent = modifiedContent.replace(
-          note.fullMatch,
-          `^${note.id}`,
-        );
-        foundNotes.push({
-          id: note.id,
-          text: note.text,
-          processedText: note.processedText,
-        });
-      });
-
-      setNotes(foundNotes);
-      setProcessedContent(modifiedContent);
-    }
-  }, [post]);
-
-  const updateNotePositions = () => {
-    if (!contentRef.current || !notesContainerRef.current) return;
-
-    const newPositions = {};
-    const markers = contentRef.current.querySelectorAll(".note-marker");
-    const contentRect = contentRef.current.getBoundingClientRect();
-    const notesRect = notesContainerRef.current.getBoundingClientRect();
-
-    // First pass: calculate base positions
-    const basePositions = [];
-    markers.forEach((marker, index) => {
-      const id = marker.getAttribute("data-note-id");
-      const markerRect = marker.getBoundingClientRect();
-      const relativeTop = markerRect.top - notesRect.top;
-
-      basePositions.push({
-        id,
-        originalTop: Math.max(0, relativeTop - 20),
-        finalTop: Math.max(0, relativeTop - 20),
-      });
-    });
-
-    // Second pass: resolve collisions
-    const NOTE_HEIGHT = 0; // Approximate height of a note card
-    const MIN_SPACING = 40; // Minimum spacing between notes
-
-    // Sort by original position to process top-to-bottom
-    basePositions.sort((a, b) => a.originalTop - b.originalTop);
-
-    for (let i = 0; i < basePositions.length; i++) {
-      const currentNote = basePositions[i];
-
-      // Check for collisions with previous notes
-      for (let j = 0; j < i; j++) {
-        const previousNote = basePositions[j];
-        const distance = currentNote.finalTop - previousNote.finalTop;
-
-        // If notes are too close, push current note down
-        if (distance < NOTE_HEIGHT + MIN_SPACING) {
-          currentNote.finalTop =
-            previousNote.finalTop + NOTE_HEIGHT + MIN_SPACING;
-        }
-      }
-
-      newPositions[currentNote.id] = currentNote.finalTop;
-    }
-
-    setNotePositions(newPositions);
-  };
-
-  useEffect(() => {
-    setTimeout(updateNotePositions, 100);
-    window.addEventListener("scroll", updateNotePositions);
-    window.addEventListener("resize", updateNotePositions);
-
-    return () => {
-      window.removeEventListener("scroll", updateNotePositions);
-      window.removeEventListener("resize", updateNotePositions);
-    };
-  }, [notes]);
-
-  // Copy code function
-  const copyToClipboard = async (text, id) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedCode(id);
-      setTimeout(() => setCopiedCode(null), 2000);
-    } catch (err) {
-      console.error("Failed to copy code:", err);
-    }
-  };
-
-  if (!post) {
-    return <div>Post not found</div>;
-  }
-
   const processTextWithNotes = (child, parentKey = "") => {
     if (typeof child === "string") {
       const parts = child.split(/(\^\d+)/);
@@ -505,6 +368,107 @@ const BlogPost = ({ post }) => {
 
     return codeBlockContent;
   };
+
+  useEffect(() => {
+    if (post?.content) {
+      const foundNotes = [];
+      let modifiedContent = post.content;
+
+      // Custom function to find sidenotes with proper bracket matching
+      const findSidenotes = (text) => {
+        const results = [];
+        const regex = /\^(\d+)\[/g;
+        let match;
+
+        while ((match = regex.exec(text)) !== null) {
+          const id = match[1];
+          const startIndex = match.index + match[0].length;
+          let bracketCount = 1;
+          let endIndex = startIndex;
+
+          // Find the matching closing bracket
+          while (endIndex < text.length && bracketCount > 0) {
+            if (text[endIndex] === "[") {
+              bracketCount++;
+            } else if (text[endIndex] === "]") {
+              bracketCount--;
+            }
+            endIndex++;
+          }
+
+          if (bracketCount === 0) {
+            const content = text.substring(startIndex, endIndex - 1);
+            results.push({
+              id,
+              text: content,
+              fullMatch: text.substring(match.index, endIndex),
+              processedText: renderMarkdownInText(content),
+            });
+          }
+        }
+
+        return results;
+      };
+
+      const sidenotes = findSidenotes(post.content);
+
+      // Replace sidenotes in content
+      sidenotes.forEach((note) => {
+        modifiedContent = modifiedContent.replace(
+          note.fullMatch,
+          `^${note.id}`,
+        );
+        foundNotes.push({
+          id: note.id,
+          text: note.text,
+          processedText: note.processedText,
+        });
+      });
+
+      setNotes(foundNotes);
+      setProcessedContent(modifiedContent);
+    }
+  }, [post]);
+
+  // ONLY CHANGE: Simplified static note positioning
+  useEffect(() => {
+    if (notes.length === 0) return;
+
+    const positionNotes = () => {
+      if (!contentRef.current || !notesContainerRef.current) return;
+
+      const newPositions = {};
+      const markers = contentRef.current.querySelectorAll(".note-marker");
+      const notesRect = notesContainerRef.current.getBoundingClientRect();
+
+      markers.forEach((marker) => {
+        const id = marker.getAttribute("data-note-id");
+        const markerRect = marker.getBoundingClientRect();
+        const relativeTop = markerRect.top - notesRect.top;
+        newPositions[id] = Math.max(0, relativeTop - 20);
+      });
+
+      setNotePositions(newPositions);
+    };
+
+    // Position notes once after initial render
+    setTimeout(positionNotes, 100);
+  }, [notes]);
+
+  // Copy code function
+  const copyToClipboard = async (text, id) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedCode(id);
+      setTimeout(() => setCopiedCode(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy code:", err);
+    }
+  };
+
+  if (!post) {
+    return <div>Post not found</div>;
+  }
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
