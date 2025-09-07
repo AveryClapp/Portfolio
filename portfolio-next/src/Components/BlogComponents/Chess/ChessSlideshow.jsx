@@ -6,11 +6,13 @@ import {
   Play,
   Pause,
   RotateCcw,
+  GitBranch,
+  Info,
 } from "lucide-react";
 
 const ChessSlideshow = ({
-  title = "Chess board",
-  moves = [],
+  title,
+  moves,
   initialBoard = [
     ["r", "n", "b", "q", "k", "b", "n", "r"], // Black pieces (row 8)
     ["p", "p", "p", "p", "p", "p", "p", "p"], // Black pawns (row 7)
@@ -21,14 +23,46 @@ const ChessSlideshow = ({
     ["P", "P", "P", "P", "P", "P", "P", "P"], // White pawns (row 2)
     ["R", "N", "B", "Q", "K", "B", "N", "R"], // White pieces (row 1)
   ],
+  description,
 }) => {
   const [currentMove, setCurrentMove] = useState(0);
+  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [hoveredSquare, setHoveredSquare] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  // Build the current move sequence (main line + selected variation if any)
+  const currentMoveSequence = useMemo(() => {
+    if (!selectedVariation) {
+      return moves;
+    }
+
+    // Find the variation point and build new sequence
+    const variationMove = moves[selectedVariation.fromMoveIndex];
+    if (!variationMove || !variationMove.variations) {
+      return moves;
+    }
+
+    const variation = variationMove.variations.find(
+      (v) => v.id === selectedVariation.variationId,
+    );
+    if (!variation) {
+      return moves;
+    }
+
+    // Build: main line up to variation point + variation moves
+    const newSequence = [
+      ...moves.slice(0, selectedVariation.fromMoveIndex + 1),
+      ...variation.moves,
+    ];
+
+    return newSequence;
+  }, [moves, selectedVariation]);
 
   const currentBoard = useMemo(() => {
     let newBoard = JSON.parse(JSON.stringify(initialBoard));
 
-    for (let i = 1; i <= currentMove && i < moves.length; i++) {
-      const move = moves[i];
+    for (let i = 1; i <= currentMove && i < currentMoveSequence.length; i++) {
+      const move = currentMoveSequence[i];
       if (move.boardChanges) {
         move.boardChanges.forEach((change) => {
           const { from, to, piece } = change;
@@ -42,7 +76,40 @@ const ChessSlideshow = ({
       }
     }
     return newBoard;
-  }, [currentMove, moves, initialBoard]);
+  }, [currentMove, currentMoveSequence, initialBoard]);
+
+  // Get pieces that can make variation moves from current position
+  const getVariationPieces = useMemo(() => {
+    const currentMoveData = currentMoveSequence[currentMove];
+    if (!currentMoveData || !currentMoveData.variations) {
+      return new Map();
+    }
+
+    const variationMap = new Map();
+
+    currentMoveData.variations.forEach((variation) => {
+      if (
+        variation.moves &&
+        variation.moves[0] &&
+        variation.moves[0].boardChanges
+      ) {
+        variation.moves[0].boardChanges.forEach((change) => {
+          if (change.from) {
+            const key = `${change.from.row}-${change.from.col}`;
+            if (!variationMap.has(key)) {
+              variationMap.set(key, []);
+            }
+            variationMap.get(key).push({
+              variation,
+              move: variation.moves[0],
+            });
+          }
+        });
+      }
+    });
+
+    return variationMap;
+  }, [currentMoveSequence, currentMove]);
 
   const handlePrevious = () => {
     if (currentMove > 0) {
@@ -51,8 +118,46 @@ const ChessSlideshow = ({
   };
 
   const handleNext = () => {
-    if (currentMove < moves.length - 1) {
+    if (currentMove < currentMoveSequence.length - 1) {
       setCurrentMove(currentMove + 1);
+    }
+  };
+
+  const handleSelectVariation = (fromMoveIndex, variationId) => {
+    setSelectedVariation({ fromMoveIndex, variationId });
+    setCurrentMove(fromMoveIndex + 1); // Start at first move of variation
+    setShowTooltip(false);
+  };
+
+  const handleReturnToMainLine = () => {
+    setSelectedVariation(null);
+    setCurrentMove(0);
+  };
+
+  const handlePieceClick = (rowIndex, colIndex) => {
+    const squareKey = `${rowIndex}-${colIndex}`;
+    const variations = getVariationPieces.get(squareKey);
+
+    if (variations && variations.length > 0) {
+      // If only one variation, go directly to it
+      if (variations.length === 1) {
+        handleSelectVariation(currentMove, variations[0].variation.id);
+      } else {
+        // If multiple variations, could show a submenu (for now, take the first)
+        handleSelectVariation(currentMove, variations[0].variation.id);
+      }
+    }
+  };
+
+  const handleSquareHover = (rowIndex, colIndex, isEntering) => {
+    const squareKey = `${rowIndex}-${colIndex}`;
+
+    if (isEntering && getVariationPieces.has(squareKey)) {
+      setHoveredSquare({ row: rowIndex, col: colIndex });
+      setShowTooltip(true);
+    } else if (!isEntering) {
+      setHoveredSquare(null);
+      setShowTooltip(false);
     }
   };
 
@@ -60,6 +165,46 @@ const ChessSlideshow = ({
     if (!piece) return null;
     return pieceComponents[piece] || null;
   };
+
+  const renderTooltip = () => {
+    if (!showTooltip || !hoveredSquare) return null;
+
+    const squareKey = `${hoveredSquare.row}-${hoveredSquare.col}`;
+    const variations = getVariationPieces.get(squareKey);
+
+    if (!variations || variations.length === 0) return null;
+
+    return (
+      <div
+        className="absolute z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg max-w-xs"
+        style={{
+          top: `${hoveredSquare.row * 64 + 40}px`, // Adjust based on square size
+          left: `${hoveredSquare.col * 64 + 20}px`,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <div className="flex items-center mb-1">
+          <GitBranch className="w-3 h-3 mr-1" />
+          <span className="font-medium">Alternative moves</span>
+        </div>
+        {variations.map((item, index) => (
+          <div key={index} className="text-xs opacity-90">
+            {item.variation.name}: {item.move.notation}
+          </div>
+        ))}
+        <div className="text-xs opacity-75 mt-1">Click to explore</div>
+        {/* Tooltip arrow */}
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+      </div>
+    );
+  };
+
+  // Get current move and check if it has variations
+  const currentMoveData = currentMoveSequence[currentMove];
+  const hasVariations =
+    currentMoveData &&
+    currentMoveData.variations &&
+    currentMoveData.variations.length > 0;
 
   // File labels (a-h)
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -75,70 +220,123 @@ const ChessSlideshow = ({
         </div>
 
         {/* Chess Board with coordinates inside */}
-        <div className="aspect-square w-full rounded-md overflow-hidden shadow-lg border-2 border-gray-800">
-          <div className="grid grid-cols-8 h-full">
-            {currentBoard.map((row, rowIndex) =>
-              row.map((piece, colIndex) => {
-                const isLight = (rowIndex + colIndex) % 2 === 0;
-                const squareKey = `${rowIndex}-${colIndex}`;
+        <div className="flex justify-center">
+          <div className="relative inline-block border-2 border-gray-800">
+            <div className="grid grid-cols-8 gap-0">
+              {currentBoard.map((row, rowIndex) =>
+                row.map((piece, colIndex) => {
+                  const isLight = (rowIndex + colIndex) % 2 === 0;
+                  const lightSquare = "#f0d9b5";
+                  const darkSquare = "#b58863";
 
-                // Chess.com style colors - exactly matching the reference
-                const lightSquare = "#f0d9b5";
-                const darkSquare = "#b58863";
+                  const fileLetter = files[colIndex];
+                  const rankNumber = ranks[rowIndex];
+                  const showFile = rowIndex === 7;
+                  const showRank = colIndex === 0;
 
-                // Show rank number on the leftmost squares (a-file)
-                const showRank = colIndex === 0;
-                const rankNumber = ranks[rowIndex];
+                  // Check if this square has a piece that can make variation moves
+                  const squareKey = `${rowIndex}-${colIndex}`;
+                  const hasVariationMoves =
+                    getVariationPieces.has(squareKey) && piece;
+                  const isHovered =
+                    hoveredSquare?.row === rowIndex &&
+                    hoveredSquare?.col === colIndex;
 
-                // Show file letter on the bottom row (rank 1)
-                const showFile = rowIndex === 7;
-                const fileLetter = files[colIndex];
+                  return (
+                    <div
+                      key={`${rowIndex}-${colIndex}`}
+                      className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center relative ${
+                        hasVariationMoves ? "cursor-pointer" : ""
+                      }`}
+                      style={{
+                        backgroundColor: isLight ? lightSquare : darkSquare,
+                        boxShadow: hasVariationMoves
+                          ? isHovered
+                            ? "inset 0 0 0 2px #3b82f6"
+                            : "inset 0 0 0 1px #93c5fd"
+                          : "none",
+                      }}
+                      onClick={() => handlePieceClick(rowIndex, colIndex)}
+                      onMouseEnter={() =>
+                        handleSquareHover(rowIndex, colIndex, true)
+                      }
+                      onMouseLeave={() =>
+                        handleSquareHover(rowIndex, colIndex, false)
+                      }
+                    >
+                      {/* Rank numbers (left) */}
+                      {showRank && (
+                        <div
+                          className="absolute top-1 left-1 text-xs font-bold"
+                          style={{ color: isLight ? darkSquare : lightSquare }}
+                        >
+                          {rankNumber}
+                        </div>
+                      )}
 
-                return (
-                  <div
-                    key={squareKey}
-                    className="relative flex items-center justify-center aspect-square"
-                    style={{
-                      backgroundColor: isLight ? lightSquare : darkSquare,
-                    }}
-                  >
-                    {/* Rank numbers (left side) */}
-                    {showRank && (
-                      <div
-                        className="absolute top-1 left-1 text-xs font-bold"
-                        style={{ color: isLight ? darkSquare : lightSquare }}
-                      >
-                        {rankNumber}
-                      </div>
-                    )}
+                      {/* File letters (bottom) */}
+                      {showFile && (
+                        <div
+                          className="absolute bottom-1 right-1 text-xs font-bold"
+                          style={{ color: isLight ? darkSquare : lightSquare }}
+                        >
+                          {fileLetter}
+                        </div>
+                      )}
 
-                    {/* File letters (bottom) */}
-                    {showFile && (
-                      <div
-                        className="absolute bottom-1 right-1 text-xs font-bold"
-                        style={{ color: isLight ? darkSquare : lightSquare }}
-                      >
-                        {fileLetter}
-                      </div>
-                    )}
+                      {/* Variation indicator */}
+                      {hasVariationMoves && (
+                        <div className="absolute top-1 right-1">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full opacity-75"></div>
+                        </div>
+                      )}
 
-                    {/* Chess piece */}
-                    {piece && (
-                      <div className="w-4/5 h-4/5">{renderPiece(piece)}</div>
-                    )}
-                  </div>
-                );
-              }),
-            )}
+                      {/* Chess piece */}
+                      {piece && (
+                        <div className="w-4/5 h-4/5">{renderPiece(piece)}</div>
+                      )}
+                    </div>
+                  );
+                }),
+              )}
+            </div>
+
+            {/* Render tooltip */}
+            {renderTooltip()}
           </div>
         </div>
 
         {/* Current Move Information */}
         <div className="mt-4 p-3 rounded-lg">
           <div className="font-semibold text-gray-800 mb-2 text-lg">
-            {moves[currentMove]?.notation || "Starting Position"}
+            {currentMoveSequence[currentMove]?.notation || "Starting Position"}
           </div>
-          <div className="text-gray-600">{moves[currentMove]?.explanation}</div>
+          <div className="text-gray-600">
+            {currentMoveSequence[currentMove]?.explanation || description}
+          </div>
+
+          {/* Show if we're in a variation */}
+          {selectedVariation && (
+            <div className="mt-2 text-sm text-blue-600 flex items-center">
+              <GitBranch className="w-4 h-4 mr-1" />
+              Viewing variation
+              <button
+                onClick={handleReturnToMainLine}
+                className="ml-2 underline hover:no-underline"
+              >
+                Return to main line
+              </button>
+            </div>
+          )}
+
+          {/* Hint about clickable pieces */}
+          {getVariationPieces.size > 0 && !selectedVariation && (
+            <div className="mt-2 text-sm text-blue-600 flex items-center">
+              <Info className="w-4 h-4 mr-1" />
+              Blue dots indicate pieces with alternative moves - click to
+              explore!
+            </div>
+          )}
         </div>
 
         {/* Navigation Controls */}
@@ -158,18 +356,18 @@ const ChessSlideshow = ({
               <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                 style={{
-                  width: `${(currentMove / (moves.length - 1)) * 100}%`,
+                  width: `${(currentMove / (currentMoveSequence.length - 1)) * 100}%`,
                 }}
               ></div>
             </div>
             <span className="text-sm text-gray-600">
-              {moves.length - 1} moves
+              {currentMoveSequence.length - 1} moves
             </span>
           </div>
 
           <button
             onClick={handleNext}
-            disabled={currentMove === moves.length - 1}
+            disabled={currentMove === currentMoveSequence.length - 1}
             className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Next
