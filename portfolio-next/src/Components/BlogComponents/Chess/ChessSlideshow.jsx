@@ -12,6 +12,7 @@ import {
 
 const ChessSlideshow = ({
   title,
+  description,
   moves,
   initialBoard = [
     ["r", "n", "b", "q", "k", "b", "n", "r"], // Black pieces (row 8)
@@ -23,7 +24,6 @@ const ChessSlideshow = ({
     ["P", "P", "P", "P", "P", "P", "P", "P"], // White pawns (row 2)
     ["R", "N", "B", "Q", "K", "B", "N", "R"], // White pieces (row 1)
   ],
-  description,
 }) => {
   const [currentMove, setCurrentMove] = useState(0);
   const [selectedVariation, setSelectedVariation] = useState(null);
@@ -124,14 +124,27 @@ const ChessSlideshow = ({
   };
 
   const handleSelectVariation = (fromMoveIndex, variationId) => {
-    setSelectedVariation({ fromMoveIndex, variationId });
+    // Find the variation to get its start point
+    const currentMoveData = currentMoveSequence[fromMoveIndex];
+    const variation = currentMoveData?.variations?.find(
+      (v) => v.id === variationId,
+    );
+    const startPoint = variation?.start || fromMoveIndex;
+
+    setSelectedVariation({
+      fromMoveIndex,
+      variationId,
+      start: startPoint,
+    });
     setCurrentMove(fromMoveIndex + 1); // Start at first move of variation
     setShowTooltip(false);
   };
 
   const handleReturnToMainLine = () => {
+    // Jump back to the start point (move before the branch)
+    const startPoint = selectedVariation?.start || 0;
     setSelectedVariation(null);
-    setCurrentMove(0);
+    setCurrentMove(startPoint);
   };
 
   const handlePieceClick = (rowIndex, colIndex) => {
@@ -315,28 +328,21 @@ const ChessSlideshow = ({
             {currentMoveSequence[currentMove]?.explanation || description}
           </div>
 
-          {/* Show if we're in a variation */}
-          {selectedVariation && (
-            <div className="mt-2 text-sm text-blue-600 flex items-center">
-              <GitBranch className="w-4 h-4 mr-1" />
-              Viewing variation
-              <button
-                onClick={handleReturnToMainLine}
-                className="ml-2 underline hover:no-underline"
-              >
-                Return to main line
-              </button>
-            </div>
-          )}
-
-          {/* Hint about clickable pieces */}
-          {getVariationPieces.size > 0 && !selectedVariation && (
-            <div className="mt-2 text-sm text-blue-600 flex items-center">
-              <Info className="w-4 h-4 mr-1" />
-              Blue dots indicate pieces with alternative moves - click to
-              explore!
-            </div>
-          )}
+          {/* Show if we're in a variation (only when past the start point) */}
+          {selectedVariation &&
+            currentMove >
+              (selectedVariation.start || selectedVariation.fromMoveIndex) && (
+              <div className="mt-2 text-sm text-blue-600 flex items-center">
+                <GitBranch className="w-4 h-4 mr-1" />
+                Viewing variation
+                <button
+                  onClick={handleReturnToMainLine}
+                  className="ml-2 underline hover:no-underline"
+                >
+                  Return to main line
+                </button>
+              </div>
+            )}
         </div>
 
         {/* Navigation Controls */}

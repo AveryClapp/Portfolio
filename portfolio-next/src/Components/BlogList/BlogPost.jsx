@@ -12,10 +12,8 @@ import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
 import {
-  italianGame,
-  italianClassical,
-  italianGambit,
-  sicilianDefense,
+  italianGameBasic,
+  italianGameVariations,
 } from "@/Components/BlogComponents/Chess/openings";
 import { Copy, Check } from "lucide-react";
 
@@ -530,11 +528,10 @@ const BlogPost = ({ post }) => {
                 },
                 chessdemo: ({ opening }) => {
                   const openingData = {
-                    italian: italianGame,
-                    italianClassical: italianClassical,
-                    italianGambit: italianGambit,
-                    sicilian: sicilianDefense,
+                    italian: italianGameBasic,
+                    italianVariations: italianGameVariations,
                   }[opening];
+                  console.log(opening);
                   return <ChessSlideshow {...openingData} />;
                 },
               }}
