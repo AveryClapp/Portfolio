@@ -1,0 +1,10 @@
+<svg width="400" height="200" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- AC Modern Logo in Black -->
+  <text x="100" y="75" 
+        font-family="Arial Black, sans-serif" 
+        font-size="125" 
+        font-weight="800" 
+        fill="black" 
+        text-anchor="middle" 
+        letter-spacing="-5">AC</text>
+</svg>
