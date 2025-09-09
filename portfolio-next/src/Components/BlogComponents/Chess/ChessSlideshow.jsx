@@ -12,7 +12,6 @@ import {
 
 const ChessSlideshow = ({
   title,
-  description,
   moves,
   initialBoard = [
     ["r", "n", "b", "q", "k", "b", "n", "r"], // Black pieces (row 8)
@@ -24,19 +23,23 @@ const ChessSlideshow = ({
     ["P", "P", "P", "P", "P", "P", "P", "P"], // White pawns (row 2)
     ["R", "N", "B", "Q", "K", "B", "N", "R"], // White pieces (row 1)
   ],
+  description,
 }) => {
+  // Safety check for moves prop
+  if (!moves || moves.length === 0) {
+    return <div className="text-center p-4">No chess moves provided</div>;
+  }
+
   const [currentMove, setCurrentMove] = useState(0);
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [hoveredSquare, setHoveredSquare] = useState(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // Build the current move sequence (main line + selected variation if any)
   const currentMoveSequence = useMemo(() => {
     if (!selectedVariation) {
       return moves;
     }
 
-    // Find the variation point and build new sequence
     const variationMove = moves[selectedVariation.fromMoveIndex];
     if (!variationMove || !variationMove.variations) {
       return moves;
@@ -49,7 +52,6 @@ const ChessSlideshow = ({
       return moves;
     }
 
-    // Build: main line up to variation point + variation moves
     const newSequence = [
       ...moves.slice(0, selectedVariation.fromMoveIndex + 1),
       ...variation.moves,
@@ -80,6 +82,15 @@ const ChessSlideshow = ({
 
   // Get pieces that can make variation moves from current position
   const getVariationPieces = useMemo(() => {
+    // Safety check: ensure currentMoveSequence exists and currentMove is valid
+    if (
+      !currentMoveSequence ||
+      currentMove < 0 ||
+      currentMove >= currentMoveSequence.length
+    ) {
+      return new Map();
+    }
+
     const currentMoveData = currentMoveSequence[currentMove];
     if (!currentMoveData || !currentMoveData.variations) {
       return new Map();
@@ -88,13 +99,17 @@ const ChessSlideshow = ({
     const variationMap = new Map();
 
     currentMoveData.variations.forEach((variation) => {
+      // Add null checks for variation structure
       if (
+        variation &&
         variation.moves &&
+        variation.moves.length > 0 &&
         variation.moves[0] &&
-        variation.moves[0].boardChanges
+        variation.moves[0].boardChanges &&
+        Array.isArray(variation.moves[0].boardChanges)
       ) {
         variation.moves[0].boardChanges.forEach((change) => {
-          if (change.from) {
+          if (change && change.from) {
             const key = `${change.from.row}-${change.from.col}`;
             if (!variationMap.has(key)) {
               variationMap.set(key, []);
@@ -113,7 +128,17 @@ const ChessSlideshow = ({
 
   const handlePrevious = () => {
     if (currentMove > 0) {
-      setCurrentMove(currentMove - 1);
+      const newMoveIndex = currentMove - 1;
+      setCurrentMove(newMoveIndex);
+
+      // Auto-return to main line if we've navigated back to the start point of the variation
+      if (selectedVariation) {
+        const variationStartPoint =
+          selectedVariation.start || selectedVariation.fromMoveIndex;
+        if (newMoveIndex <= variationStartPoint) {
+          setSelectedVariation(null);
+        }
+      }
     }
   };
 
@@ -198,16 +223,14 @@ const ChessSlideshow = ({
       >
         <div className="flex items-center mb-1">
           <GitBranch className="w-3 h-3 mr-1" />
-          <span className="font-medium">Alternative moves</span>
+          <span className="font-medium">Alternative move</span>
         </div>
         {variations.map((item, index) => (
           <div key={index} className="text-xs opacity-90">
-            {item.variation.name}: {item.move.notation}
+            {item.variation.name}
           </div>
         ))}
         <div className="text-xs opacity-75 mt-1">Click to explore</div>
-        {/* Tooltip arrow */}
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
       </div>
     );
   };

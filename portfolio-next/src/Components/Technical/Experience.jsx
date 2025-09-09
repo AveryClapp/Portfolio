@@ -22,7 +22,7 @@ const Experience = () => {
             ML Research Assistant <span class="text-base font-normal text-neutral-600">@ Johns Hopkins University | September 2024 - Present</span>
           </h3>
           <p class="text-sm text-neutral-700">
-              Developing GPU-accelerated algorithms for large language model training, creating novel CUDA implementations for masked matrix operations that achieve significant performance improvements in computational efficiency and memory optimization for billion-parameter models.
+              Developing GPU-accelerated algorithms for large language model training, creating novel CUDA implementations for masked matrix operations that achieve significant performance improvements in computational efficiency and memory optimization for billion-parameter models. While working on this, I was awarded the <a href="https://www.cs.jhu.edu/academic-programs/undergraduate-studies/research-opportunities/" class="underline">Pistritto Fellowship</a>, an annual grant given to ambitious student-researchers within the Computer Science department at Johns Hopkins.
           </p>
         </div>
 
