@@ -3,8 +3,8 @@ import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 
 const Welcome = () => {
   const welcomeContent = `
-    <section id="home" class="max-w-3xl bg-stone-100 mb-4 text-neutral-800 font-sans">
-      <div class="max-w-5xl px-0 lg:px-4">
+    <section class="max-w-3xl mb-4 text-neutral-900 font-sans">
+      <div class="max-w-3xl px-4 lg:px-4">
         <div>
           <p class="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
             Hi, my name is Avery Clapp^1[![](/headshot.png)]
