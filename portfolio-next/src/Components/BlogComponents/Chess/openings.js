@@ -1,8 +1,8 @@
 // Italian Game - Basic Line (No Variations)
-export const italianGameBasic = {
-  title: "Italian Game - Basic Development",
+export const kingsGambitBasic = {
+  title: "King's Gambit - Basic Development",
   description:
-    "The fundamental Italian Game setup with quick piece development and central control.",
+    "The fundamental setup for the aggresive and decisive King's Gambit opening.",
   moves: [
     {
       notation: "Starting Position",
@@ -25,27 +25,11 @@ export const italianGameBasic = {
       ],
     },
     {
-      notation: "2. Nf3",
+      notation: "2. f4",
       explanation:
         "White develops the knight to its best square, attacking the e5 pawn and preparing kingside castling.",
       boardChanges: [
-        { from: { row: 7, col: 6 }, to: { row: 5, col: 5 }, piece: "N" },
-      ],
-    },
-    {
-      notation: "2... Nc6",
-      explanation:
-        "Black defends the e5 pawn and develops the knight to its most active square.",
-      boardChanges: [
-        { from: { row: 0, col: 1 }, to: { row: 2, col: 2 }, piece: "n" },
-      ],
-    },
-    {
-      notation: "3. Bc4",
-      explanation:
-        "The Italian Game! White develops the bishop aggressively, targeting the weak f7 square.",
-      boardChanges: [
-        { from: { row: 7, col: 5 }, to: { row: 4, col: 2 }, piece: "B" },
+        { from: { row: 6, col: 5 }, to: { row: 4, col: 5 }, piece: "P" },
       ],
     },
   ],
@@ -204,6 +188,3 @@ export const italianGameVariations = {
     ["R", "N", "B", "Q", "K", null, null, "R"],
   ],
 };
-
-// Export default for backward compatibility
-export default italianGameBasic;

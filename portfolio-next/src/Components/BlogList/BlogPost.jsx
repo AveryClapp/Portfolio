@@ -11,10 +11,7 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
-import {
-  italianGameBasic,
-  italianGameVariations,
-} from "@/Components/BlogComponents/Chess/openings";
+import { kingsGambitBasic } from "@/Components/BlogComponents/Chess/openings";
 import { Copy, Check } from "lucide-react";
 
 // Import KaTeX CSS
@@ -528,8 +525,7 @@ const BlogPost = ({ post }) => {
                 },
                 chessdemo: ({ opening }) => {
                   const openingData = {
-                    italian: italianGameBasic,
-                    italianVariations: italianGameVariations,
+                    kingsGambitBasic: kingsGambitBasic,
                   }[opening];
                   console.log(opening);
                   return <ChessSlideshow {...openingData} />;
