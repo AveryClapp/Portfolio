@@ -9,7 +9,6 @@ import {
   GitBranch,
   Info,
 } from "lucide-react";
-
 const ChessSlideshow = ({
   title,
   moves,
@@ -29,40 +28,32 @@ const ChessSlideshow = ({
   if (!moves || moves.length === 0) {
     return <div className="text-center p-4">No chess moves provided</div>;
   }
-
   const [currentMove, setCurrentMove] = useState(0);
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [hoveredSquare, setHoveredSquare] = useState(null);
   const [showTooltip, setShowTooltip] = useState(false);
-
   const currentMoveSequence = useMemo(() => {
     if (!selectedVariation) {
       return moves;
     }
-
     const variationMove = moves[selectedVariation.fromMoveIndex];
     if (!variationMove || !variationMove.variations) {
       return moves;
     }
-
     const variation = variationMove.variations.find(
       (v) => v.id === selectedVariation.variationId,
     );
     if (!variation) {
       return moves;
     }
-
     const newSequence = [
       ...moves.slice(0, selectedVariation.fromMoveIndex + 1),
       ...variation.moves,
     ];
-
     return newSequence;
   }, [moves, selectedVariation]);
-
   const currentBoard = useMemo(() => {
     let newBoard = JSON.parse(JSON.stringify(initialBoard));
-
     for (let i = 1; i <= currentMove && i < currentMoveSequence.length; i++) {
       const move = currentMoveSequence[i];
       if (move.boardChanges) {
@@ -79,7 +70,6 @@ const ChessSlideshow = ({
     }
     return newBoard;
   }, [currentMove, currentMoveSequence, initialBoard]);
-
   // Get pieces that can make variation moves from current position
   const getVariationPieces = useMemo(() => {
     // Safety check: ensure currentMoveSequence exists and currentMove is valid
@@ -90,14 +80,11 @@ const ChessSlideshow = ({
     ) {
       return new Map();
     }
-
     const currentMoveData = currentMoveSequence[currentMove];
     if (!currentMoveData || !currentMoveData.variations) {
       return new Map();
     }
-
     const variationMap = new Map();
-
     currentMoveData.variations.forEach((variation) => {
       // Add null checks for variation structure
       if (
@@ -122,15 +109,12 @@ const ChessSlideshow = ({
         });
       }
     });
-
     return variationMap;
   }, [currentMoveSequence, currentMove]);
-
   const handlePrevious = () => {
     if (currentMove > 0) {
       const newMoveIndex = currentMove - 1;
       setCurrentMove(newMoveIndex);
-
       // Auto-return to main line if we've navigated back to the start point of the variation
       if (selectedVariation) {
         const variationStartPoint =
@@ -141,13 +125,11 @@ const ChessSlideshow = ({
       }
     }
   };
-
   const handleNext = () => {
     if (currentMove < currentMoveSequence.length - 1) {
       setCurrentMove(currentMove + 1);
     }
   };
-
   const handleSelectVariation = (fromMoveIndex, variationId) => {
     // Find the variation to get its start point
     const currentMoveData = currentMoveSequence[fromMoveIndex];
@@ -155,7 +137,6 @@ const ChessSlideshow = ({
       (v) => v.id === variationId,
     );
     const startPoint = variation?.start || fromMoveIndex;
-
     setSelectedVariation({
       fromMoveIndex,
       variationId,
@@ -164,18 +145,15 @@ const ChessSlideshow = ({
     setCurrentMove(fromMoveIndex + 1); // Start at first move of variation
     setShowTooltip(false);
   };
-
   const handleReturnToMainLine = () => {
     // Jump back to the start point (move before the branch)
     const startPoint = selectedVariation?.start || 0;
     setSelectedVariation(null);
     setCurrentMove(startPoint);
   };
-
   const handlePieceClick = (rowIndex, colIndex) => {
     const squareKey = `${rowIndex}-${colIndex}`;
     const variations = getVariationPieces.get(squareKey);
-
     if (variations && variations.length > 0) {
       // If only one variation, go directly to it
       if (variations.length === 1) {
@@ -186,10 +164,8 @@ const ChessSlideshow = ({
       }
     }
   };
-
   const handleSquareHover = (rowIndex, colIndex, isEntering) => {
     const squareKey = `${rowIndex}-${colIndex}`;
-
     if (isEntering && getVariationPieces.has(squareKey)) {
       setHoveredSquare({ row: rowIndex, col: colIndex });
       setShowTooltip(true);
@@ -198,20 +174,15 @@ const ChessSlideshow = ({
       setShowTooltip(false);
     }
   };
-
   const renderPiece = (piece) => {
     if (!piece) return null;
     return pieceComponents[piece] || null;
   };
-
   const renderTooltip = () => {
     if (!showTooltip || !hoveredSquare) return null;
-
     const squareKey = `${hoveredSquare.row}-${hoveredSquare.col}`;
     const variations = getVariationPieces.get(squareKey);
-
     if (!variations || variations.length === 0) return null;
-
     return (
       <div
         className="absolute z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg max-w-xs"
@@ -234,27 +205,23 @@ const ChessSlideshow = ({
       </div>
     );
   };
-
   // Get current move and check if it has variations
   const currentMoveData = currentMoveSequence[currentMove];
   const hasVariations =
     currentMoveData &&
     currentMoveData.variations &&
     currentMoveData.variations.length > 0;
-
   // File labels (a-h)
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
   // Rank labels (8-1 from top to bottom)
   const ranks = ["8", "7", "6", "5", "4", "3", "2", "1"];
-
   return (
     <div className="max-w-xl mx-auto p-2 sm:p-4">
       <div className="">
         {/* Title and Description */}
-        <div className="flex justify-center">
+        <div className="flex justify-center px-4 sm:px-0">
           <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
         </div>
-
         {/* Chess Board with coordinates inside */}
         <div className="flex justify-center">
           <div className="relative inline-block border-2 border-gray-800">
@@ -264,12 +231,10 @@ const ChessSlideshow = ({
                   const isLight = (rowIndex + colIndex) % 2 === 0;
                   const lightSquare = "#f0d9b5";
                   const darkSquare = "#b58863";
-
                   const fileLetter = files[colIndex];
                   const rankNumber = ranks[rowIndex];
                   const showFile = rowIndex === 7;
                   const showRank = colIndex === 0;
-
                   // Check if this square has a piece that can make variation moves
                   const squareKey = `${rowIndex}-${colIndex}`;
                   const hasVariationMoves =
@@ -277,11 +242,10 @@ const ChessSlideshow = ({
                   const isHovered =
                     hoveredSquare?.row === rowIndex &&
                     hoveredSquare?.col === colIndex;
-
                   return (
                     <div
                       key={`${rowIndex}-${colIndex}`}
-                      className={`w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center relative ${
+                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center relative ${
                         hasVariationMoves ? "cursor-pointer" : ""
                       }`}
                       style={{
@@ -309,7 +273,6 @@ const ChessSlideshow = ({
                           {rankNumber}
                         </div>
                       )}
-
                       {/* File letters (bottom) */}
                       {showFile && (
                         <div
@@ -319,14 +282,12 @@ const ChessSlideshow = ({
                           {fileLetter}
                         </div>
                       )}
-
                       {/* Variation indicator */}
                       {hasVariationMoves && (
                         <div className="absolute top-1 right-1">
                           <div className="w-2 h-2 bg-blue-500 rounded-full opacity-75"></div>
                         </div>
                       )}
-
                       {/* Chess piece */}
                       {piece && (
                         <div className="w-4/5 h-4/5">{renderPiece(piece)}</div>
@@ -336,21 +297,18 @@ const ChessSlideshow = ({
                 }),
               )}
             </div>
-
             {/* Render tooltip */}
             {renderTooltip()}
           </div>
         </div>
-
         {/* Current Move Information */}
-        <div className="mt-4 p-3 rounded-lg">
+        <div className="mt-4 p-3 px-4 sm:px-3">
           <div className="font-semibold text-gray-800 mb-2 text-lg">
             {currentMoveSequence[currentMove]?.notation || "Starting Position"}
           </div>
           <div className="text-gray-600">
             {currentMoveSequence[currentMove]?.explanation || description}
           </div>
-
           {/* Show if we're in a variation (only when past the start point) */}
           {selectedVariation &&
             currentMove >
@@ -367,19 +325,27 @@ const ChessSlideshow = ({
               </div>
             )}
         </div>
-
         {/* Navigation Controls */}
-        <div className="flex items-center justify-between mt-4">
-          <button
-            onClick={handlePrevious}
-            disabled={currentMove === 0}
-            className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Previous
-          </button>
-
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:items-center sm:justify-between mt-4 px-4 sm:px-0">
+          <div className="flex items-center justify-center space-x-3 sm:justify-start sm:space-x-0">
+            <button
+              onClick={handlePrevious}
+              disabled={currentMove === 0}
+              className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed sm:mr-4"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              Previous
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentMove === currentMoveSequence.length - 1}
+              className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </button>
+          </div>
+          <div className="flex items-center justify-center space-x-2">
             <span className="text-sm text-gray-600">Move {currentMove}</span>
             <div className="w-32 bg-gray-200 rounded-full h-2">
               <div
@@ -393,19 +359,9 @@ const ChessSlideshow = ({
               {currentMoveSequence.length - 1} moves
             </span>
           </div>
-
-          <button
-            onClick={handleNext}
-            disabled={currentMove === currentMoveSequence.length - 1}
-            className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </button>
         </div>
       </div>
     </div>
   );
 };
-
 export default ChessSlideshow;

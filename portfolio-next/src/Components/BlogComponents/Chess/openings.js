@@ -244,7 +244,7 @@ export const kingsGambitDeclined = {
       variations: [
         {
           id: "modern-defense",
-          start: 1,
+          start: 0,
           name: "2... d6 (Modern Defense)",
           description:
             "Solid positional approach - Black reinforces the center and prepares gradual piece development.",
