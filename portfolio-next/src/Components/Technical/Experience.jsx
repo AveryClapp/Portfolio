@@ -10,7 +10,7 @@ const Experience = () => {
 
         <div class="mb-8">
           <h3 class="text-xl font-semibold text-neutral-900 mb-2">
-            Software Engineer <span class="text-base font-normal text-neutral-600">@ Single Phase Capital | Aug 2025 - Present</span>
+            Quantitative Developer <span class="text-base font-normal text-neutral-600">@ Single Phase Capital | Aug 2025 - Present</span>
           </h3>
           <p class="text-sm text-neutral-700">
             Building...
