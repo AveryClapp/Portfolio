@@ -188,34 +188,61 @@ const NoteWrapper = ({
   }, [content, processMainContentAsMarkdown]);
 
   const updateNotePositions = () => {
-    if (!contentRef.current || !notesContainerRef.current) return;
+    if (!contentRef.current || !notesContainerRef.current || notes.length === 0)
+      return;
 
     const newPositions = {};
     const markers = contentRef.current.querySelectorAll(".note-marker");
-    const contentRect = contentRef.current.getBoundingClientRect();
     const notesRect = notesContainerRef.current.getBoundingClientRect();
 
-    markers.forEach((marker, index) => {
+    // First pass: calculate base positions
+    const basePositions = [];
+    markers.forEach((marker) => {
       const id = marker.getAttribute("data-note-id");
       const markerRect = marker.getBoundingClientRect();
-
-      // Calculate position relative to the notes container, not trying to avoid overlaps
       const relativeTop = markerRect.top - notesRect.top;
-      newPositions[id] = Math.max(0, relativeTop - 20); // Small offset to align nicely
+
+      basePositions.push({
+        id,
+        originalTop: Math.max(0, relativeTop - 20),
+        finalTop: Math.max(0, relativeTop - 20),
+      });
+    });
+
+    // Second pass: resolve collisions
+    const NOTE_HEIGHT = 20; // More realistic height for note cards with padding
+    const MIN_SPACING = 50; // Refined spacing between notes
+
+    // Sort by original position to process top-to-bottom
+    basePositions.sort((a, b) => a.originalTop - b.originalTop);
+
+    // More efficient collision detection - only check against the last positioned note
+    for (let i = 1; i < basePositions.length; i++) {
+      const currentNote = basePositions[i];
+      const previousNote = basePositions[i - 1];
+
+      const requiredTop = previousNote.finalTop + NOTE_HEIGHT + MIN_SPACING;
+
+      // Only push down if there would be a collision
+      if (currentNote.finalTop < requiredTop) {
+        currentNote.finalTop = requiredTop;
+      }
+    }
+
+    // Apply final positions
+    basePositions.forEach((note) => {
+      newPositions[note.id] = note.finalTop;
     });
 
     setNotePositions(newPositions);
   };
 
   useEffect(() => {
-    setTimeout(updateNotePositions, 100);
-    window.addEventListener("scroll", updateNotePositions);
-    window.addEventListener("resize", updateNotePositions);
-
-    return () => {
-      window.removeEventListener("scroll", updateNotePositions);
-      window.removeEventListener("resize", updateNotePositions);
-    };
+    // Only run once when notes are loaded/changed
+    if (notes.length > 0) {
+      const timeoutId = setTimeout(updateNotePositions, 150);
+      return () => clearTimeout(timeoutId);
+    }
   }, [notes]);
 
   return (

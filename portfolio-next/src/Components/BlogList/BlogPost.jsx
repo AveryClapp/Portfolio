@@ -138,6 +138,64 @@ const BlogPost = ({ post }) => {
     return child;
   };
 
+  const updateNotePositions = () => {
+    if (!contentRef.current || !notesContainerRef.current || notes.length === 0)
+      return;
+
+    const newPositions = {};
+    const markers = contentRef.current.querySelectorAll(".note-marker");
+    const notesRect = notesContainerRef.current.getBoundingClientRect();
+
+    // First pass: calculate base positions
+    const basePositions = [];
+    markers.forEach((marker) => {
+      const id = marker.getAttribute("data-note-id");
+      const markerRect = marker.getBoundingClientRect();
+      const relativeTop = markerRect.top - notesRect.top;
+
+      basePositions.push({
+        id,
+        originalTop: Math.max(0, relativeTop - 20),
+        finalTop: Math.max(0, relativeTop - 20),
+      });
+    });
+
+    // Second pass: resolve collisions
+    const NOTE_HEIGHT = 20; // More realistic height for note cards with padding
+    const MIN_SPACING = 50; // Refined spacing between notes
+
+    // Sort by original position to process top-to-bottom
+    basePositions.sort((a, b) => a.originalTop - b.originalTop);
+
+    // More efficient collision detection - only check against the last positioned note
+    for (let i = 1; i < basePositions.length; i++) {
+      const currentNote = basePositions[i];
+      const previousNote = basePositions[i - 1];
+
+      const requiredTop = previousNote.finalTop + NOTE_HEIGHT + MIN_SPACING;
+
+      // Only push down if there would be a collision
+      if (currentNote.finalTop < requiredTop) {
+        currentNote.finalTop = requiredTop;
+      }
+    }
+
+    // Apply final positions
+    basePositions.forEach((note) => {
+      newPositions[note.id] = note.finalTop;
+    });
+
+    setNotePositions(newPositions);
+  };
+
+  useEffect(() => {
+    // Only run once when notes are loaded/changed
+    if (notes.length > 0) {
+      const timeoutId = setTimeout(updateNotePositions, 150);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [notes]);
+
   const processChildren = (children, parentKey = "") => {
     if (Array.isArray(children)) {
       return children.map((child, index) => {
