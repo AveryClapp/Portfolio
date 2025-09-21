@@ -43,7 +43,7 @@ const Projects = () => {
           Network Analyzer
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A sophisticated network analysis tool that captures, sniffs, and parses network traffic flowing through your device in real-time.
+          A sophisticated network analysis tool that captures, sniffs, and parses network traffic flowing through your device in real-time for various analytics.
         </p>
         <a
           href="https://github.com/AveryClapp/NetworkAnalyzer"
@@ -78,7 +78,7 @@ const Projects = () => {
           Crypto Trading Platform
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A robust trading platform that crunches real-time data and machine learning models to forecast crypto market trends.
+            A quantitative research backed cryptocurrency trading utility site for smarter and unique investment strategies.
         </p>
         <a
           href="https://github.com/AveryClapp/AICryptoPlatform"
