@@ -3,7 +3,7 @@ title: "Learning to Hallucinate"
 date: "09-12-2025"
 preview: "A brief overview of an OpenAI-led research paper on why LLMs hallucinate"
 slug: "learning-to-hallucinate"
-tags: ["Machine Learning"]
+tags: ["Research"]
 ---
 
 ## How many 'R's in Strawberry?

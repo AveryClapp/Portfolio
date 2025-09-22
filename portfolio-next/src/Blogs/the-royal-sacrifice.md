@@ -3,7 +3,7 @@ title: "The Royal Sacrifice"
 date: "09-13-2025"
 preview: "An exploratory analysis on one of chess's most infamous opening sequences"
 slug: "the-royal-sacrifice"
-tags: ["Chess"]
+tags: ["Misc"]
 ---
 
 ## The Opening Problem
