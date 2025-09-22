@@ -1,6 +1,6 @@
 ---
 title: "WTFilesystem"
-date: "09-XX-2025"
+date: "09-22-2025"
 preview: "Unwinding the esoteric tangles of modern filesystems"
 slug: "wtfilesystem"
 tags: ["Systems"]
