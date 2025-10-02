@@ -5,6 +5,24 @@ const Projects = () => {
     <section id="projects" class="max-w-3xl px-4 py-2">
       <h2 class="mb-2 text-2xl font-semibold text-neutral-900">Projects</h2>
 
+
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-neutral-900">
+          Emergent Sparsity Matrix Multiplication (On-going)
+        </h3>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+          Investigating various techniques to take advantage of emergent sparsity in LLMs to pioneer a faster and more efficient approach to generating tokens.
+        </p>
+        <a
+          href="https://github.com/AveryClapp/ESMM-Research"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block text-sm font-medium text-black hover:text-blue-500"
+        >
+          View Project →
+        </a>
+      </div>
+
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
           C++ Orderbook
@@ -75,7 +93,7 @@ const Projects = () => {
 
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
-          Crypto Trading Platform
+          Crypto QuantLab
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
             A quantitative research backed cryptocurrency trading utility site for smarter and unique investment strategies.
