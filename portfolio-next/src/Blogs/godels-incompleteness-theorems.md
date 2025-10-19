@@ -1,7 +1,7 @@
 ---
 title: "Gödel's Incompleteness Theorems and their Implications on the Human Condition"
 date: "10-19-2025"
-preview: "Is philosophy as a system consistent? Can it be solved?"
+preview: "What Gödel's theorems reveal about knowledge, self-understanding, and human potential"
 slug: "godels-incompleteness-theorems"
 tags: ["Philosophy"]
 ---
