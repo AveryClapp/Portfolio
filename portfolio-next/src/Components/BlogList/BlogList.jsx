@@ -62,6 +62,16 @@ const BlogList = ({ blogPosts }) => {
                     </span>
                   `).join('') : ''}
                 </div>
+                ${post.subtopics && post.subtopics.length > 0 ? `
+                  <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs text-neutral-400 font-medium">Topics:</span>
+                    ${post.subtopics.map(subtopic => `
+                      <span class="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600">
+                        ${subtopic}
+                      </span>
+                    `).join('')}
+                  </div>
+                ` : ''}
                 <p class="text-neutral-700">${post.preview}</p>
               </article>
             `).join('')

@@ -3,7 +3,8 @@ title: "Fractals, Power Laws, and Wall Street"
 date: "07-13-2025"
 preview: "How advanced geometry gives Wall Street a mathematical edge"
 slug: "fractals-power-laws-and-wall-street"
-tags: ["Research", "Markets"]
+tags: ["Technical"]
+subtopics: ["Mathematics", "Finance"]
 ---
 
 ## Introduction

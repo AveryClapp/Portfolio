@@ -3,7 +3,8 @@ title: "C++ Orderbook: A Worklog"
 date: "08-29-2025"
 preview: "Building an ultra low-latency Orderbook in C++"
 slug: "cpp-orderbook-worklog"
-tags: ["Systems", "Markets", "Projects"]
+tags: ["Technical"]
+subtopics: ["C++", "Finance"]
 ---
 
 ## What is an Orderbook?

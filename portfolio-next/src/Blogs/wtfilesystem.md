@@ -3,7 +3,8 @@ title: "WTFilesystem"
 date: "09-22-2025"
 preview: "Unwinding the esoteric tangles of modern filesystems"
 slug: "wtfilesystem"
-tags: ["Systems"]
+tags: ["Technical"]
+subtopics: ["Operating Systems", "Systems"]
 ---
 
 ## What even is a File?

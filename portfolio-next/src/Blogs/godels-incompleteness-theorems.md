@@ -3,7 +3,8 @@ title: "Gödel's Incompleteness Theorems and their Implications on the Human Con
 date: "10-19-2025"
 preview: "What Gödel's theorems reveal about knowledge, self-understanding, and human potential"
 slug: "godels-incompleteness-theorems"
-tags: ["Philosophy"]
+tags: ["Humanities"]
+subtopics: ["Logic", "Epistemology"]
 ---
 
 ## The Hilbert Program

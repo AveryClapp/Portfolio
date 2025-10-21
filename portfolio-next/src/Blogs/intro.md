@@ -3,7 +3,8 @@ title: "Pilot Blog"
 date: "01-19-2024"
 preview: "A personal introduction and what to expect"
 slug: "intro"
-tags: ["Misc"]
+tags: ["Personal"]
+subtopics: ["Introduction"]
 ---
 
 <div>

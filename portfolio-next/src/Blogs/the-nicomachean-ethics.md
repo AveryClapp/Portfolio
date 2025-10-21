@@ -3,7 +3,8 @@ title: "The Nicomachean Ethics"
 date: "08-21-2025"
 preview: "Aristotle's foundation for Ethics and Happiness"
 slug: "the-nicomachean-ethics"
-tags: ["Philosophy"]
+tags: ["Humanities"]
+subtopics: ["Ethics", "Virtue"]
 ---
 
 ## Introduction

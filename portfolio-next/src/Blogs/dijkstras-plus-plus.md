@@ -3,7 +3,8 @@ title: "Dijkstras++"
 date: "08-19-2025"
 preview: "Breaking the lower bound for SSSP Algorithms"
 slug: "dijkstras-plus-plus"
-tags: ["Research"]
+tags: ["Technical"]
+subtopics: ["Algorithms", "Graph Theory"]
 ---
 
 ## Context
