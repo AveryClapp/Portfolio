@@ -533,10 +533,11 @@ const BlogPost = ({ post }) => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
-      <main className="flex flex-col lg:flex-row pb-6 mb-6 border-b border-neutral-200">
-        {/* Main content - flows naturally */}
-        <div className="w-full lg:w-3/5 px-4 lg:ml-32" ref={contentRef}>
-          <article className="prose max-w-none text-black">
+      <main className="mb-6 relative z-20 flex-1">
+        <div className="flex flex-col lg:flex-row pb-6 border-b border-neutral-200">
+          {/* Main content - flows naturally */}
+          <div className="px-4 lg:ml-32 w-full lg:w-3/5" ref={contentRef}>
+          <article className="prose max-w-none text-black px-4">
             <h1 className="text-xl font-bold">{post.title}</h1>
             <p className="text-sm mb-6">{post.date}</p>
             <ReactMarkdown
@@ -627,6 +628,7 @@ const BlogPost = ({ post }) => {
               </div>
             ))}
           </div>
+        </div>
         </div>
       </main>
       <Footer />

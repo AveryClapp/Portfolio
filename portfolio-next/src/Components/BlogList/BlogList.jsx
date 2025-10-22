@@ -7,41 +7,52 @@ import Footer from "@/Components/Footer/Footer";
 import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 
 const BlogList = ({ blogPosts }) => {
-  const [selectedTag, setSelectedTag] = useState('all');
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  const allTags = ['all', ...new Set(blogPosts.flatMap(post => post.tags || []))];
-  const filteredPosts = selectedTag === 'all'
-    ? blogPosts
-    : blogPosts.filter(post => post.tags && post.tags.includes(selectedTag));
+  const allTags = [...new Set(blogPosts.flatMap((post) => post.tags || []))];
+  const filteredPosts =
+    selectedTags.length === 0
+      ? blogPosts
+      : blogPosts.filter(
+          (post) =>
+            post.tags && post.tags.some((tag) => selectedTags.includes(tag)),
+        );
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   // Build the HTML content string
   const buildBlogListContent = () => {
     return `
-      <div>
-        <h1 class="text-2xl font-bold mb-8">Blog Posts</h1>
+      <div class="px-4">
+        <h1 class="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">Blog Posts</h1>
 
         <!-- Tag filter buttons -->
         <div class="mb-6 flex flex-wrap gap-2">
-          ${allTags.map((tag) => `
+          ${allTags
+            .map(
+              (tag) => `
             <button
               onclick="window.handleTagClick('${tag}')"
-              class="px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedTag === tag
-        ? 'bg-neutral-900 text-white'
-        : 'bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-100'
-      }"
+              class="px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                selectedTags.includes(tag)
+                  ? "bg-neutral-900 text-white"
+                  : "bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-100"
+              }"
             >
               ${tag.charAt(0).toUpperCase() + tag.slice(1)}
             </button>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </div>
 
         <!-- Blog posts list -->
         <div class="space-y-8">
-          ${filteredPosts.length > 0 ? (
-        filteredPosts.map((post) => `
+          ${
+            filteredPosts.length > 0
+              ? filteredPosts
+                  .map(
+                    (post) => `
               <article
                 key="${post.slug}"
                 class="border-b border-neutral-200 pb-6"
@@ -56,30 +67,47 @@ const BlogList = ({ blogPosts }) => {
                 </h2>
                 <div class="flex items-center gap-3 text-sm text-neutral-500 mb-3">
                   <span>${post.date}</span>
-                  ${post.tags ? post.tags.map(tag => `
+                  ${
+                    post.tags
+                      ? post.tags
+                          .map(
+                            (tag) => `
                     <span class="px-2 py-1 bg-neutral-200 rounded-md text-xs mr-1">
                       ${tag}
                     </span>
-                  `).join('') : ''}
+                  `,
+                          )
+                          .join("")
+                      : ""
+                  }
                 </div>
-                ${post.subtopics && post.subtopics.length > 0 ? `
+                ${
+                  post.subtopics && post.subtopics.length > 0
+                    ? `
                   <div class="flex items-center gap-2 mb-3">
                     <span class="text-xs text-neutral-400 font-medium">Topics:</span>
-                    ${post.subtopics.map(subtopic => `
+                    ${post.subtopics
+                      .map(
+                        (subtopic) => `
                       <span class="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600">
                         ${subtopic}
                       </span>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                   </div>
-                ` : ''}
+                `
+                    : ""
+                }
                 <p class="text-neutral-700">${post.preview}</p>
               </article>
-            `).join('')
-      ) : (
-        `<p class="text-neutral-500 text-center py-8">
-              No posts found with the selected tag.
+            `,
+                  )
+                  .join("")
+              : `<p class="text-neutral-500 text-center py-8">
+              No posts found with the selected tags.
             </p>`
-      )}
+          }
         </div>
       </div>
     `;
@@ -88,7 +116,15 @@ const BlogList = ({ blogPosts }) => {
   // Handle tag clicks
   useEffect(() => {
     window.handleTagClick = (tag) => {
-      setSelectedTag(tag);
+      setSelectedTags((prev) => {
+        if (prev.includes(tag)) {
+          // Remove tag if already selected
+          return prev.filter((t) => t !== tag);
+        } else {
+          // Add tag if not selected
+          return [...prev, tag];
+        }
+      });
     };
     return () => {
       delete window.handleTagClick;
@@ -98,9 +134,9 @@ const BlogList = ({ blogPosts }) => {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
-      <main className="relative z-20 flex-1 mb-6">
-        <div className="flex">
-          <div className="w-full px-4 lg:ml-32">
+      <main className="mb-6 relative z-20 flex-1">
+        <div className="flex flex-col lg:flex-row">
+          <div className="px-4 lg:ml-32 w-full">
             <NoteWrapper content={buildBlogListContent()} />
           </div>
         </div>

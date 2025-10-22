@@ -245,6 +245,20 @@ const NoteWrapper = ({
     }
   }, [notes]);
 
+  // If there are no notes, render full-width content without the two-column layout
+  if (notes.length === 0) {
+    return (
+      <div ref={contentRef}>
+        {content ? (
+          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+        ) : (
+          children
+        )}
+      </div>
+    );
+  }
+
+  // Otherwise, render the two-column layout with notes
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Main content - flows naturally */}
