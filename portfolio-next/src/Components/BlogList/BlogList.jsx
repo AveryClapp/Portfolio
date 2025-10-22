@@ -19,12 +19,8 @@ const BlogList = ({ blogPosts }) => {
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  };
-
-  const clearAllTags = () => {
-    setSelectedTags([]);
   };
 
   // Build just the blog posts content
@@ -107,14 +103,6 @@ const BlogList = ({ blogPosts }) => {
                 <span className="text-sm font-medium text-neutral-600">
                   Filter by topic
                 </span>
-                {selectedTags.length > 0 && (
-                  <button
-                    onClick={clearAllTags}
-                    className="text-xs text-neutral-500 hover:text-neutral-900 underline transition-colors"
-                  >
-                    Clear all
-                  </button>
-                )}
               </div>
 
               {/* Tag filter buttons */}
