@@ -1,7 +1,6 @@
 // src/Components/BlogList/BlogList.jsx
 "use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
@@ -18,118 +17,77 @@ const BlogList = ({ blogPosts }) => {
             post.tags && post.tags.some((tag) => selectedTags.includes(tag)),
         );
 
-  useEffect(() => {}, []);
+  const toggleTag = (tag) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
 
-  // Build the HTML content string
-  const buildBlogListContent = () => {
+  const clearAllTags = () => {
+    setSelectedTags([]);
+  };
+
+  // Build just the blog posts content
+  const buildBlogPostsContent = () => {
     return `
-      <div class="px-4">
-        <h1 class="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">Blog Posts</h1>
-
-        <!-- Tag filter buttons -->
-        <div class="mb-6 flex flex-wrap gap-2">
-          ${allTags
-            .map(
-              (tag) => `
-            <button
-              onclick="window.handleTagClick('${tag}')"
-              class="px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedTags.includes(tag)
-                  ? "bg-neutral-900 text-white"
-                  : "bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-100"
-              }"
-            >
-              ${tag.charAt(0).toUpperCase() + tag.slice(1)}
-            </button>
-          `,
-            )
-            .join("")}
-        </div>
-
-        <!-- Blog posts list -->
-        <div class="space-y-8">
-          ${
-            filteredPosts.length > 0
-              ? filteredPosts
-                  .map(
-                    (post) => `
-              <article
-                key="${post.slug}"
-                class="border-b border-neutral-200 pb-6"
-              >
-                <h2 class="text-xl font-semibold mb-2">
-                  <a
-                    href="/blog/${post.slug}"
-                    class="hover:text-neutral-600 transition-colors"
-                  >
-                    ${post.title}
-                  </a>
-                </h2>
-                <div class="flex items-center gap-3 text-sm text-neutral-500 mb-3">
-                  <span>${post.date}</span>
-                  ${
-                    post.tags
-                      ? post.tags
-                          .map(
-                            (tag) => `
+      <div class="space-y-8">
+        ${
+          filteredPosts.length > 0
+            ? filteredPosts
+                .map(
+                  (post) => `
+            <article class="border-b border-neutral-200 pb-6">
+              <h2 class="text-xl font-semibold mb-2">
+                <a href="/blog/${post.slug}" class="hover:text-neutral-600 transition-colors">
+                  ${post.title}
+                </a>
+              </h2>
+              <div class="flex items-center gap-3 text-sm text-neutral-500 mb-3">
+                <span>${post.date}</span>
+                ${
+                  post.tags
+                    ? post.tags
+                        .map(
+                          (tag) => `
                     <span class="px-2 py-1 bg-neutral-200 rounded-md text-xs mr-1">
                       ${tag}
                     </span>
                   `,
-                          )
-                          .join("")
-                      : ""
-                  }
-                </div>
-                ${
-                  post.subtopics && post.subtopics.length > 0
-                    ? `
-                  <div class="flex items-center gap-2 mb-3">
-                    <span class="text-xs text-neutral-400 font-medium">Topics:</span>
-                    ${post.subtopics
-                      .map(
-                        (subtopic) => `
-                      <span class="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600">
-                        ${subtopic}
-                      </span>
-                    `,
-                      )
-                      .join("")}
-                  </div>
-                `
+                        )
+                        .join("")
                     : ""
                 }
-                <p class="text-neutral-700">${post.preview}</p>
-              </article>
-            `,
-                  )
-                  .join("")
-              : `<p class="text-neutral-500 text-center py-8">
+              </div>
+              ${
+                post.subtopics && post.subtopics.length > 0
+                  ? `
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-xs text-neutral-400 font-medium">Topics:</span>
+                  ${post.subtopics
+                    .map(
+                      (subtopic) => `
+                    <span class="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600">
+                      ${subtopic}
+                    </span>
+                  `,
+                    )
+                    .join("")}
+                </div>
+              `
+                  : ""
+              }
+              <p class="text-neutral-700">${post.preview}</p>
+            </article>
+          `,
+                )
+                .join("")
+            : `<p class="text-neutral-500 text-center py-8">
               No posts found with the selected tags.
             </p>`
-          }
-        </div>
+        }
       </div>
     `;
   };
-
-  // Handle tag clicks
-  useEffect(() => {
-    window.handleTagClick = (tag) => {
-      setSelectedTags((prev) => {
-        if (prev.includes(tag)) {
-          // Remove tag if already selected
-          return prev.filter((t) => t !== tag);
-        } else {
-          // Add tag if not selected
-          return [...prev, tag];
-        }
-      });
-    };
-    return () => {
-      delete window.handleTagClick;
-    };
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
@@ -137,7 +95,57 @@ const BlogList = ({ blogPosts }) => {
       <main className="mb-6 relative z-20 flex-1">
         <div className="flex flex-col lg:flex-row">
           <div className="px-4 lg:ml-32 w-full">
-            <NoteWrapper content={buildBlogListContent()} />
+            {/* Title */}
+            <h1 className="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
+              Blog Posts
+            </h1>
+
+            {/* Filter section with improved UX */}
+            <div className="mb-6">
+              {/* Filter header with clear button */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-neutral-600">
+                  Filter by topic
+                </span>
+                {selectedTags.length > 0 && (
+                  <button
+                    onClick={clearAllTags}
+                    className="text-xs text-neutral-500 hover:text-neutral-900 underline transition-colors"
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
+
+              {/* Tag filter buttons */}
+              <div className="flex flex-wrap gap-2">
+                {allTags.map((tag) => {
+                  const isSelected = selectedTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isSelected
+                          ? "bg-neutral-900 text-white shadow-md"
+                          : "bg-white border border-neutral-300 text-neutral-700 hover:border-neutral-400 hover:shadow-sm"
+                      }`}
+                    >
+                      {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Results count */}
+              <p className="mt-3 text-xs text-neutral-500">
+                Showing {filteredPosts.length} of {blogPosts.length}{" "}
+                {blogPosts.length === 1 ? "post" : "posts"}
+              </p>
+            </div>
+
+            {/* Blog posts through NoteWrapper */}
+            <NoteWrapper content={buildBlogPostsContent()} />
           </div>
         </div>
       </main>
