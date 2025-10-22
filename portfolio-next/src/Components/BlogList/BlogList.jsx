@@ -30,7 +30,7 @@ const BlogList = ({ blogPosts }) => {
   // Build just the blog posts content
   const buildBlogPostsContent = () => {
     return `
-      <div class="space-y-8">
+      <div class="max-w-3xl space-y-8">
         ${
           filteredPosts.length > 0
             ? filteredPosts
@@ -96,12 +96,12 @@ const BlogList = ({ blogPosts }) => {
         <div className="flex flex-col lg:flex-row">
           <div className="px-4 lg:ml-32 w-full">
             {/* Title */}
-            <h1 className="mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
+            <h1 className="max-w-3xl mb-4 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
               Blog Posts
             </h1>
 
             {/* Filter section with improved UX */}
-            <div className="mb-6">
+            <div className="max-w-3xl mb-6">
               {/* Filter header with clear button */}
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-neutral-600">

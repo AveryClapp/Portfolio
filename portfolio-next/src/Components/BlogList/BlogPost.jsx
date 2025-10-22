@@ -537,7 +537,7 @@ const BlogPost = ({ post }) => {
         <div className="flex flex-col lg:flex-row pb-6 border-b border-neutral-200">
           {/* Main content - flows naturally */}
           <div className="px-4 lg:ml-32 w-full lg:w-3/5" ref={contentRef}>
-          <article className="prose max-w-none text-black px-4">
+          <article className="prose max-w-3xl text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
             <p className="text-sm mb-6">{post.date}</p>
             <ReactMarkdown
