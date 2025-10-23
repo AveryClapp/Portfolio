@@ -1,7 +1,7 @@
 ---
 title: "Fractals, Power Laws, and Wall Street"
 date: "07-13-2025"
-preview: "How advanced geometry gives Wall Street a mathematical edge"
+preview: "Analyzing how Benoit Mandelbrot's revolutionary application of fractal mathematics and power laws to financial markets challenged traditional models. Examining how self-similar patterns and scale-invariant behavior can predict market crashes that normal distributions deem impossible, and how firms leverage these insights for risk management and profit."
 slug: "fractals-power-laws-and-wall-street"
 tags: ["Technical"]
 subtopics: ["Mathematics", "Finance"]

@@ -1,7 +1,7 @@
 ---
 title: "Learning to Hallucinate"
 date: "09-12-2025"
-preview: "A brief overview of an OpenAI-led research paper on why LLMs hallucinate"
+preview: "A deep dive into recent OpenAI research exploring the mathematical foundations behind why large language models hallucinate. Examining how pre and post-training limitations create unavoidable and magnified errors, and how binary evaluation methods inadvertently encourage overconfidence in models."
 slug: "learning-to-hallucinate"
 tags: ["Technical"]
 subtopics: ["AI/ML", "Research"]

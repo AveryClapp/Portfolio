@@ -1,7 +1,7 @@
 ---
 title: "The Royal Sacrifice"
 date: "09-13-2025"
-preview: "An exploratory analysis on one of chess's most infamous opening sequences"
+preview: "Exploring the King's Gambit, one of chess's most aggressive openings that sacrifices a pawn for rapid piece development. Examining why this high-risk strategy embodies the razor-thin margin between domination and disaster, and how imperfect openings like this force players away from memorization and into genuine critical thinking as early as move 5."
 slug: "the-royal-sacrifice"
 tags: ["Arts"]
 subtopics: ["Chess", "Strategy", "Game Theory"]

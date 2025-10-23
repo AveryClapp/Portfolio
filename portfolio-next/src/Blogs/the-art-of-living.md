@@ -1,7 +1,7 @@
 ---
 title: "The Art of Living"
 date: "06-28-2025"
-preview: "Epictetus's guide to living a meaningful life"
+preview: "Exploring Epictetus's stoic philosophy on living a meaningful life, from his teachings as a former slave in ancient Rome. Examining core principles like finding happiness internally rather than through external validation, embodying virtue through action rather than just understanding it intellectually, and how discipline leads to true freedom."
 slug: "the-art-of-living"
 tags: ["Humanities"]
 subtopics: ["Stoicism", "Ethics"]

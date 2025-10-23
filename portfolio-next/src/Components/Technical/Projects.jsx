@@ -11,7 +11,7 @@ const Projects = () => {
           Emergent Sparsity Matrix Multiplication (On-going)
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          Investigating various techniques to take advantage of emergent sparsity in LLMs to pioneer a faster and more efficient approach to generating tokens.
+          Research project investigating how to exploit emergent sparsity patterns in large language models to accelerate inference. Exploring various techniques like dynamic masking, permutation invariants, and custom CUDA kernels to skip unnecessary computations during matrix multiplication, with the goal of achieving faster token generation without sacrificing model accuracy or quality.
         </p>
         <a
           href="https://github.com/AveryClapp/ESMM-Research"
@@ -28,7 +28,7 @@ const Projects = () => {
           C++ Orderbook
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A performance-critical C++ trading system designed for ultra-low latency order matching and execution.
+          A performance-critical C++ trading system designed for ultra-low latency order matching and execution. Built from scratch with extensive optimizations including memory pooling to eliminate syscalls, cache-friendly data structures, strategic struct alignment, branch prediction hints, and careful inlining. Achieved nearly 2M orders per second throughput by squeezing out every microsecond of performance through low-level systems programming techniques.
         </p>
         <a
           href="https://github.com/AveryClapp/Orderbook"
@@ -44,7 +44,7 @@ const Projects = () => {
           ArXiv Search Tool
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A robust overhaul of the ArXiv search system that enables more efficient and optimized querying of various research papers.
+          A comprehensive overhaul of the ArXiv search system that streamlines academic research discovery. Built with improved query parsing, advanced filtering by categories and date ranges, and semantic search capabilities to find relevant papers more efficiently. Designed to cut down the time spent sifting through thousands of research papers by providing more intuitive and powerful search functionality for researchers and students.
         </p>
         <a
           href="https://github.com/AveryClapp/ArxivSearch"
@@ -61,7 +61,7 @@ const Projects = () => {
           Network Analyzer
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A sophisticated network analysis tool that captures, sniffs, and parses network traffic flowing through your device in real-time for various analytics.
+          A sophisticated network analysis tool that captures and parses network traffic in real-time. Built with packet sniffing capabilities to monitor HTTP/HTTPS requests, DNS queries, and TCP/UDP connections flowing through your device. Provides detailed analytics on bandwidth usage, protocol distributions, and connection patterns, making it useful for debugging network issues, understanding application behavior, and learning about network protocols at a low level.
         </p>
         <a
           href="https://github.com/AveryClapp/NetworkAnalyzer"
@@ -78,7 +78,7 @@ const Projects = () => {
           Daily News Report
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A daily news aggregation system that curates top trending headlines from multiple sources. Designed to cut personal browsing time and keep you updated effortlessly.^2[This was my first coding project outside of the classroom]
+          A daily news aggregation system that automatically curates and summarizes top trending headlines from multiple sources including major news outlets and niche publications. Designed to eliminate the endless browsing and doomscrolling by delivering a concise, personalized digest of the most important stories each morning. Built with web scraping, natural language processing for summarization, and scheduled automation to keep you informed without the time sink.^2[This was my first coding project outside of the classroom]
         </p>
         <a
           href="https://github.com/AveryClapp/DailyNewsReport"
@@ -96,7 +96,7 @@ const Projects = () => {
           Crypto QuantLab
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-            A quantitative research backed cryptocurrency trading utility site for smarter and unique investment strategies.
+            A quantitative research platform for cryptocurrency trading that combines technical analysis, machine learning models, and market sentiment analysis to generate data-driven investment strategies. Features backtesting capabilities to evaluate strategy performance across historical data, real-time market monitoring, and algorithmic trading signals. Built to bring institutional-grade quantitative methods to crypto markets for smarter, evidence-based trading decisions.
         </p>
         <a
           href="https://github.com/AveryClapp/AICryptoPlatform"

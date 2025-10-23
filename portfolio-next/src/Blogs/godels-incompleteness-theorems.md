@@ -1,7 +1,7 @@
 ---
 title: "Gödel's Incompleteness Theorems and their Implications on the Human Condition"
 date: "10-19-2025"
-preview: "What Gödel's theorems reveal about knowledge, self-understanding, and human potential"
+preview: "Exploring how Kurt Gödel shattered David Hilbert's dream of perfect mathematics by proving that any consistent formal system contains unprovable truths. Applying the profound implications for human knowledge, the limits of self-understanding through strange loops and consciousness, the incompleteness of moral systems, and why this isn't pessimistic."
 slug: "godels-incompleteness-theorems"
 tags: ["Humanities"]
 subtopics: ["Logic", "Epistemology"]

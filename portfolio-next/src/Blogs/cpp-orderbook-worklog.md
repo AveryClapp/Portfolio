@@ -1,7 +1,7 @@
 ---
 title: "C++ Orderbook: A Worklog"
 date: "08-29-2025"
-preview: "Building an ultra low-latency Orderbook in C++"
+preview: "A detailed worklog of building an ultra-low latency orderbook in C++ from scratch, exploring the journey from a naive 635K orders/sec implementation to nearly 2M orders/sec. Diving into memory pooling to avoid syscalls, cache-friendly data structures, struct alignment, branch prediction hints, and strategic inlining to squeeze out every microsecond of performance."
 slug: "cpp-orderbook-worklog"
 tags: ["Technical"]
 subtopics: ["C++", "Finance"]

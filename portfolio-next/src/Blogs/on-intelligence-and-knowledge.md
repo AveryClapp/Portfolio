@@ -1,11 +1,12 @@
 ---
 title: "On Intelligence and Knowledge"
 date: "05-16-2025"
-preview: "What does it mean to intelligent?"
+preview: "A personal reflection on what it means to be intelligent, distinguishing between knowledge accumulation and critical thinking ability. Exploring whether true intelligence is innate or can be developed, with insights from competitive programming and chess."
 slug: "on-intelligence-and-knowledge"
 tags: ["Personal"]
 subtopics: ["Reflection", "Education"]
 ---
+
 ### Intro
 
 It's the time of year when finals roll around and rapidtables.com experiences significantly more traffic than usual. To be honest, it can be jarring to look at where your grade stands—especially if you haven't been keeping track the whole semester—but it can also be pleasantly surprising. Lately, I've taken the stance that it's somewhat pointless to plug and play numbers on grade calculators for a few reasons. As I just mentioned, sometimes it can be demotivating to see that you **really** need to lock in on the final to get an acceptable grade. Aside from that, I genuinely think there's merit in the idea that if you're going to do something, you should take the time to do it right. In this case, that means if you're enrolled in a class—regardless of whether it's exciting, relevant, or whatever—you should take joy in pursuing the knowledge it offers. Not only because it costs a lot of money to enroll in these classes, but because it's simply cool to know things. Game theory? Sure. Maximizing the Sharpe Ratio of a portfolio? Might as well know that. Conducting a J-test? It's interesting, at least.

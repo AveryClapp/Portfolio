@@ -1,7 +1,7 @@
 ---
 title: "Dijkstras++"
 date: "08-19-2025"
-preview: "Breaking the lower bound for SSSP Algorithms"
+preview: "A deep dive into groundbreaking research that breaks the time complexity lower bound for single-source shortest path algorithms. Fleshing out how researchers combined Dijkstra's algorithm with Bellman-Ford through an innovative frontier-reduction technique to achieve faster runtimes using divide-and-conquer and bounded multi-source shortest path strategies."
 slug: "dijkstras-plus-plus"
 tags: ["Technical"]
 subtopics: ["Algorithms", "Graph Theory"]

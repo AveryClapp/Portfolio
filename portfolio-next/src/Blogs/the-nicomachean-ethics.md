@@ -1,7 +1,7 @@
 ---
 title: "The Nicomachean Ethics"
 date: "08-21-2025"
-preview: "Aristotle's foundation for Ethics and Happiness"
+preview: "Unpacking Aristotle's Nicomachean Ethics and its exploration of happiness, morality, and virtue. Examining how Aristotle argues that happiness comes from virtuous activity, how moral virtues are cultivated through practice and finding the mean between extremes, and why friendships based on goodness represent the highest form of human connection."
 slug: "the-nicomachean-ethics"
 tags: ["Humanities"]
 subtopics: ["Ethics", "Virtue"]

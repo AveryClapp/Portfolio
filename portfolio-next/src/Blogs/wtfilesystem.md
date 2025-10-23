@@ -1,7 +1,7 @@
 ---
 title: "WTFilesystem"
 date: "09-22-2025"
-preview: "Unwinding the esoteric tangles of modern filesystems"
+preview: "Unwinding the esoteric architecture of modern filesystems, from the fundamental question of what a 'file' even is to your operating system. Exploring how inodes, superblocks, and bitmaps organize raw bytes into the familiar hierarchy we navigate daily, and examining performance optimizations like indirect pointers, extents, journaling, and block groups that make modern storage reliable and fast."
 slug: "wtfilesystem"
 tags: ["Technical"]
 subtopics: ["Operating Systems", "Systems"]
