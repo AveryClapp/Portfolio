@@ -41,6 +41,26 @@ const Projects = () => {
       </div>
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
+          Claude Code Fallback
+        </h3>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+          An intelligent CLI wrapper for Claude Code that automatically switches from subscription to API billing when usage limits
+          are hit. Built with Python using pseudo-terminals for seamless process interception, background thread monitoring for 
+          real-time output parsing, and I/O handling. Maintains full terminal interactivity while transparently 
+          detecting rate limit errors and orchestrating graceful process restarts with
+          environment variable injection.
+       </p>
+        <a
+          href="https://github.com/AveryClapp/Orderbook"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block text-sm font-medium text-black hover:text-blue-500"
+        >
+          View Project →
+        </a>
+      </div>
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-neutral-900">
           ArXiv Search Tool
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
