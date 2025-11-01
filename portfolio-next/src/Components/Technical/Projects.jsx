@@ -41,7 +41,7 @@ const Projects = () => {
       </div>
       <div class="mb-8">
         <h3 class="text-lg font-semibold text-neutral-900">
-          Claude Code Fallback
+          Claude Code Fallback^2[This is published as an official python package on [PyPI](https://pypi.org/project/claude-code-fallback/)]
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
           An intelligent CLI wrapper for Claude Code that automatically switches from subscription to API billing when usage limits
@@ -98,7 +98,7 @@ const Projects = () => {
           Daily News Report
         </h3>
         <p class="text-sm text-neutral-700 leading-relaxed">
-          A daily news aggregation system that automatically curates and summarizes top trending headlines from multiple sources including major news outlets and niche publications. Designed to eliminate the endless browsing and doomscrolling by delivering a concise, personalized digest of the most important stories each morning. Built with web scraping, natural language processing for summarization, and scheduled automation to keep you informed without the time sink.^2[This was my first coding project outside of the classroom]
+          A daily news aggregation system that automatically curates and summarizes top trending headlines from multiple sources including major news outlets and niche publications. Designed to eliminate the endless browsing and doomscrolling by delivering a concise, personalized digest of the most important stories each morning. Built with web scraping, natural language processing for summarization, and scheduled automation to keep you informed without the time sink.^3[This was my first coding project outside of the classroom]
         </p>
         <a
           href="https://github.com/AveryClapp/DailyNewsReport"
