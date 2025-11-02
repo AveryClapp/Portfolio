@@ -245,10 +245,10 @@ const NoteWrapper = ({
     }
   }, [notes]);
 
-  // If there are no notes, render full-width content without the two-column layout
+  // If there are no notes, render content constrained to 55% width
   if (notes.length === 0) {
     return (
-      <div ref={contentRef}>
+      <div className="w-full lg:w-[55%]" ref={contentRef}>
         {content ? (
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         ) : (
@@ -262,7 +262,7 @@ const NoteWrapper = ({
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Main content - flows naturally */}
-      <div className="w-full lg:w-3/5" ref={contentRef}>
+      <div className="w-full lg:w-[55%]" ref={contentRef}>
         {content ? (
           <div dangerouslySetInnerHTML={{ __html: processedContent }} />
         ) : (
@@ -270,8 +270,8 @@ const NoteWrapper = ({
         )}
       </div>
       {/* Notes container - completely independent, allows overlaps */}
-      <div className="hidden lg:block lg:w-2/5 px-4" ref={notesContainerRef}>
-        <div className="relative">
+      <div className="hidden lg:block lg:w-[45%] pl-8 pr-4" ref={notesContainerRef}>
+        <div className="relative flex justify-center">
           {notes.map((note) => (
             <div
               key={note.id}

@@ -3,7 +3,7 @@ import Experience from "./Experience";
 
 const About = () => {
   return (
-    <section id="about" className="mx-auto max-w-3xl px-4 py-8">
+    <section id="about" className="mx-auto px-4 py-8">
       {/* About Me Section */}
       <h2 className="mb-4 text-2xl font-bold text-neutral-900">About Me</h2>
       <p className="mb-8 text-neutral-700 leading-relaxed">

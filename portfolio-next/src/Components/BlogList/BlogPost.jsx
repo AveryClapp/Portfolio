@@ -536,8 +536,8 @@ const BlogPost = ({ post }) => {
       <main className="mb-6 relative z-20 flex-1">
         <div className="flex flex-col lg:flex-row pb-6 border-b border-neutral-200">
           {/* Main content - flows naturally */}
-          <div className="px-4 lg:ml-32 w-full lg:w-3/5" ref={contentRef}>
-          <article className="prose max-w-3xl text-black">
+          <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
+          <article className="prose max-w-none text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
             <p className="text-sm mb-6">{post.date}</p>
             <ReactMarkdown
@@ -605,8 +605,8 @@ const BlogPost = ({ post }) => {
         </div>
 
         {/* Notes container - completely independent, allows overlaps */}
-        <div className="hidden lg:block lg:w-2/5 px-4" ref={notesContainerRef}>
-          <div className="relative">
+        <div className="hidden lg:block lg:w-[45%] pl-8 pr-4" ref={notesContainerRef}>
+          <div className="relative flex justify-center">
             {notes.map((note) => (
               <div
                 key={note.id}

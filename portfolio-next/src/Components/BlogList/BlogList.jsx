@@ -26,7 +26,7 @@ const BlogList = ({ blogPosts }) => {
   // Build just the blog posts content
   const buildBlogPostsContent = () => {
     return `
-      <div class="max-w-3xl space-y-8">
+      <div class="space-y-8">
         ${
           filteredPosts.length > 0
             ? filteredPosts
@@ -89,15 +89,15 @@ const BlogList = ({ blogPosts }) => {
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
-        <div className="flex flex-col lg:flex-row">
-          <div className="px-4 lg:ml-32 w-full">
+        <div className="px-4 lg:ml-32">
+          <div className="w-full lg:w-[55%]">
             {/* Title */}
-            <h1 className="max-w-3xl mb-6 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
+            <h1 className="mb-6 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
               Blog Posts
             </h1>
 
             {/* Filter section with improved UX */}
-            <div className="max-w-3xl mb-6">
+            <div className="mb-6">
               {/* Tag filter buttons */}
               <div className="flex flex-wrap gap-2">
                 {allTags.map((tag) => {
@@ -120,10 +120,10 @@ const BlogList = ({ blogPosts }) => {
 
               {/* Results count */}
             </div>
-
-            {/* Blog posts through NoteWrapper */}
-            <NoteWrapper content={buildBlogPostsContent()} />
           </div>
+
+          {/* Blog posts through NoteWrapper */}
+          <NoteWrapper content={buildBlogPostsContent()} />
         </div>
       </main>
       <Footer />

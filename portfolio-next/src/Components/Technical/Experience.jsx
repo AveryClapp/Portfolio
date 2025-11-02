@@ -3,7 +3,7 @@ import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 
 const Experience = () => {
   const experienceContent = `
-    <section id="experience" class="max-w-3xl mb-6">
+    <section id="experience" class="mb-6">
       <h2 class="mb-2 text-2xl font-semibold text-neutral-900">
         Experience
       </h2>
