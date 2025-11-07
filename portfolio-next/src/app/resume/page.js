@@ -6,7 +6,7 @@ import { Download, ExternalLink, FileText } from "lucide-react";
 export const metadata = {
   title: "Avery's Resume",
   icons: {
-    icon: '/file.svg',
+    icon: "/file.svg",
   },
 };
 
@@ -20,7 +20,9 @@ export default function ResumePage() {
             {/* Viewer Header */}
             <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
               <div className="flex items-center justify-center">
-                <p className="text-sm text-neutral-500 font-mono">Avery-Clapp-Resume.pdf</p>
+                <p className="text-sm text-neutral-500 font-mono">
+                  Avery-Clapp-Resume.pdf
+                </p>
               </div>
             </div>
 
@@ -34,12 +36,16 @@ export default function ResumePage() {
               />
 
               {/* Fallback message */}
-              <div className="absolute inset-0 flex items-center justify-center bg-neutral-50 text-neutral-600"
-                style={{ zIndex: -1 }}>
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-neutral-50 text-neutral-600"
+                style={{ zIndex: -1 }}
+              >
                 <div className="text-center">
                   <FileText className="h-12 w-12 mx-auto mb-4 text-neutral-400" />
                   <p className="text-lg font-medium mb-2">PDF Viewer</p>
-                  <p className="text-sm">If the PDF doesn't load, please download it directly.</p>
+                  <p className="text-sm">
+                    If the PDF doesn't load, please download it directly.
+                  </p>
                 </div>
               </div>
             </div>
@@ -52,8 +58,8 @@ export default function ResumePage() {
               <h1 className="text-2xl font-bold text-neutral-900">Resume</h1>
             </div>
             <p className="text-neutral-600 text-sm max-w-xl">
-              Download or view my latest resume. For the most up-to-date version or specific formats,
-              feel free to reach out directly.
+              Download or view my latest resume. For the most up-to-date version
+              or specific formats, feel free to reach out directly.
             </p>
           </div>
 
