@@ -11,20 +11,20 @@ const Header = () => {
         <div className="flex space-x-6">
 	  <Link
 	    href="/"
-	   	className={`py-2 text-base transition-colors ${
+	   	className={`py-2 font-display text-base transition-colors ${
 		  pathname === '/'
 		    ? "text-neutral-900 border-b-2 border-neutral-900"
-			: "text-neutral-500 hover:text-neutral-900"
+			: "text-neutral-600 hover:text-neutral-900"
 		}`}
 	  >
         About
 	  </Link>
 	  <Link
 	    href="/blog"
-		className={`py-2 text-base transition-colors ${
+		className={`py-2 font-display text-base transition-colors ${
 		  pathname === '/blog'
 			? "text-neutral-900 border-b-2 border-neutral-900"
-		    : "text-neutral-500 hover:text-neutral-900"
+		    : "text-neutral-600 hover:text-neutral-900"
 		}`}
 	  >
 	    Blog

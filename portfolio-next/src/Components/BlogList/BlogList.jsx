@@ -33,12 +33,12 @@ const BlogList = ({ blogPosts }) => {
                 .map(
                   (post) => `
             <article class="border-b border-neutral-200 pb-6">
-              <h2 class="text-xl font-semibold mb-2">
+              <h2 class="text-lg font-display font-semibold mb-2">
                 <a href="/blog/${post.slug}" class="hover:text-neutral-600 transition-colors">
                   ${post.title}
                 </a>
               </h2>
-              <div class="flex items-center gap-3 text-sm text-neutral-500 mb-3">
+              <div class="flex items-center gap-3 text-xs text-neutral-500 mb-3">
                 <span>${post.date}</span>
                 ${
                   post.tags
@@ -92,34 +92,34 @@ const BlogList = ({ blogPosts }) => {
         <div className="px-4 lg:ml-32">
           <div className="w-full lg:w-[55%]">
             {/* Title */}
-            <h1 className="mb-6 text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-900">
+            <h1 className="mb-6 text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-neutral-900 tracking-tight">
               Blog Posts
             </h1>
 
-            {/* Filter section with improved UX */}
-            <div className="mb-6">
-              {/* Tag filter buttons */}
-              <div className="flex flex-wrap gap-2">
-                {allTags.map((tag) => {
-                  const isSelected = selectedTags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isSelected
-                          ? "bg-neutral-900 text-white shadow-md"
-                          : "bg-white border border-neutral-300 text-neutral-700 hover:border-neutral-400 hover:shadow-sm"
-                      }`}
-                    >
-                      {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                    </button>
-                  );
-                })}
+            {/* Filter section - minimalist inline tags */}
+            {allTags.length > 0 && (
+              <div className="mb-8">
+                <p className="text-xs text-neutral-500 mb-3">Filter by tag:</p>
+                <div className="flex flex-wrap gap-2">
+                  {allTags.map((tag) => {
+                    const isSelected = selectedTags.includes(tag);
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                          isSelected
+                            ? "bg-neutral-900 text-white"
+                            : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-
-              {/* Results count */}
-            </div>
+            )}
           </div>
 
           {/* Blog posts through NoteWrapper */}

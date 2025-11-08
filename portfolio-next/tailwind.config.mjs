@@ -11,6 +11,16 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
+      lineHeight: {
+        relaxed: "1.75",
+      },
+      letterSpacing: {
+        tight: "-0.02em",
+      },
     },
   },
   plugins: [],
