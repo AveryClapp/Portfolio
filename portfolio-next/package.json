@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "notify": "node scripts/notify.js",
-    "notify:prod": "node scripts/notify.js --prod"
+    "notify:prod": "node scripts/notify.js --prod",
+    "subscribers": "node scripts/check-subscribers.js"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",

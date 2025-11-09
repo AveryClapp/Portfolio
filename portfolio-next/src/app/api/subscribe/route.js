@@ -80,8 +80,16 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error("Subscribe error:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      {
+        error: "Something went wrong. Please try again.",
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
   }
