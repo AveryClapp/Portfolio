@@ -11,6 +11,7 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
+import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 import {
   kingsGambitBasic,
   kingsGambitAccepted,
@@ -601,6 +602,11 @@ const BlogPost = ({ post }) => {
             >
               {processedContent}
             </ReactMarkdown>
+
+            {/* Subscribe form at bottom of post */}
+            <div className="mt-12 pt-8 border-t border-neutral-200">
+              <SubscribeForm />
+            </div>
           </article>
         </div>
 

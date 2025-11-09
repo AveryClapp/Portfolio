@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "notify": "node scripts/notify.js",
+    "notify:prod": "node scripts/notify.js --prod"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",
