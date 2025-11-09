@@ -52,7 +52,7 @@ function question(query) {
   return new Promise((resolve) => rl.question(query, resolve));
 }
 
-function makeRequest(url, data) {
+function makeRequest(url, data, followRedirects = true) {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
     const isHttps = urlObj.protocol === "https:";
@@ -70,13 +70,24 @@ function makeRequest(url, data) {
     };
 
     const req = lib.request(options, (res) => {
+      // Handle redirects
+      if (followRedirects && (res.statusCode === 307 || res.statusCode === 308)) {
+        const redirectUrl = res.headers.location;
+        if (redirectUrl) {
+          console.log(`Following redirect to: ${redirectUrl}`);
+          return makeRequest(redirectUrl, data, false)
+            .then(resolve)
+            .catch(reject);
+        }
+      }
+
       let body = "";
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
         try {
-          resolve({ status: res.statusCode, body: JSON.parse(body) });
+          resolve({ status: res.statusCode, body: JSON.parse(body), headers: res.headers });
         } catch {
-          resolve({ status: res.statusCode, body });
+          resolve({ status: res.statusCode, body, headers: res.headers });
         }
       });
     });
@@ -108,6 +119,7 @@ async function main() {
   }
 
   console.log("\nSending notifications...");
+  console.log(`Target: ${siteUrl}/api/notify-subscribers\n`);
 
   const payload = JSON.stringify({
     secret,
@@ -121,8 +133,15 @@ async function main() {
 
     if (result.status === 200) {
       console.log(`\n✅ Success! ${result.body.message}`);
+    } else if (result.status === 307 || result.status === 308) {
+      console.error(`\n❌ Error: Redirect loop detected (Status: ${result.status})`);
+      console.log("This usually means:");
+      console.log("1. Your production site might need redeployment");
+      console.log("2. Environment variables aren't set in Vercel");
+      console.log("3. The API route might not be deployed yet");
+      console.log("\nTry testing locally first with: npm run notify");
     } else {
-      console.error(`\n❌ Error: ${result.body.error || "Failed to send"}`);
+      console.error(`\n❌ Error: ${result.body.error || result.body || "Failed to send"}`);
       console.log(`Status: ${result.status}`);
     }
   } catch (error) {

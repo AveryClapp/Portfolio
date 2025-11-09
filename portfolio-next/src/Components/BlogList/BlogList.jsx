@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
+import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 
 const BlogList = ({ blogPosts }) => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -124,6 +125,11 @@ const BlogList = ({ blogPosts }) => {
 
           {/* Blog posts through NoteWrapper */}
           <NoteWrapper content={buildBlogPostsContent()} />
+
+          {/* Subscribe form at bottom */}
+          <div className="w-full lg:w-[55%] mt-12 pt-8 border-t border-neutral-200">
+            <SubscribeForm />
+          </div>
         </div>
       </main>
       <Footer />
