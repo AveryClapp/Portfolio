@@ -23,20 +23,35 @@ const ensureDataDir = () => {
 
 // Read subscribers
 const getSubscribers = () => {
-  ensureDataDir();
-  const data = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
-  return JSON.parse(data);
+  try {
+    ensureDataDir();
+    const data = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    // In production (Vercel), filesystem is read-only
+    // Return empty array and log warning
+    console.warn("Unable to read subscribers file (production environment):", error.message);
+    return [];
+  }
 };
 
 // Add subscriber
 const addSubscriber = (email) => {
-  const subscribers = getSubscribers();
-  if (!subscribers.includes(email)) {
-    subscribers.push(email);
-    fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2));
-    return true;
+  try {
+    const subscribers = getSubscribers();
+    if (!subscribers.includes(email)) {
+      subscribers.push(email);
+      fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2));
+      return true;
+    }
+    return false;
+  } catch (error) {
+    // In production, we can't write to filesystem
+    // Just return true to allow the confirmation email to send
+    console.warn("Unable to write to subscribers file (production environment):", error.message);
+    console.log("Subscriber email:", email);
+    return true; // Allow signup even if we can't persist
   }
-  return false;
 };
 
 export async function POST(request) {

@@ -32,8 +32,8 @@ const BlogList = ({ blogPosts }) => {
           filteredPosts.length > 0
             ? filteredPosts
                 .map(
-                  (post) => `
-            <article class="border-b border-neutral-200 pb-6">
+                  (post, index) => `
+            <article class="${index < filteredPosts.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}">
               <h2 class="text-lg font-display font-semibold mb-2">
                 <a href="/blog/${post.slug}" class="hover:text-neutral-600 transition-colors">
                   ${post.title}
