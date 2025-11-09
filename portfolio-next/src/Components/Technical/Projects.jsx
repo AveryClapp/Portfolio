@@ -2,7 +2,7 @@ import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 
 const Projects = () => {
   const projectsContent = `
-    <section id="projects" class="mb-10 max-w-3xl">
+    <section id="projects" class="mb-10">
       <h2 class="mb-4 text-2xl font-display font-bold text-neutral-900 tracking-tight">Projects</h2>
 
 
