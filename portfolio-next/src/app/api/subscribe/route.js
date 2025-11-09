@@ -1,56 +1,36 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { kv } from "@vercel/kv";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Simple in-memory storage (you'll want to replace this with a database)
-// For now, we'll store in a JSON file
-import fs from "fs";
-import path from "path";
+// Vercel KV key for storing subscribers
+const SUBSCRIBERS_KEY = "blog:subscribers";
 
-const SUBSCRIBERS_FILE = path.join(process.cwd(), "data", "subscribers.json");
-
-// Ensure data directory exists
-const ensureDataDir = () => {
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-  if (!fs.existsSync(SUBSCRIBERS_FILE)) {
-    fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify([]));
-  }
-};
-
-// Read subscribers
-const getSubscribers = () => {
+// Read subscribers from KV
+const getSubscribers = async () => {
   try {
-    ensureDataDir();
-    const data = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
-    return JSON.parse(data);
+    const subscribers = await kv.get(SUBSCRIBERS_KEY);
+    return subscribers || [];
   } catch (error) {
-    // In production (Vercel), filesystem is read-only
-    // Return empty array and log warning
-    console.warn("Unable to read subscribers file (production environment):", error.message);
+    console.error("Error reading subscribers from KV:", error);
     return [];
   }
 };
 
-// Add subscriber
-const addSubscriber = (email) => {
+// Add subscriber to KV
+const addSubscriber = async (email) => {
   try {
-    const subscribers = getSubscribers();
+    const subscribers = await getSubscribers();
     if (!subscribers.includes(email)) {
       subscribers.push(email);
-      fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(subscribers, null, 2));
+      await kv.set(SUBSCRIBERS_KEY, subscribers);
       return true;
     }
     return false;
   } catch (error) {
-    // In production, we can't write to filesystem
-    // Just return true to allow the confirmation email to send
-    console.warn("Unable to write to subscribers file (production environment):", error.message);
-    console.log("Subscriber email:", email);
-    return true; // Allow signup even if we can't persist
+    console.error("Error adding subscriber to KV:", error);
+    throw error;
   }
 };
 
@@ -67,7 +47,7 @@ export async function POST(request) {
     }
 
     // Check if already subscribed
-    const isNew = addSubscriber(email);
+    const isNew = await addSubscriber(email);
     if (!isNew) {
       return NextResponse.json(
         { error: "This email is already subscribed" },

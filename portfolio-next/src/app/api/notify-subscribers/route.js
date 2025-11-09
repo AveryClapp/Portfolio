@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import fs from "fs";
-import path from "path";
+import { kv } from "@vercel/kv";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SUBSCRIBERS_FILE = path.join(process.cwd(), "data", "subscribers.json");
+const SUBSCRIBERS_KEY = "blog:subscribers";
 
-// Get subscribers
-const getSubscribers = () => {
-  if (!fs.existsSync(SUBSCRIBERS_FILE)) {
+// Get subscribers from KV
+const getSubscribers = async () => {
+  try {
+    const subscribers = await kv.get(SUBSCRIBERS_KEY);
+    return subscribers || [];
+  } catch (error) {
+    console.error("Error reading subscribers from KV:", error);
     return [];
   }
-  const data = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
-  return JSON.parse(data);
 };
 
 export async function POST(request) {
@@ -31,7 +32,7 @@ export async function POST(request) {
       );
     }
 
-    const subscribers = getSubscribers();
+    const subscribers = await getSubscribers();
 
     if (subscribers.length === 0) {
       return NextResponse.json(
