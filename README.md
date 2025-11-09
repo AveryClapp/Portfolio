@@ -1,116 +1,176 @@
 # Personal Portfolio
 
-A modern, responsive personal portfolio website built with Next.js, featuring a clean design, blog system with sidenotes, and mobile-friendly interface.
+A minimalist portfolio built with Next.js 15, featuring a blog with email subscriptions, Tufte-style sidenotes, and KaTeX math rendering.
 
 ## Features
 
-### Core Functionality
+- **Minimalist Design**: Clean, academic aesthetic with generous whitespace
+- **Blog System**: Markdown-based blog with GitHub Flavored Markdown, math equations (KaTeX), and syntax highlighting
+- **Sidenotes**: Tufte-style margin notes for academic footnotes
+- **Email Subscriptions**: Resend-powered email notifications for new posts
+- **Responsive**: Mobile-friendly with collapsible sidenotes
 
-- **Responsive Design**: Fully mobile-friendly layout that adapts to all screen sizes
-- **Blog System**: Complete markdown-based blog with advanced features
-- **Sidenotes**: Interactive margin notes for enhanced reading experience (desktop only)
-- **Projects Showcase**: Detailed project presentations with GitHub links
-- **Professional Experience**: Timeline of work experience and roles
+## Getting Started
 
-### Technical Highlights
+### Development
 
-- **Advanced Markdown Processing**: Support for LaTeX math, code highlighting, and custom formatting
-- **Interactive Code Blocks**: Copy-to-clipboard functionality with syntax highlighting
-- **Dynamic Navigation**: Clean header navigation with active state indicators
-- **Performance Optimized**: Built with Next.js for optimal loading and SEO
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```bash
+# Resend API Key (get from https://resend.com/api-keys)
+RESEND_API_KEY=re_your_api_key_here
+
+# Secret key for notify-subscribers endpoint
+NOTIFY_SECRET=your_random_secret_string
+
+# Site URL (for local dev)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Create a `.env.production` file for production notifications:
+
+```bash
+# Same API key and secret
+RESEND_API_KEY=re_your_api_key_here
+NOTIFY_SECRET=your_random_secret_string
+
+# Production URL
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+```
+
+### Vercel Environment Variables
+
+Add these in your Vercel project settings → Environment Variables:
+
+- `RESEND_API_KEY`
+- `NOTIFY_SECRET`
+- `NEXT_PUBLIC_SITE_URL`
+
+After adding, redeploy your project.
+
+## Blog System
+
+### Creating a New Post
+
+Create a markdown file in `src/Blogs/`:
+
+```markdown
+---
+title: "Your Post Title"
+date: "2025-01-15"
+preview: "Short description for list page"
+tags: ["tag1", "tag2"]
+subtopics: ["subtopic1", "subtopic2"]
+---
+
+Your content here...
+
+Use sidenotes like this^1[This appears in the margin]
+
+Math equations: $inline$ or $$display$$
+```
+
+### Notifying Subscribers
+
+After publishing a new post:
+
+**For local testing:**
+```bash
+npm run notify
+```
+
+**For production:**
+```bash
+npm run notify:prod
+```
+
+The script will prompt you for:
+- Blog post slug
+- Title
+- Preview text (optional)
+
+## Project Structure
 
 ```
 portfolio-next/
 ├── src/
-│   ├── app/                    # Next.js app directory
-│   │   ├── blog/              # Blog pages and routing
-│   │   ├── resume/            # Resume viewer page
-│   │   └── globals.css        # Global styles
-│   ├── Components/            # React components
-│   │   ├── BlogList/          # Blog listing and post components
-│   │   ├── NoteSystem/        # Sidenote system implementation
-│   │   ├── Header/            # Navigation header
-│   │   ├── Footer/            # Site footer
-│   │   ├── Welcome/           # Landing section
-│   │   └── Technical/         # Experience and projects sections
-│   ├── Blogs/                 # Markdown blog posts
-│   └── utils/                 # Utility functions
-├── public/                    # Static assets
-└── README.md
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/
+│   │   │   ├── subscribe/      # Email subscription endpoint
+│   │   │   └── notify-subscribers/ # Notification endpoint
+│   │   ├── blog/               # Blog pages
+│   │   └── resume/             # Resume page
+│   ├── Components/
+│   │   ├── BlogList/           # Blog listing and posts
+│   │   ├── NoteSystem/         # Sidenote system
+│   │   ├── Subscribe/          # Email subscription form
+│   │   └── ...
+│   ├── Blogs/                  # Blog post markdown files
+│   └── utils/                  # Utility functions
+├── data/
+│   └── subscribers.json        # Email subscriber list
+├── scripts/
+│   └── notify.js               # Notification script
+├── .env.local                  # Local environment variables
+├── .env.production             # Production environment variables
+└── CLAUDE.md                   # Development guide
 ```
 
-## ✍️ Writing Blog Posts
+## Email Subscription System
 
-Create new blog posts by adding Markdown files to `src/Blogs/`. Each post should include frontmatter:
+### How It Works
 
-```markdown
----
-title: "Your Blog Post Title"
-date: "MM-DD-YYYY"
-preview: "Brief description for the blog listing"
-slug: "url-friendly-slug"
-tags: ["TagOne", "TagTwo"]
----
+1. Users subscribe via form at bottom of blog posts
+2. Email addresses stored in `data/subscribers.json`
+3. Confirmation email sent via Resend
+4. When you publish, run `npm run notify:prod`
+5. All subscribers receive email with link to new post
 
-Your blog content here...
+### Customizing Email Domain
+
+By default, emails come from `onboarding@resend.dev`. To use your custom domain:
+
+1. Add and verify your domain in Resend dashboard
+2. Update "from" address in:
+   - `src/app/api/subscribe/route.js` (line 66)
+   - `src/app/api/notify-subscribers/route.js` (line 48)
+
+```js
+from: "Your Name <you@yourdomain.com>"
 ```
 
-### Sidenotes Feature
+## Deployment
 
-Add interactive sidenotes using the syntax: `^1[This is a sidenote]`
+This project is designed to be deployed on [Vercel](https://vercel.com):
 
-The sidenote system supports:
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
 
-- **Markdown formatting** within notes
-- **LaTeX math** expressions
-- **Images** and links
-- **Automatic positioning** on desktop
+## Tech Stack
 
-## Customization
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS
+- **Typography**: Inter font
+- **Markdown**: React Markdown with KaTeX for math
+- **Email**: Resend API
+- **Deployment**: Vercel
 
-### Styling
+## Documentation
 
-The project uses Tailwind CSS for styling. Key color scheme:
+- **CLAUDE.md**: Comprehensive development guide for AI assistants and contributors
+- **SUBSCRIBE_DESIGNS.md**: Alternative subscription form designs
 
-- Background: Stone/neutral tones
-- Text: Various neutral shades
-- Accents: Blue for links, neutral for UI elements
+## License
 
-### Content Updates
-
-- **Personal Information**: Update `src/Components/Welcome/Welcome.jsx`
-- **Experience**: Modify `src/Components/Technical/Experience.jsx`
-- **Projects**: Edit `src/Components/Technical/Projects.jsx`
-- **Contact Info**: Update footer and contact components
-
-## Technologies Used
-
-- **Frontend**: Next.js 14, React, Tailwind CSS
-- **Markdown Processing**: gray-matter, ReactMarkdown
-- **Math Rendering**: KaTeX
-- **Code Highlighting**: Prism.js (react-syntax-highlighter)
-- **Icons**: Lucide React
-- **Deployment**: Vercel-ready
-
-## Mobile Responsiveness
-
-The portfolio is fully responsive with:
-
-- **Adaptive layouts** for all screen sizes
-- **Touch-friendly navigation** on mobile devices
-- **Optimized typography** scaling
-- **Hidden sidenotes** on mobile (converted to regular text)
-
-## Author
-
-**Avery Clapp**
-
-- Email: aclapp1@jh.edu
-- LinkedIn: [avery-clapp-062289245](https://www.linkedin.com/in/avery-clapp-062289245/)
-- GitHub: [@AveryClapp](https://github.com/AveryClapp)
-
-## Contributing
-
-Feel free to fork this repository and adapt it for yourself
-
----
+Private project
