@@ -2,16 +2,16 @@ import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 
 const Projects = () => {
   const projectsContent = `
-    <section id="projects" class="mb-12">
-      <h2 class="mb-6 text-3xl font-display font-bold text-neutral-900 tracking-tight">Projects</h2>
+    <section id="projects" class="mb-10 max-w-3xl">
+      <h2 class="mb-4 text-2xl font-display font-bold text-neutral-900 tracking-tight">Projects</h2>
 
 
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
           Emergent Sparsity Matrix Multiplication (On-going)
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          Research project investigating how to exploit emergent sparsity patterns in large language models to accelerate inference. Exploring various techniques like dynamic masking, permutation invariants, and custom CUDA kernels to skip unnecessary computations during matrix multiplication, with the goal of achieving faster token generation without sacrificing model accuracy or quality.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          Research project exploiting emergent sparsity in transformer attention matrices to accelerate LLM inference. Implements dynamic threshold-based masking to identify and skip negligible activations at runtime, with custom CUDA kernels for efficient sparse-dense operations. Current benchmarks show faster end-to-end performance than cuBLAS at sparsity levels ≤50%, with ongoing work exploiting B matrix sparsity for runtime improvements.
         </p>
         <a
           href="https://github.com/AveryClapp/ESMM-Research"
@@ -23,12 +23,12 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
           C++ Orderbook
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          A performance-critical C++ trading system designed for ultra-low latency order matching and execution. Built from scratch with extensive optimizations including memory pooling to eliminate syscalls, cache-friendly data structures, strategic struct alignment, branch prediction hints, and careful inlining. Achieved nearly 2M orders per second throughput by squeezing out every microsecond of performance through low-level systems programming techniques.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          High-frequency trading order matching engine achieving ~2M orders/second throughput. Single-threaded design with pre-allocated fixed-size memory pool eliminating all allocations in the hot path. Aggressive function inlining to maximize instruction cache hits, cache-line aligned data structures, and branch prediction hints (__builtin_expect) on critical paths.
         </p>
         <a
           href="https://github.com/AveryClapp/Orderbook"
@@ -39,19 +39,15 @@ const Projects = () => {
           View Project →
         </a>
       </div>
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
           Claude Code Fallback^2[This is published as an official python package on [PyPI](https://pypi.org/project/claude-code-fallback/)]
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          An intelligent CLI wrapper for Claude Code that automatically switches from subscription to API billing when usage limits
-          are hit. Built with Python using pseudo-terminals for seamless process interception, background thread monitoring for
-          real-time output parsing, and I/O handling. Maintains full terminal interactivity while transparently
-          detecting rate limit errors and orchestrating graceful process restarts with
-          environment variable injection.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          CLI wrapper that transparently intercepts Claude Code rate limits and switches to API billing without user intervention. Uses Python's pty module for pseudo-terminal control, background threads for non-blocking output parsing, and environment variable injection to orchestrate seamless process restarts. Maintains full terminal interactivity while monitoring stderr for rate limit signals.
        </p>
         <a
-          href="https://github.com/AveryClapp/Orderbook"
+          href="https://github.com/AveryClapp/claude-code-fallback"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-block text-sm font-medium text-neutral-900 underline-grow"
@@ -59,12 +55,12 @@ const Projects = () => {
           View Project →
         </a>
       </div>
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
           ArXiv Search Tool
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          A comprehensive overhaul of the ArXiv search system that streamlines academic research discovery. Built with improved query parsing, advanced filtering by categories and date ranges, and semantic search capabilities to find relevant papers more efficiently. Designed to cut down the time spent sifting through thousands of research papers by providing more intuitive and powerful search functionality for researchers and students.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          Research paper search using token-level Jaccard similarity to find conceptually related papers beyond keyword matching. Tokenizes abstracts, computes set intersection/union ratios, and ranks results by similarity score. Supports filtering by ArXiv category, date ranges, and author, with query parsing to handle complex boolean logic.
         </p>
         <a
           href="https://github.com/AveryClapp/ArxivSearch"
@@ -76,12 +72,12 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
           Network Analyzer
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          A sophisticated network analysis tool that captures and parses network traffic in real-time. Built with packet sniffing capabilities to monitor HTTP/HTTPS requests, DNS queries, and TCP/UDP connections flowing through your device. Provides detailed analytics on bandwidth usage, protocol distributions, and connection patterns, making it useful for debugging network issues, understanding application behavior, and learning about network protocols at a low level.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          Real-time packet analyzer built on raw sockets and libpcap. Implements protocol parsers for TCP, UDP, DNS, and HTTP/HTTPS (TLS handshake inspection only), with multi-threaded capture to handle high-throughput interfaces without packet drops. Provides bandwidth usage breakdowns, connection tracking, and protocol distribution analytics for debugging network behavior.
         </p>
         <a
           href="https://github.com/AveryClapp/NetworkAnalyzer"
@@ -93,15 +89,15 @@ const Projects = () => {
         </a>
       </div>
 
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
-          Daily News Report
+          Crypto QuantLab
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-          A daily news aggregation system that automatically curates and summarizes top trending headlines from multiple sources including major news outlets and niche publications. Designed to eliminate the endless browsing and doomscrolling by delivering a concise, personalized digest of the most important stories each morning. Built with web scraping, natural language processing for summarization, and scheduled automation to keep you informed without the time sink.^3[This was my first coding project outside of the classroom]
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+            Quantitative trading research platform using statistical arbitrage and cointegration analysis for crypto pairs trading. Implements Johansen cointegration tests to identify mean-reverting pairs, Bayesian modeling for regime detection, and momentum tests for trend identification. Includes backtesting engine to evaluate strategy performance across historical data.
         </p>
         <a
-          href="https://github.com/AveryClapp/DailyNewsReport"
+          href="https://github.com/AveryClapp/AICryptoPlatform"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-block text-sm font-medium text-neutral-900 underline-grow"
@@ -110,16 +106,15 @@ const Projects = () => {
         </a>
       </div>
 
-
-      <div class="mb-8">
+      <div class="mb-6">
         <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
-          Crypto QuantLab
+          Daily News Report
         </h3>
-        <p class="text-sm text-neutral-700 leading-relaxed mb-2">
-            A quantitative research platform for cryptocurrency trading that combines technical analysis, machine learning models, and market sentiment analysis to generate data-driven investment strategies. Features backtesting capabilities to evaluate strategy performance across historical data, real-time market monitoring, and algorithmic trading signals. Built to bring institutional-grade quantitative methods to crypto markets for smarter, evidence-based trading decisions.
+        <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+          Automated news digest that takes user-requested topics, scrapes relevant sources, and generates concise summaries via GPT API. Runs on a scheduled cron job to deliver personalized daily reports. Simple web scraping with BeautifulSoup for article extraction, API integration for summarization, and email delivery to cut through news noise without manual curation.^3[This was my first coding project outside of the classroom]
         </p>
         <a
-          href="https://github.com/AveryClapp/AICryptoPlatform"
+          href="https://github.com/AveryClapp/DailyNewsReport"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-block text-sm font-medium text-neutral-900 underline-grow"

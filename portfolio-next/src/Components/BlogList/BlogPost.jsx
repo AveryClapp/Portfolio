@@ -604,7 +604,7 @@ const BlogPost = ({ post }) => {
             </ReactMarkdown>
 
             {/* Subscribe form at bottom of post */}
-            <div className="mt-12 pt-8 border-t border-neutral-200">
+            <div className="mt-4">
               <SubscribeForm />
             </div>
           </article>

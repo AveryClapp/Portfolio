@@ -93,7 +93,7 @@ const BlogList = ({ blogPosts }) => {
         <div className="px-4 lg:ml-32">
           <div className="w-full lg:w-[55%]">
             {/* Title */}
-            <h1 className="mb-6 text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-neutral-900 tracking-tight">
+            <h1 className="mb-6 text-2xl font-display font-bold text-neutral-900 tracking-tight">
               Blog Posts
             </h1>
 
@@ -125,11 +125,6 @@ const BlogList = ({ blogPosts }) => {
 
           {/* Blog posts through NoteWrapper */}
           <NoteWrapper content={buildBlogPostsContent()} />
-
-          {/* Subscribe form at bottom */}
-          <div className="w-full lg:w-[55%] mt-12 pt-8 border-t border-neutral-200">
-            <SubscribeForm />
-          </div>
         </div>
       </main>
       <Footer />
