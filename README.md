@@ -84,16 +84,19 @@ Math equations: $inline$ or $$display$$
 After publishing a new post:
 
 **For local testing:**
+
 ```bash
 npm run notify
 ```
 
 **For production:**
+
 ```bash
 npm run notify:prod
 ```
 
 The script will prompt you for:
+
 - Blog post slug
 - Title
 - Preview text (optional)
@@ -145,7 +148,7 @@ By default, emails come from `onboarding@resend.dev`. To use your custom domain:
    - `src/app/api/notify-subscribers/route.js` (line 48)
 
 ```js
-from: "Your Name <you@yourdomain.com>"
+from: "Your Name <you@yourdomain.com>";
 ```
 
 ## Deployment
@@ -169,7 +172,6 @@ This project is designed to be deployed on [Vercel](https://vercel.com):
 ## Documentation
 
 - **CLAUDE.md**: Comprehensive development guide for AI assistants and contributors
-- **SUBSCRIBE_DESIGNS.md**: Alternative subscription form designs
 
 ## License
 

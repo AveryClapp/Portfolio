@@ -111,7 +111,7 @@ const Projects = () => {
           Daily News Report
         </h3>
         <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
-          Automated news digest that takes user-requested topics, scrapes relevant sources, and generates concise summaries via GPT API. Runs on a scheduled cron job to deliver personalized daily reports. Simple web scraping with BeautifulSoup for article extraction, API integration for summarization, and email delivery to cut through news noise without manual curation.^3[This was my first coding project outside of the classroom]
+          Automated news digest that reads user-selected categories, calls an API for summaries, and uses an email service to send out daily reports. Runs on a cron schedule.^3[This was my first coding project outside of the classroom]
         </p>
         <a
           href="https://github.com/AveryClapp/DailyNewsReport"
