@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 // Quick script to check subscribers in KV
 // Run with: node scripts/check-subscribers.js
-
+require("dotenv").config({ path: ".env.local" });
 const { kv } = require("@vercel/kv");
 
 async function checkSubscribers() {
   try {
     const subscribers = await kv.get("blog:subscribers");
-
     if (!subscribers || subscribers.length === 0) {
       console.log("\n📭 No subscribers yet\n");
     } else {
@@ -21,7 +20,6 @@ async function checkSubscribers() {
     console.error("\n❌ Error:", error.message);
     console.log("Make sure you have KV environment variables set up locally\n");
   }
-
   process.exit(0);
 }
 
