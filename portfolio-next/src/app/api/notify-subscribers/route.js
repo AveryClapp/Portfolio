@@ -46,7 +46,7 @@ export async function POST(request) {
 
     const emailPromises = subscribers.map((email) =>
       resend.emails.send({
-        from: "Avery Clapp <onboarding@resend.dev>", // Update with your domain
+        from: "Avery Clapp <subscription@averyclapp.com>",
         to: email,
         subject: `New blog post: ${title}`,
         html: `

@@ -96,7 +96,7 @@ export async function POST(request) {
 
     try {
       const result = await resend.emails.send({
-        from: "Avery Clapp <onboarding@resend.dev>",
+        from: "Avery Clapp <subscription@averyclapp.com>",
         to: email,
         subject: "Verify your subscription to Avery's blog",
         html: `
