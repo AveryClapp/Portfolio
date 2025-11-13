@@ -25,7 +25,7 @@ const SubscribeForm = () => {
 
       if (response.ok) {
         setStatus("success");
-        setMessage("Subscribed");
+        setMessage(data.message || "Subscribed");
         setEmail("");
       } else {
         setStatus("error");
