@@ -9,7 +9,8 @@
     "lint": "next lint",
     "notify": "node scripts/notify.js",
     "notify:prod": "node scripts/notify.js --prod",
-    "subscribers": "node scripts/check-subscribers.js"
+    "subscribers": "node scripts/check-subscribers.js",
+    "pending": "node scripts/check-subscribers.js --pending"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",
