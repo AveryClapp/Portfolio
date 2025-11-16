@@ -1,4 +1,4 @@
-import { Linkedin, Mail, Github, Newspaper, FileText } from "lucide-react"
+import { Linkedin, Mail, Github, FileText } from "lucide-react"
 import Link from "next/link"
 
 const Footer = () => {
@@ -20,11 +20,12 @@ const Footer = () => {
       icon: Mail,
       url: "mailto:aclapp1@jh.edu",
     },
-    {
-      name: "Resume",
-      icon: FileText,
-      url: "/resume",
-    },
+    // RESUME VISIBILITY: Uncomment the block below to show resume link in footer
+    // {
+    //   name: "Resume",
+    //   icon: FileText,
+    //   url: "/resume",
+    // },
   ];
 
   return (
@@ -34,6 +35,7 @@ const Footer = () => {
           <div className="flex space-x-4">
             {socialLinks.map((link) => {
               const Icon = link.icon;
+              // RESUME VISIBILITY: Resume uses Link component, others use <a> tag
               if (link.name === "Resume") {
                 return (
                   <Link

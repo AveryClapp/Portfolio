@@ -396,6 +396,28 @@ body {
 }
 ```
 
+### Toggling Resume Visibility
+
+The resume link in the footer can be easily hidden or shown:
+
+**To Hide Resume** (current state):
+- The resume object in `src/Components/Footer/Footer.jsx` is commented out
+- Resume page still exists at `/resume` but is not linked anywhere
+
+**To Show Resume**:
+1. Open `src/Components/Footer/Footer.jsx`
+2. Find the `socialLinks` array (around line 7)
+3. Uncomment the resume block:
+```js
+{
+  name: "Resume",
+  icon: FileText,
+  url: "/resume",
+},
+```
+
+**Note**: The imports for `FileText` and `Link` are kept in the file to make toggling easier. The rendering logic handles both cases automatically.
+
 ---
 
 ## Quick Reference
