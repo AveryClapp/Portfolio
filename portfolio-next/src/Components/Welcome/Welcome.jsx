@@ -11,9 +11,12 @@ const Welcome = () => {
           </h1>
         </div>
         <div>
+          <p class="text-sm text-neutral-700 leading-relaxed mb-4">
+            I am a senior at Johns Hopkins University studying Computer Science and Economics. I enjoy grappling with hard topics across a wide array of disciplines, including philosophy, math, physics, and religion. I explore these ideas on my <a href="/blog" class="underline">blog</a>.
+          </p>
+
           <p class="text-sm text-neutral-700 leading-relaxed">
-            I am a senior at Johns Hopkins University where I study Computer Science and Economics. I enjoy working on
-            cutting-edge projects, honing my problem-solving skills, and researching cool topics.
+            In my engineering work, I love delving into the fundamentals of how systems work at the lowest level. I am broadly interested in high-performance computing because I find the rigor and complexity of these systems to be intellectually stimulating.
           </p>
         </div>
       </div>

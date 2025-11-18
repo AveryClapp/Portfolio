@@ -4,6 +4,7 @@ import Welcome from "@/Components/Welcome/Welcome";
 import Footer from "@/Components/Footer/Footer";
 import Projects from "@/Components/Technical/Projects";
 import Experience from "@/Components/Technical/Experience";
+import OpenSource from "@/Components/Technical/OpenSource";
 import { Analytics } from "@vercel/analytics/next";
 import Image from "next/image";
 
@@ -22,6 +23,9 @@ const Home = () => {
           </section>
           <section id="projects">
             <Projects />
+          </section>
+          <section id="opensource">
+            <OpenSource />
           </section>
         </div>
       </main>
