@@ -28,7 +28,7 @@ const Projects = () => {
             C++ Orderbook
           </h3>
           <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
-            High-frequency trading order matching engine achieving ~2M orders/second throughput. Single-threaded design with pre-allocated fixed-size memory pool eliminating all allocations in the hot path. Aggressive function inlining to maximize instruction cache hits, cache-line aligned data structures, and branch prediction hints (__builtin_expect) on critical paths.
+            High-frequency trading order matching engine achieving ~2M orders/second throughput. Single-threaded design with pre-allocated fixed-size memory pool eliminating all allocations in the hot path. Aggressive function inlining to maximize instruction cache hits, cache-line aligned data structures, and branch prediction hints ([[likely]] vs [[unlikely]]) on critical paths.
           </p>
           <a
             href="https://github.com/AveryClapp/Orderbook"
