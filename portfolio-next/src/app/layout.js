@@ -9,8 +9,10 @@ const inter = Inter({
 
 export const metadata = {
   title: "Avery Clapp",
+  description:
+    "Portfolio and occasional writing. Technical problems and timeless questions. Writing when there's something worth saying.",
   icons: {
-    icon: "/file.svg", // Path to your icon in public/
+    icon: "/lambda.svg", // Path to your icon in public/
   },
 };
 

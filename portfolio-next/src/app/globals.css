@@ -27,7 +27,7 @@ body {
   }
 
   .underline-grow::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0;
     height: 1px;
@@ -40,4 +40,12 @@ body {
   .underline-grow:hover::after {
     width: 100%;
   }
+}
+
+.my-logo-icon {
+  color: #ffffff;
+}
+
+html.dark .my-logo-icon {
+  color: #000000;
 }
