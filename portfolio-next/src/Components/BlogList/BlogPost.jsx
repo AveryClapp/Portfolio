@@ -18,7 +18,6 @@ import {
   kingsGambitDeclined,
   spasskyBronstein1960,
 } from "@/Components/BlogComponents/Chess/openings";
-import { Copy, Check } from "lucide-react";
 
 // Import KaTeX CSS
 import "katex/dist/katex.min.css";
@@ -27,7 +26,6 @@ const BlogPost = ({ post }) => {
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [notePositions, setNotePositions] = useState({});
-  const [copiedCode, setCopiedCode] = useState(null);
   const contentRef = useRef(null);
   const notesContainerRef = useRef(null);
 
@@ -328,102 +326,85 @@ const BlogPost = ({ post }) => {
 
     // Code block styling aligned with site theme
     const codeBlockContent = (
-      <div className="relative group mb-6 rounded-lg border border-neutral-300 shadow-sm overflow-hidden">
-        {/* Language label and copy button */}
-        <div className="flex items-center justify-between bg-neutral-200 border-b border-neutral-300 px-4 py-2">
-          <span className="text-sm font-mono text-neutral-700 font-medium">
-            {language || "text"}
-          </span>
-          <button
-            onClick={() => copyToClipboard(codeString, codeId)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-neutral-300 hover:border-neutral-400 hover:bg-neutral-50 rounded text-xs font-medium text-neutral-700 transition-colors duration-200"
-            title="Copy to clipboard"
-          >
-            {copiedCode === codeId ? (
-              <>
-                <Check size={14} className="text-green-600" />
-                <span className="text-green-600">Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy size={14} />
-                Copy
-              </>
-            )}
-          </button>
-        </div>
+      <div className="relative mb-6 border-2 border-neutral-400 rounded overflow-hidden">
+        {/* Language label in top right corner */}
+        {language && (
+          <div className="absolute top-2 right-2 z-10">
+            <span className="text-xs font-mono text-neutral-500 bg-stone-50 px-2 py-1 rounded">
+              {language}
+            </span>
+          </div>
+        )}
 
         {/* Code content with site-aligned styling */}
-        <div className="bg-neutral-100">
-          <SyntaxHighlighter
-            style={{
-              'code[class*="language-"]': {
-                color: "#1F2937",
-                background: "transparent",
-                fontFamily:
-                  'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                fontSize: "0.875rem",
-                lineHeight: "1.5",
-              },
-              'pre[class*="language-"]': {
-                color: "#1F2937",
-                background: "transparent",
-                padding: "1rem",
-                margin: "0",
-                overflow: "auto",
-              },
-              comment: { color: "#6B7280", fontStyle: "italic" },
-              keyword: { color: "#111827", fontWeight: "600" },
-              string: { color: "#047857" },
-              number: { color: "#B91C1C" },
-              function: { color: "#6B21A8" },
-              operator: { color: "#1F2937" },
-              punctuation: { color: "#4B5563" },
-              property: { color: "#0E7490" },
-              tag: { color: "#B91C1C" },
-              "attr-name": { color: "#6B21A8" },
-              "attr-value": { color: "#047857" },
-              namespace: { color: "#6B21A8" },
-              prolog: { color: "#6B7280" },
-              doctype: { color: "#6B7280" },
-              cdata: { color: "#6B7280" },
-              entity: { color: "#B91C1C" },
-              url: { color: "#0E7490" },
-              symbol: { color: "#B91C1C" },
-              boolean: { color: "#B91C1C" },
-              variable: { color: "#111827" },
-              constant: { color: "#B91C1C" },
-              selector: { color: "#047857" },
-              important: { color: "#B91C1C", fontWeight: "600" },
-              atrule: { color: "#6B21A8" },
-              builtin: { color: "#6B21A8" },
-              "class-name": { color: "#111827" },
-              regex: { color: "#047857" },
-              deleted: { color: "#B91C1C" },
-              inserted: { color: "#047857" },
-            }}
-            language={language || "text"}
-            PreTag="pre"
-            customStyle={{
-              margin: 0,
-              padding: "1rem",
-              background: "#F5F5F5",
-              fontSize: "0.875rem",
-              lineHeight: "1.5",
+        <SyntaxHighlighter
+          style={{
+            'code[class*="language-"]': {
+              color: "#1F2937",
+              background: "transparent",
               fontFamily:
                 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-            }}
-            codeTagProps={{
-              style: {
-                fontFamily:
-                  'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-              },
-            }}
-            {...props}
-          >
-            {codeString}
-          </SyntaxHighlighter>
-        </div>
+              fontSize: "0.875rem",
+              lineHeight: "1.5",
+            },
+            'pre[class*="language-"]': {
+              color: "#1F2937",
+              background: "transparent",
+              padding: "1rem",
+              margin: "0",
+              overflow: "auto",
+            },
+            comment: { color: "#6B7280", fontStyle: "italic" },
+            keyword: { color: "#111827", fontWeight: "600" },
+            string: { color: "#047857" },
+            number: { color: "#B91C1C" },
+            function: { color: "#6B21A8" },
+            operator: { color: "#1F2937" },
+            punctuation: { color: "#4B5563" },
+            property: { color: "#0E7490" },
+            tag: { color: "#B91C1C" },
+            "attr-name": { color: "#6B21A8" },
+            "attr-value": { color: "#047857" },
+            namespace: { color: "#6B21A8" },
+            prolog: { color: "#6B7280" },
+            doctype: { color: "#6B7280" },
+            cdata: { color: "#6B7280" },
+            entity: { color: "#B91C1C" },
+            url: { color: "#0E7490" },
+            symbol: { color: "#B91C1C" },
+            boolean: { color: "#B91C1C" },
+            variable: { color: "#111827" },
+            constant: { color: "#B91C1C" },
+            selector: { color: "#047857" },
+            important: { color: "#B91C1C", fontWeight: "600" },
+            atrule: { color: "#6B21A8" },
+            builtin: { color: "#6B21A8" },
+            "class-name": { color: "#111827" },
+            regex: { color: "#047857" },
+            deleted: { color: "#B91C1C" },
+            inserted: { color: "#047857" },
+          }}
+          language={language || "text"}
+          PreTag="pre"
+          customStyle={{
+            margin: 0,
+            padding: "1rem",
+            background: "#FAFAF9",
+            fontSize: "0.875rem",
+            lineHeight: "1.5",
+            fontFamily:
+              'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily:
+                'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+            },
+          }}
+          {...props}
+        >
+          {codeString}
+        </SyntaxHighlighter>
       </div>
     );
 
@@ -516,16 +497,6 @@ const BlogPost = ({ post }) => {
     setTimeout(positionNotes, 100);
   }, [notes]);
 
-  // Copy code function
-  const copyToClipboard = async (text, id) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedCode(id);
-      setTimeout(() => setCopiedCode(null), 2000);
-    } catch (err) {
-      console.error("Failed to copy code:", err);
-    }
-  };
 
   if (!post) {
     return <div>Post not found</div>;
