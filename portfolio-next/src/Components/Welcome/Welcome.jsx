@@ -16,7 +16,7 @@ const Welcome = () => {
           </p>
 
           <p class="text-sm text-neutral-700 leading-relaxed">
-            In my engineering work, I love delving into the fundamentals of how systems work at the lowest level. I am broadly interested in high-performance computing because I find the rigor and complexity of these systems to be intellectually stimulating.
+            In my engineering work, I love delving into the fundamentals of how systems work at the lowest level. I am broadly interested in high-performance computing as I find the rigor and complexity of these systems to be intellectually rewarding.
           </p>
         </div>
       </div>
