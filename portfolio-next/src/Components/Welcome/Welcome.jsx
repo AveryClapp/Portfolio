@@ -12,7 +12,7 @@ const Welcome = () => {
         </div>
         <div>
           <p class="text-sm text-neutral-700 leading-relaxed mb-4">
-            I am a senior at Johns Hopkins University studying Computer Science and Economics. I enjoy grappling with hard topics across a wide range of disciplines, from computer science and economics to philosophy, math, and physics. I explore these ideas on my <a href="/blog" class="underline">blog</a>.
+            I am a senior at Johns Hopkins University studying Computer Science and Economics. I enjoy grappling with hard topics across a wide range of disciplines, from computer science and software to philosophy, math, and physics. I explore these ideas on my <a href="/blog" class="underline">blog</a>.
           </p>
 
           <p class="text-sm text-neutral-700 leading-relaxed">
