@@ -3,7 +3,7 @@ import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
 const OpenSource = () => {
   const openSourceContent = `
     <section id="opensource" class="mb-10">
-      <h2 class="mb-4 text-2xl font-display font-bold text-neutral-900 tracking-tight">Open Source Contributions</h2>
+      <h2 class="mb-4 text-2xl font-display font-bold text-neutral-900 tracking-tight">Open Source Contributions^4[I'm always looking to work on cool projects so if you have any recommendations or advice, let me know!]</h2>
 
       <ul class="list-disc list-outside ml-4 space-y-6 text-neutral-400">
         <li>
