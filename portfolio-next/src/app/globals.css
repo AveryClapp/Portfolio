@@ -40,6 +40,11 @@ body {
   .underline-grow:hover::after {
     width: 100%;
   }
+
+  .subtle-oblique {
+    transform: skewX(-8deg);
+    display: inline-block;
+  }
 }
 
 .my-logo-icon {

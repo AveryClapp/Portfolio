@@ -527,7 +527,7 @@ const BlogPost = ({ post }) => {
                 ),
                 h3: createProcessedComponent(
                   "h3",
-                  "text-xl font-bold mt-4 mb-2",
+                  "text-xl font-medium subtle-oblique mt-4 mb-2",
                 ),
                 p: CustomParagraph,
                 li: createProcessedComponent("li", "mb-2"),
