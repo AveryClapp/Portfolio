@@ -386,6 +386,16 @@ const BlogPost = ({ post }) => {
           }}
           language={language || "text"}
           PreTag="pre"
+          showLineNumbers={true}
+          lineNumberStyle={{
+            minWidth: "2.5em",
+            paddingRight: "1em",
+            color: "#A8A29E",
+            textAlign: "right",
+            userSelect: "none",
+            borderRight: "1px solid #E7E5E4",
+            marginRight: "1em",
+          }}
           customStyle={{
             margin: 0,
             padding: "1rem",
