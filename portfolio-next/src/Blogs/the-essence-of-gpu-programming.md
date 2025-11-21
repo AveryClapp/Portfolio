@@ -1,7 +1,7 @@
 ---
 title: "The Essence of GPU Programming"
 date: "11-20-2025"
-preview: "GPU programming isn't just faster programming, it's a different computational paradigm. Threads execute in lockstep. Memory hierarchies are explicit. Serialization is everywhere. Here's your gateway into the architecture and optimization patterns that power video games and modern AI."
+preview: "GPU programming is a completely different computational paradigm compared to developing on a CPU. Threads execute in lockstep. Memory hierarchies are explicit. Serialization is everywhere. Here's your gateway into the architecture and optimization patterns that power video games and modern AI."
 slug: "the-essence-of-gpu-programming"
 tags: ["Technical"]
 subtopics: ["CUDA", "Machine Learning", "High-performance Computing"]
