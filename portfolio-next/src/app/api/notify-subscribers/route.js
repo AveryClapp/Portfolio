@@ -41,36 +41,70 @@ export async function POST(request) {
       );
     }
 
-    // Send email to all subscribers
+    // Send email to all subscribers in batches to respect Resend rate limits
+    // Resend free tier: 2 emails/second, 100 emails/day
     const blogUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/blog/${slug}`;
+    const BATCH_SIZE = 2; // Resend free tier limit
+    const DELAY_MS = 1000; // 1 second between batches
 
-    const emailPromises = subscribers.map((email) =>
-      resend.emails.send({
-        from: "Avery Clapp <subscription@averyclapp.com>",
-        to: email,
-        subject: `New blog post: ${title}`,
-        html: `
-          <h2>${title}</h2>
-          ${preview ? `<p>${preview}</p>` : ""}
-          <p>
-            <a href="${blogUrl}" style="color: #000; text-decoration: underline;">
-              Read the full post →
-            </a>
-          </p>
-          <p style="color: #666; font-size: 12px; margin-top: 30px;">
-            You're receiving this because you subscribed to Avery's blog.<br/>
-            Reply to this email to unsubscribe.
-          </p>
-        `,
-      })
-    );
+    let successCount = 0;
+    let failureCount = 0;
+    const errors = [];
 
-    await Promise.all(emailPromises);
+    // Process subscribers in batches
+    for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
+      const batch = subscribers.slice(i, i + BATCH_SIZE);
+
+      console.log(`Sending batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(subscribers.length / BATCH_SIZE)} (${batch.length} emails)`);
+
+      const batchPromises = batch.map((email) =>
+        resend.emails.send({
+          from: "Avery Clapp <subscription@averyclapp.com>",
+          to: email,
+          subject: `New blog post: ${title}`,
+          html: `
+            <h2>${title}</h2>
+            ${preview ? `<p>${preview}</p>` : ""}
+            <p>
+              <a href="${blogUrl}" style="color: #000; text-decoration: underline;">
+                Read the full post →
+              </a>
+            </p>
+            <p style="color: #666; font-size: 12px; margin-top: 30px;">
+              You're receiving this because you subscribed to Avery's blog.<br/>
+              Reply to this email to unsubscribe.
+            </p>
+          `,
+        })
+        .then(() => {
+          successCount++;
+          return { success: true, email };
+        })
+        .catch((error) => {
+          failureCount++;
+          errors.push({ email, error: error.message });
+          console.error(`Failed to send to ${email}:`, error.message);
+          return { success: false, email, error: error.message };
+        })
+      );
+
+      await Promise.all(batchPromises);
+
+      // Wait before next batch (unless it's the last batch)
+      if (i + BATCH_SIZE < subscribers.length) {
+        await new Promise(resolve => setTimeout(resolve, DELAY_MS));
+      }
+    }
+
+    console.log(`Notification complete: ${successCount} succeeded, ${failureCount} failed`);
 
     return NextResponse.json(
       {
-        message: `Successfully notified ${subscribers.length} subscribers`,
-        count: subscribers.length,
+        message: `Notified ${successCount} of ${subscribers.length} subscribers`,
+        successCount,
+        failureCount,
+        totalSubscribers: subscribers.length,
+        errors: errors.length > 0 ? errors : undefined,
       },
       { status: 200 }
     );
