@@ -541,8 +541,13 @@ const BlogPost = ({ post }) => {
                 ),
                 p: CustomParagraph,
                 li: createProcessedComponent("li", "mb-2"),
-                td: createProcessedComponent("td", "px-4 py-2"),
-                th: createProcessedComponent("th", "px-4 py-2 font-semibold"),
+                table: ({ node, ...props }) => (
+                  <div className="overflow-x-auto mb-6 -mx-4 px-4 lg:mx-0 lg:px-0">
+                    <table className="min-w-full border-collapse border border-neutral-300" {...props} />
+                  </div>
+                ),
+                td: createProcessedComponent("td", "px-4 py-2 border border-neutral-200"),
+                th: createProcessedComponent("th", "px-4 py-2 font-semibold border border-neutral-300 bg-neutral-100"),
                 blockquote: createProcessedComponent(
                   "blockquote",
                   "border-l-4 border-gray-300 pl-4 italic my-4",
