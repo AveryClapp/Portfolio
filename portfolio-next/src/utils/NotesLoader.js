@@ -94,9 +94,18 @@ export async function getNoteBySlug(slug) {
       }
     }
 
+    // Process wikilinks - import dynamically to avoid circular dependency
+    let processedContent = content;
+    try {
+      const { processWikilinks } = await import('./WikilinkProcessor.js');
+      processedContent = await processWikilinks(content);
+    } catch (error) {
+      console.error('Error processing wikilinks:', error);
+    }
+
     return {
       slug,
-      content,
+      content: processedContent,
       title,
       date: data.date || new Date().toISOString().split('T')[0],
       ...data
