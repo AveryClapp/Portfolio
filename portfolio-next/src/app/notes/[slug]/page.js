@@ -15,12 +15,12 @@ export async function generateMetadata({ params }) {
 
   if (!note) {
     return {
-      title: 'Note Not Found',
+      title: 'Avery Clapp',
     };
   }
 
   return {
-    title: `${note.title} | Avery Clapp`,
+    title: 'Avery Clapp',
     description: note.preview || note.title,
   };
 }
