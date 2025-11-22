@@ -6,6 +6,7 @@ A minimalist portfolio built with Next.js 15, featuring a blog with email subscr
 
 - **Minimalist Design**: Clean, academic aesthetic with generous whitespace
 - **Blog System**: Markdown-based blog with GitHub Flavored Markdown, math equations (KaTeX), and syntax highlighting
+- **Obsidian Notes Integration**: Automatically host, read, and link obsidian notes from a given repo of yours.
 - **Sidenotes**: Tufte-style margin notes for academic footnotes
 - **Email Subscriptions**: Resend-powered email notifications for new posts
 - **Responsive**: Mobile-friendly with collapsible sidenotes
