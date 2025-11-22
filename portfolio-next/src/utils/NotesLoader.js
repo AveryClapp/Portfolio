@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const NOTES_DIRECTORY = path.join(process.cwd(), 'src', 'Notes');
+// Use local Obsidian vault in development, synced notes in production
+const NOTES_DIRECTORY = process.env.NODE_ENV === 'development'
+  ? '/Users/averyclapp/Documents/KnowledgeVault/SecondBrain'
+  : path.join(process.cwd(), 'src', 'Notes');
 
 // Helper function to ensure notes directory exists
 function ensureNotesDirectoryExists() {
