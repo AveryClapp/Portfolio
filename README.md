@@ -101,6 +101,106 @@ The script will prompt you for:
 - Title
 - Preview text (optional)
 
+## Obsidian Notes Integration
+
+This portfolio automatically syncs and publishes notes from a private Obsidian vault.
+
+### How It Works
+
+1. Write notes in Obsidian using markdown + sidenotes (`^N[content]`)
+2. Push to private GitHub repo ([NotesNew](https://github.com/AveryClapp/NotesNew))
+3. GitHub Actions triggers Vercel deployment webhook
+4. Vercel rebuild process:
+   - Clones notes repo using GitHub token
+   - Copies markdown files to `src/Notes/`
+   - Syncs assets to `public/notes-assets/`
+   - Processes wikilinks and image paths
+5. Notes appear at `/notes/{slug}`
+
+### Setup
+
+**Vercel Environment Variables:**
+
+Add these in Vercel project settings:
+
+```bash
+# GitHub Personal Access Token with repo access
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxx
+
+# Optional: Deploy hook for manual triggers
+VERCEL_DEPLOY_HOOK=https://api.vercel.com/v1/integrations/deploy/...
+```
+
+**GitHub Repository Secrets (NotesNew repo):**
+
+Add in repository Settings → Secrets and variables → Actions:
+
+```
+VERCEL_DEPLOY_HOOK - Webhook URL from Vercel deploy hooks
+```
+
+**Creating GitHub Token:**
+
+1. Go to https://github.com/settings/tokens/new
+2. Note: "Vercel Notes Access"
+3. Expiration: No expiration (or 1 year)
+4. Scopes: Check `repo` (full control of private repositories)
+5. Generate token and copy to Vercel
+
+### Supported Features
+
+**Sidenotes:**
+```markdown
+Main text here^1[This appears in the margin as a sidenote]
+```
+
+**Wikilinks:**
+```markdown
+See [[Note Title]] for more details
+Custom text: [[Note Title|click here]]
+Cross-reference blog: [[blog-post-slug]]
+```
+
+Wikilinks automatically resolve to:
+- Notes: `/notes/{slug}`
+- Blog posts: `/blog/{slug}`
+
+**Images and Assets:**
+```markdown
+![Description](assets/image.png)
+![Screenshot](images/screenshot.jpg)
+[Download PDF](attachments/document.pdf)
+```
+
+Supported asset folders (auto-synced):
+- `assets/`
+- `images/`
+- `attachments/`
+- `files/`
+
+### Development vs Production
+
+**Development (`npm run dev`):**
+- Reads directly from local Obsidian vault
+- Path: `/Users/averyclapp/Documents/KnowledgeVault/SecondBrain`
+- Instant updates when editing notes
+
+**Production (Vercel):**
+- Uses synced notes from `src/Notes/` (cloned during build)
+- Auto-deploys on push to NotesNew repo
+
+### Automatic Deployment
+
+When you push to NotesNew:
+
+1. GitHub Actions workflow triggers
+2. Calls Vercel deploy hook
+3. Vercel runs prebuild script (`scripts/sync-notes.js`)
+4. Script clones latest notes and syncs assets
+5. Site rebuilds with updated notes
+
+Deploy time: ~2-3 minutes
+
 ## Project Structure
 
 ```
