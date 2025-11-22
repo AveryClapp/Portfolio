@@ -2,6 +2,27 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+// Recursive copy function
+function copyRecursive(src, dest) {
+  if (!fs.existsSync(src)) return;
+
+  const stats = fs.statSync(src);
+
+  if (stats.isDirectory()) {
+    fs.mkdirSync(dest, { recursive: true });
+    const entries = fs.readdirSync(src);
+
+    entries.forEach(entry => {
+      copyRecursive(
+        path.join(src, entry),
+        path.join(dest, entry)
+      );
+    });
+  } else {
+    fs.copyFileSync(src, dest);
+  }
+}
+
 const NOTES_DIR = path.join(process.cwd(), 'src', 'Notes');
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
 
@@ -38,11 +59,40 @@ try {
     fs.rmSync(obsidianDir, { recursive: true, force: true });
   }
 
+  // Copy assets to public directory
+  console.log('📦 Copying assets...');
+  const publicAssetsDir = path.join(process.cwd(), 'public', 'notes-assets');
+
+  // Remove old assets
+  if (fs.existsSync(publicAssetsDir)) {
+    fs.rmSync(publicAssetsDir, { recursive: true, force: true });
+  }
+
+  // Create assets directory
+  fs.mkdirSync(publicAssetsDir, { recursive: true });
+
+  // Copy common asset directories
+  const assetDirs = ['assets', 'images', 'attachments', 'files'];
+  let assetCount = 0;
+
+  assetDirs.forEach(dirName => {
+    const sourceDir = path.join(NOTES_DIR, dirName);
+    if (fs.existsSync(sourceDir)) {
+      const destDir = path.join(publicAssetsDir, dirName);
+      copyRecursive(sourceDir, destDir);
+      console.log(`  ✓ Copied ${dirName}/`);
+      assetCount++;
+    }
+  });
+
   console.log('✅ Notes synced successfully!');
 
   // Count markdown files
   const files = fs.readdirSync(NOTES_DIR).filter(f => f.endsWith('.md'));
   console.log(`📝 Found ${files.length} note(s)`);
+  if (assetCount > 0) {
+    console.log(`🖼️  Synced ${assetCount} asset folder(s)`);
+  }
 
 } catch (error) {
   console.error('❌ Error syncing notes:', error.message);

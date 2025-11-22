@@ -38,6 +38,7 @@ yarn-error.log*
 
 # notes synced from Obsidian vault
 /src/Notes
+/public/notes-assets
 
 # vercel
 .vercel

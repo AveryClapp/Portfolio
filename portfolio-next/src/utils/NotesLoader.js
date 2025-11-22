@@ -94,11 +94,18 @@ export async function getNoteBySlug(slug) {
       }
     }
 
-    // Process wikilinks - import dynamically to avoid circular dependency
+    // Process wikilinks and image paths
     let processedContent = content;
     try {
       const { processWikilinks } = await import('./WikilinkProcessor.js');
       processedContent = await processWikilinks(content);
+
+      // Rewrite image paths to use public directory
+      // Convert: ![](assets/image.png) -> ![](/notes-assets/assets/image.png)
+      processedContent = processedContent.replace(
+        /!\[([^\]]*)\]\((?!http)((?:assets|images|attachments|files)\/[^)]+)\)/g,
+        (match, alt, path) => `![${alt}](/notes-assets/${path})`
+      );
     } catch (error) {
       console.error('Error processing wikilinks:', error);
     }
