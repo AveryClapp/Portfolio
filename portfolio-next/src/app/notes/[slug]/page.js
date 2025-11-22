@@ -44,7 +44,6 @@ export default async function NotePage({ params }) {
     );
   }
 
-  // Reuse BlogPost component to render the note
-  // It already handles sidenotes and markdown rendering
-  return <BlogPost post={note} />;
+  // Reuse BlogPost component but hide date and subscription for notes
+  return <BlogPost post={note} isNote={true} />;
 }

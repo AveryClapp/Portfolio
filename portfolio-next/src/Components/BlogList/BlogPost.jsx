@@ -22,7 +22,7 @@ import {
 // Import KaTeX CSS
 import "katex/dist/katex.min.css";
 
-const BlogPost = ({ post }) => {
+const BlogPost = ({ post, isNote = false }) => {
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [notePositions, setNotePositions] = useState({});
@@ -521,7 +521,7 @@ const BlogPost = ({ post }) => {
           <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
           <article className="prose max-w-none text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
-            <p className="text-sm mb-6">{post.date}</p>
+            {!isNote && <p className="text-sm mb-6">{post.date}</p>}
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeRaw, rehypeKatex]}
@@ -589,10 +589,12 @@ const BlogPost = ({ post }) => {
               {processedContent}
             </ReactMarkdown>
 
-            {/* Subscribe form at bottom of post */}
-            <div className="mt-4">
-              <SubscribeForm />
-            </div>
+            {/* Subscribe form at bottom of post (only for blog posts, not notes) */}
+            {!isNote && (
+              <div className="mt-4">
+                <SubscribeForm />
+              </div>
+            )}
           </article>
         </div>
 
