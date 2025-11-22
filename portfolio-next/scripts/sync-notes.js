@@ -3,9 +3,15 @@ const fs = require('fs');
 const path = require('path');
 
 const NOTES_DIR = path.join(process.cwd(), 'src', 'Notes');
-const NOTES_REPO = 'https://github.com/AveryClapp/NotesNew.git';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+
+// Use token if available (for private repos), otherwise use public URL
+const NOTES_REPO = GITHUB_TOKEN
+  ? `https://${GITHUB_TOKEN}@github.com/AveryClapp/NotesNew.git`
+  : 'https://github.com/AveryClapp/NotesNew.git';
 
 console.log('🔄 Syncing notes from repository...');
+console.log(`📝 Using ${GITHUB_TOKEN ? 'authenticated' : 'public'} access`);
 
 try {
   // Remove existing notes directory if it exists
