@@ -36,6 +36,9 @@ yarn-error.log*
 # subscriber data (privacy)
 /data/subscribers.json
 
+# notes synced from Obsidian vault
+/src/Notes
+
 # vercel
 .vercel
 

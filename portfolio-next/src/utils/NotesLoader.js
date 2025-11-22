@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const NOTES_DIRECTORY = '/Users/averyclapp/Documents/KnowledgeVault/SecondBrain';
+const NOTES_DIRECTORY = path.join(process.cwd(), 'src', 'Notes');
 
 // Helper function to ensure notes directory exists
 function ensureNotesDirectoryExists() {
