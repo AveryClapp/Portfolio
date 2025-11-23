@@ -72,7 +72,7 @@ try {
   fs.mkdirSync(publicAssetsDir, { recursive: true });
 
   // Copy common asset directories
-  const assetDirs = ['assets', 'images', 'attachments', 'files'];
+  const assetDirs = ['_assets', 'assets', 'images', 'attachments', 'files'];
   let assetCount = 0;
 
   assetDirs.forEach(dirName => {

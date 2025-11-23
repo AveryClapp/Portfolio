@@ -106,7 +106,7 @@ export async function getNoteBySlug(slug) {
       // Rewrite image paths to use public directory
       // Convert: ![](assets/image.png) -> ![](/notes-assets/assets/image.png)
       processedContent = processedContent.replace(
-        /!\[([^\]]*)\]\((?!http)((?:assets|images|attachments|files)\/[^)]+)\)/g,
+        /!\[([^\]]*)\]\((?!http)((?:_assets|assets|images|attachments|files)\/[^)]+)\)/g,
         (match, alt, path) => `![${alt}](/notes-assets/${path})`
       );
     } catch (error) {
