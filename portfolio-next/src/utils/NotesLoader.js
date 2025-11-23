@@ -104,9 +104,9 @@ export async function getNoteBySlug(slug) {
       processedContent = await processWikilinks(content);
 
       // Rewrite image paths to use public directory
-      // Convert: ![](assets/image.png) -> ![](/notes-assets/assets/image.png)
+      // Convert: ![](_assets/image.png) -> ![](/notes-assets/_assets/image.png)
       processedContent = processedContent.replace(
-        /!\[([^\]]*)\]\((?!http)((?:_assets|assets|images|attachments|files)\/[^)]+)\)/g,
+        /!\[([^\]]*)\]\((?!http)(_assets\/[^)]+)\)/g,
         (match, alt, path) => `![${alt}](/notes-assets/${path})`
       );
     } catch (error) {
