@@ -503,8 +503,41 @@ const BlogPost = ({ post, isNote = false }) => {
       setNotePositions(newPositions);
     };
 
-    // Position notes once after initial render
-    setTimeout(positionNotes, 100);
+    // Position notes after initial render
+    const initialTimeout = setTimeout(positionNotes, 100);
+
+    // Recalculate after images load
+    const images = contentRef.current?.querySelectorAll('img');
+    let loadedImages = 0;
+    const totalImages = images?.length || 0;
+
+    const handleImageLoad = () => {
+      loadedImages++;
+      if (loadedImages === totalImages) {
+        setTimeout(positionNotes, 50);
+      }
+    };
+
+    images?.forEach((img) => {
+      if (img.complete) {
+        handleImageLoad();
+      } else {
+        img.addEventListener('load', handleImageLoad);
+        img.addEventListener('error', handleImageLoad);
+      }
+    });
+
+    // Recalculate on window resize
+    window.addEventListener('resize', positionNotes);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      window.removeEventListener('resize', positionNotes);
+      images?.forEach((img) => {
+        img.removeEventListener('load', handleImageLoad);
+        img.removeEventListener('error', handleImageLoad);
+      });
+    };
   }, [notes]);
 
 
