@@ -45,7 +45,7 @@ const Projects = () => {
             Claude Code Fallback^2[This is published as an official python package on [PyPI](https://pypi.org/project/claude-code-fallback/)]
           </h3>
           <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
-            CLI wrapper that transparently intercepts Claude Code rate limits and switches to API billing without user intervention. Uses Python's pty module for pseudo-terminal control, background threads for non-blocking output parsing, and environment variable injection to orchestrate seamless process restarts. Maintains full terminal interactivity while monitoring stderr for rate limit signals.
+            Log-based monitor that detects Claude Code usage limits by parsing JSONL session logs and sends native OS notifications. Uses lightweight file watching instead of process wrapping, background threads for non-blocking log parsing, and shell function injection to enable seamless mode switching. Works in any terminal environment including tmux and SSH while keeping full user control over API fallback decisions.
           </p>
           <a
             href="https://github.com/AveryClapp/claude-code-fallback"
