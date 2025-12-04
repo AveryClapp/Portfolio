@@ -116,12 +116,6 @@ export async function getNoteBySlug(slug) {
     try {
       const { processWikilinks } = await import("./WikilinkProcessor.js");
       processedContent = await processWikilinks(content);
-
-      // Rewrite image paths to use public directory
-      processedContent = processedContent.replace(
-        /!\[([^\]]*)\]\((?!http)(_assets\/[^)]+)\)/g,
-        (match, alt, path) => `![${alt}](/notes-assets/${path})`,
-      );
     } catch (error) {
       console.error("Error processing wikilinks:", error);
     }

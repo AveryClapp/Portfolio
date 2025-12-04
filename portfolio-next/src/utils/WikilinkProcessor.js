@@ -35,7 +35,7 @@ async function buildContentMap() {
 
   const notes = await getAllNotes();
   const posts = await getAllPosts();
-  console.log(notes);
+
   // Map titles to slugs for quick lookup
   notesCache = new Map();
   postsCache = new Map();
@@ -73,15 +73,18 @@ export async function processWikilinks(content) {
     (match, imgName, altText) => {
       console.log("wiki image match:", imgName);
       const display = altText ? altText.trim() : imgName.trim();
-      const slugifiedName = slugifyImageName(imgName.trim());
-      return `![${display}](/_assets/${slugifiedName})`;
+      // Keep original filename, just trim whitespace
+      const filename = imgName.trim();
+      // URL encode the filename to handle spaces and special chars
+      const encodedFilename = encodeURIComponent(filename);
+      return `![${display}](/notes-assets/${encodedFilename})`;
     },
   );
 
   // 2️⃣ Standard images ![](_assets/image.png)
   processedContent = processedContent.replace(
-    /!\[([^\]]*)\]\((?!http)([^)]+)\)/g,
-    (match, alt, path) => `![${alt}](/notes-assets/${path})`,
+    /!\[([^\]]*)\]\((?!http)_assets\/([^)]+)\)/g,
+    (match, alt, filename) => `![${alt}](/notes-assets/${filename})`,
   );
 
   // 3️⃣ Wiki-style note/blog links [[Note Title|Display]]
