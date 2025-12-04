@@ -1,11 +1,20 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
+function titleToSlug(title) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // remove special chars
+    .replace(/\s+/g, "-") // spaces → hyphens
+    .replace(/-+/g, "-"); // collapse multiple hyphens
+}
 // Use local Obsidian vault in development, synced notes in production
-const NOTES_DIRECTORY = process.env.NODE_ENV === 'development'
-  ? '/Users/averyclapp/Documents/KnowledgeVault/SecondBrain'
-  : path.join(process.cwd(), 'src', 'Notes');
+const NOTES_DIRECTORY =
+  process.env.NODE_ENV === "development"
+    ? "/Users/averyclapp/Documents/KnowledgeVault/SecondBrain"
+    : path.join(process.cwd(), "src", "Notes");
 
 // Helper function to ensure notes directory exists
 function ensureNotesDirectoryExists() {
@@ -23,22 +32,25 @@ export async function getAllNotes() {
     const fileNames = fs.readdirSync(NOTES_DIRECTORY);
 
     const allNotesData = fileNames
-      .filter(fileName => {
+      .filter((fileName) => {
         // Only include .md files, exclude system files and folders
-        return fileName.endsWith('.md') &&
-               !fileName.startsWith('.') &&
-               !fileName.startsWith('_');
+        return (
+          fileName.endsWith(".md") &&
+          !fileName.startsWith(".") &&
+          !fileName.startsWith("_")
+        );
       })
-      .map(fileName => {
-        const slug = fileName.replace(/\.md$/, '');
+      .map((fileName) => {
         const fullPath = path.join(NOTES_DIRECTORY, fileName);
 
         try {
-          const fileContents = fs.readFileSync(fullPath, 'utf8');
+          const fileContents = fs.readFileSync(fullPath, "utf8");
           const { data, content } = matter(fileContents);
+          const rawSlug = data.slug || fileName.replace(/\.md$/, "");
+          const slug = titleToSlug(rawSlug);
 
           // Extract title from frontmatter or use first heading or filename
-          let title = data.title || slug;
+          let title = rawSlug;
           if (!data.title && content) {
             const headingMatch = content.match(/^#\s+(.+)$/m);
             if (headingMatch) {
@@ -48,18 +60,20 @@ export async function getAllNotes() {
 
           return {
             slug,
+            filename: fileName,
             content,
             title,
-            date: data.date || new Date().toISOString().split('T')[0],
-            preview: data.preview || content.slice(0, 150).replace(/[#*\[\]]/g, ''),
-            ...data
+            date: data.date || new Date().toISOString().split("T")[0],
+            preview:
+              data.preview || content.slice(0, 150).replace(/[#*\[\]]/g, ""),
+            ...data,
           };
         } catch (error) {
           console.error(`Error reading note ${fileName}:`, error);
           return null;
         }
       })
-      .filter(note => note !== null);
+      .filter((note) => note !== null);
 
     return allNotesData.sort((a, b) => {
       if (a.date < b.date) {
@@ -78,47 +92,46 @@ export async function getNoteBySlug(slug) {
   if (!ensureNotesDirectoryExists()) return null;
 
   try {
-    const fullPath = path.join(NOTES_DIRECTORY, `${slug}.md`);
+    // Load all notes (they already have standardized slugs and filenames)
+    const allNotes = await getAllNotes();
 
-    if (!fs.existsSync(fullPath)) {
-      console.log(`Note not found: ${slug}`);
-      return null;
-    }
+    // Find the note that matches the slug
+    const noteData = allNotes.find((n) => n.slug === slug);
+    if (!noteData) return null;
 
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    // Use the original filename to read the file
+    const fullPath = path.join(NOTES_DIRECTORY, noteData.filename);
+    const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
 
     // Extract title from frontmatter or first heading or filename
-    let title = data.title || slug;
+    let title = data.title || noteData.title;
     if (!data.title && content) {
       const headingMatch = content.match(/^#\s+(.+)$/m);
-      if (headingMatch) {
-        title = headingMatch[1];
-      }
+      if (headingMatch) title = headingMatch[1];
     }
 
     // Process wikilinks and image paths
     let processedContent = content;
     try {
-      const { processWikilinks } = await import('./WikilinkProcessor.js');
+      const { processWikilinks } = await import("./WikilinkProcessor.js");
       processedContent = await processWikilinks(content);
 
       // Rewrite image paths to use public directory
-      // Convert: ![](_assets/image.png) -> ![](/notes-assets/_assets/image.png)
       processedContent = processedContent.replace(
         /!\[([^\]]*)\]\((?!http)(_assets\/[^)]+)\)/g,
-        (match, alt, path) => `![${alt}](/notes-assets/${path})`
+        (match, alt, path) => `![${alt}](/notes-assets/${path})`,
       );
     } catch (error) {
-      console.error('Error processing wikilinks:', error);
+      console.error("Error processing wikilinks:", error);
     }
 
     return {
-      slug,
+      slug: noteData.slug,
       content: processedContent,
       title,
-      date: data.date || new Date().toISOString().split('T')[0],
-      ...data
+      date: data.date || noteData.date,
+      ...data,
     };
   } catch (error) {
     console.error(`Error loading note ${slug}:`, error);

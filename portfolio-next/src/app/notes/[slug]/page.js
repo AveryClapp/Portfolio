@@ -1,47 +1,54 @@
-import { getNoteBySlug, getAllNotes } from '@/utils/NotesLoader';
-import BlogPost from '@/Components/BlogList/BlogPost';
+import { redirect } from "next/navigation";
+import { getNoteBySlug, getAllNotes } from "@/utils/NotesLoader";
+import BlogPost from "@/Components/BlogList/BlogPost";
+import NotFound from "@/app/not-found.js";
+
+function titleToSlug(title) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // remove special chars
+    .replace(/\s+/g, "-") // spaces → hyphens
+    .replace(/-+/g, "-"); // collapse multiple hyphens
+}
 
 // Generate static paths for all notes at build time
 export async function generateStaticParams() {
   const notes = await getAllNotes();
-  return notes.map(note => ({
+  return notes.map((note) => ({
     slug: note.slug,
   }));
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }) {
-  const note = await getNoteBySlug(params.slug);
+  const resolvedParams = await params;
+  const slug = decodeURIComponent(resolvedParams.slug);
+  const note = await getNoteBySlug(slug);
 
   if (!note) {
     return {
-      title: 'Avery Clapp',
+      title: "Avery Clapp",
     };
   }
 
   return {
-    title: 'Avery Clapp',
+    title: "Avery Clapp",
     description: note.preview || note.title,
   };
 }
 
 export default async function NotePage({ params }) {
-  const note = await getNoteBySlug(params.slug);
+  const resolvedParams = await params;
+  const decodedSlug = decodeURIComponent(resolvedParams.slug);
+  const slug = titleToSlug(decodedSlug);
+  if (slug !== decodedSlug) {
+    return redirect(`/notes/${slug}`);
+  }
+  const note = await getNoteBySlug(slug);
 
   if (!note) {
-    return (
-      <div className="min-h-screen bg-stone-100 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Note Not Found</h1>
-          <p className="text-neutral-600">
-            The note "{params.slug}" could not be found.
-          </p>
-          <a href="/notes" className="text-blue-600 hover:underline mt-4 inline-block">
-            ← Back to Notes
-          </a>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 
   // Reuse BlogPost component but hide date and subscription for notes
