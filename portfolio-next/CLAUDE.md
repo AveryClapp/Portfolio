@@ -77,7 +77,7 @@ portfolio-next/
 │   │   ├── Technical/         # Experience and Projects sections
 │   │   └── Welcome/           # Hero/welcome section
 │   ├── Blogs/                 # Blog post markdown files
-│   └── utils/                 # Utility functions (BlogLoader, etc.)
+│   └── utils/                 # Utility functions (BlogLoader, pgnParser, etc.)
 ├── data/                      # Runtime data
 │   └── subscribers.json       # Email subscriber list
 ├── public/                    # Static assets
@@ -205,6 +205,59 @@ const content = `
 - Date: `text-sm` (below title)
 - Content: Full markdown rendering with custom components
 - Subscribe form at bottom
+
+### Chess Game Integration
+**Purpose**: Render interactive chess games from PGN notation
+
+**How It Works**:
+- PGN code blocks automatically render as interactive ChessSlideshow components
+- Uses chess.js for robust move parsing + custom variation support
+- No Obsidian plugin needed - just plain markdown PGN code blocks
+
+**Basic Usage** (in any blog post or note):
+````markdown
+```pgn
+[Event "Immortal Game"]
+[White "Anderssen, Adolf"]
+[Black "Kieseritzky, Lionel"]
+
+1. e4 e5 2. f4 exf4 3. Bc4 Qh4+ 4. Kf1
+```
+````
+
+**With Variations** (clickable alternative moves):
+````markdown
+```pgn
+[Event "King's Gambit Study"]
+[White "Study"]
+[Black "Study"]
+
+1. e4 e5
+2. f4 exf4
+3. Nf3
+   {variation: Bishop's Gambit}
+   (3. Bc4 d5 4. Bxd5)
+3... g5
+```
+````
+
+**Features**:
+- Move-by-move navigation (Previous/Next buttons)
+- Progress bar showing position in game
+- Interactive variations (blue dots on pieces with alternative lines)
+- Supports castling, captures, pawn promotion
+- Mobile responsive
+- Simple explanations auto-generated ("White plays e4")
+
+**Technical Details**:
+- Parser: `src/utils/pgnParser.js` (uses chess.js v1.4.0)
+- Renderer: `src/Components/BlogComponents/Chess/ChessSlideshow.jsx`
+- Integration: `BlogPost.jsx` CustomCodeBlock detects `language="pgn"`
+
+**Obsidian Workflow**:
+1. Write PGN in Obsidian (no plugin needed - plain code blocks)
+2. NotesLoader.js syncs to Next.js automatically
+3. Site renders as interactive chess board
 
 ---
 

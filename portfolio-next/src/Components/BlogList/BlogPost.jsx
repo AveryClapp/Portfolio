@@ -103,10 +103,17 @@ const BlogPost = ({ post, isNote = false }) => {
       '<code class="bg-neutral-200 text-neutral-800 px-1 py-0.5 rounded text-xs font-mono">$1</code>',
     );
 
-    // Links: [text](url)
+    // Links: [text](url) - internal links stay in same tab
     processedText = processedText.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>',
+      (match, text, url) => {
+        // Check if it's an internal link (starts with / or relative)
+        const isInternal = url.startsWith('/') || !url.match(/^https?:\/\//);
+        if (isInternal) {
+          return `<a href="${url}" class="text-blue-600 hover:underline">${text}</a>`;
+        }
+        return `<a href="${url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
     );
 
     return processedText;
@@ -294,6 +301,25 @@ const BlogPost = ({ post, isNote = false }) => {
     const match = /language-(\w+)/.exec(className || "");
     const language = match ? match[1] : "";
     const codeString = String(children).replace(/\n$/, "");
+
+    // ===== PGN DETECTION: Render ChessSlideshow for PGN code blocks =====
+    if (language === "pgn" && !inline) {
+      try {
+        const { parsePGN } = require("@/utils/pgnParser");
+        const chessData = parsePGN(codeString);
+        return <ChessSlideshow {...chessData} />;
+      } catch (error) {
+        console.error("PGN parsing error:", error);
+        return (
+          <div className="border-2 border-red-300 bg-red-50 p-4 rounded mb-6">
+            <p className="text-red-800 font-semibold">Error parsing PGN</p>
+            <p className="text-sm text-red-600">{error.message}</p>
+            <pre className="text-xs mt-2 text-neutral-700 overflow-x-auto">{codeString}</pre>
+          </div>
+        );
+      }
+    }
+    // ===== END PGN DETECTION =====
 
     // Create a stable ID based on code content hash
     const codeId = React.useMemo(() => {

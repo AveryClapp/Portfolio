@@ -112,10 +112,17 @@ const NoteWrapper = ({
     processedText = processedText.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
     processedText = processedText.replace(/_([^_]+?)_/g, "<em>$1</em>");
 
-    // Links: [text](url)
+    // Links: [text](url) - internal links stay in same tab
     processedText = processedText.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>',
+      (match, text, url) => {
+        // Check if it's an internal link (starts with / or relative)
+        const isInternal = url.startsWith('/') || !url.match(/^https?:\/\//);
+        if (isInternal) {
+          return `<a href="${url}" class="text-blue-600 hover:underline">${text}</a>`;
+        }
+        return `<a href="${url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
     );
 
     return processedText;

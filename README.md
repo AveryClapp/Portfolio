@@ -6,6 +6,7 @@ A minimalist portfolio built with Next.js 15, featuring a blog with email subscr
 
 - **Minimalist Design**: Clean, academic aesthetic with generous whitespace
 - **Blog System**: Markdown-based blog with GitHub Flavored Markdown, math equations (KaTeX), and syntax highlighting
+- **Chess Game Integration**: Interactive chess boards from PGN notation with move-by-move navigation and variations
 - **Obsidian Notes Integration**: Automatically host, read, and link obsidian notes from a given repo of yours.
 - **Sidenotes**: Tufte-style margin notes for academic footnotes
 - **Email Subscriptions**: Resend-powered email notifications for new posts
@@ -78,7 +79,58 @@ Your content here...
 Use sidenotes like this^1[This appears in the margin]
 
 Math equations: $inline$ or $$display$$
+
+Chess games (renders as interactive board):
 ```
+````markdown
+```pgn
+[Event "Immortal Game"]
+[White "Anderssen, Adolf"]
+[Black "Kieseritzky, Lionel"]
+
+1. e4 e5 2. f4 exf4 3. Bc4 Qh4+
+```
+````
+```
+
+### Chess Game Integration
+
+Interactive chess boards render automatically from PGN code blocks.
+
+**Basic game:**
+````markdown
+```pgn
+[Event "My Game"]
+[White "Player 1"]
+[Black "Player 2"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4
+```
+````
+
+**With variations** (clickable alternative moves):
+````markdown
+```pgn
+1. e4 e5
+2. f4 exf4
+3. Nf3
+   {variation: Bishop's Gambit}
+   (3. Bc4 d5 4. Bxd5)
+3... g5
+```
+````
+
+Features:
+- Move-by-move navigation (Previous/Next buttons)
+- Progress bar
+- Interactive variations (blue dots on pieces)
+- Supports castling, captures, promotions
+- Auto-syncs from Obsidian (no plugin needed)
+
+**Obsidian workflow:**
+1. Get PGN from lichess.org, chess.com, or any chess site
+2. Paste into Obsidian as regular code block with `pgn` language
+3. Syncs automatically - renders as interactive board on site
 
 ### Notifying Subscribers
 
@@ -267,6 +319,7 @@ This project is designed to be deployed on [Vercel](https://vercel.com):
 - **Styling**: Tailwind CSS
 - **Typography**: Inter font
 - **Markdown**: React Markdown with KaTeX for math
+- **Chess**: chess.js v1.4.0 for PGN parsing
 - **Email**: Resend API
 - **Deployment**: Vercel
 
