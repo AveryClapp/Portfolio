@@ -185,7 +185,7 @@ const ChessSlideshow = ({
     if (!variations || variations.length === 0) return null;
     return (
       <div
-        className="absolute z-50 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-lg max-w-xs"
+        className="absolute z-50 bg-neutral-900 text-white text-xs px-3 py-2 max-w-xs border border-neutral-700"
         style={{
           top: `${hoveredSquare.row * 64 + 40}px`, // Adjust based on square size
           left: `${hoveredSquare.col * 64 + 20}px`,
@@ -197,11 +197,11 @@ const ChessSlideshow = ({
           <span className="font-medium">Alternative move</span>
         </div>
         {variations.map((item, index) => (
-          <div key={index} className="text-xs opacity-90">
+          <div key={index} className="text-xs">
             {item.variation.name}
           </div>
         ))}
-        <div className="text-xs opacity-75 mt-1">Click to explore</div>
+        <div className="text-xs text-neutral-400 mt-1">Click to explore</div>
       </div>
     );
   };
@@ -220,17 +220,17 @@ const ChessSlideshow = ({
       <div className="">
         {/* Title and Description */}
         <div className="flex justify-center px-4 sm:px-0">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
+          <h2 className="text-xl font-bold text-neutral-900 mb-2">{title}</h2>
         </div>
         {/* Chess Board with coordinates inside */}
         <div className="flex justify-center">
-          <div className="relative inline-block border-2 border-gray-800">
+          <div className="relative inline-block shadow-md border-2 border-neutral-800">
             <div className="grid grid-cols-8 gap-0">
               {currentBoard.map((row, rowIndex) =>
                 row.map((piece, colIndex) => {
                   const isLight = (rowIndex + colIndex) % 2 === 0;
-                  const lightSquare = "#f0d9b5";
-                  const darkSquare = "#b58863";
+                  const lightSquare = "#eeeed2"; // chess.com light square
+                  const darkSquare = "#769656"; // chess.com dark square
                   const fileLetter = files[colIndex];
                   const rankNumber = ranks[rowIndex];
                   const showFile = rowIndex === 7;
@@ -252,8 +252,8 @@ const ChessSlideshow = ({
                         backgroundColor: isLight ? lightSquare : darkSquare,
                         boxShadow: hasVariationMoves
                           ? isHovered
-                            ? "inset 0 0 0 2px #3b82f6"
-                            : "inset 0 0 0 1px #93c5fd"
+                            ? "inset 0 0 0 3px rgba(59, 130, 246, 0.8)"
+                            : "inset 0 0 0 2px rgba(59, 130, 246, 0.5)"
                           : "none",
                       }}
                       onClick={() => handlePieceClick(rowIndex, colIndex)}
@@ -267,8 +267,8 @@ const ChessSlideshow = ({
                       {/* Rank numbers (left) */}
                       {showRank && (
                         <div
-                          className="absolute top-1 left-1 text-xs font-bold"
-                          style={{ color: isLight ? darkSquare : lightSquare }}
+                          className="absolute top-0.5 left-0.5 text-[10px] font-semibold"
+                          style={{ color: isLight ? "#769656" : "#eeeed2" }}
                         >
                           {rankNumber}
                         </div>
@@ -276,8 +276,8 @@ const ChessSlideshow = ({
                       {/* File letters (bottom) */}
                       {showFile && (
                         <div
-                          className="absolute bottom-1 right-1 text-xs font-bold"
-                          style={{ color: isLight ? darkSquare : lightSquare }}
+                          className="absolute bottom-0.5 right-0.5 text-[10px] font-semibold"
+                          style={{ color: isLight ? "#769656" : "#eeeed2" }}
                         >
                           {fileLetter}
                         </div>
@@ -285,7 +285,7 @@ const ChessSlideshow = ({
                       {/* Variation indicator */}
                       {hasVariationMoves && (
                         <div className="absolute top-1 right-1">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full opacity-75"></div>
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "rgba(59, 130, 246, 0.9)" }}></div>
                         </div>
                       )}
                       {/* Chess piece */}
@@ -301,37 +301,13 @@ const ChessSlideshow = ({
             {renderTooltip()}
           </div>
         </div>
-        {/* Current Move Information */}
-        <div className="mt-4 p-3 px-4 sm:px-3">
-          <div className="font-semibold text-gray-800 mb-2 text-lg">
-            {currentMoveSequence[currentMove]?.notation || "Starting Position"}
-          </div>
-          <div className="text-gray-600">
-            {currentMoveSequence[currentMove]?.explanation || description}
-          </div>
-          {/* Show if we're in a variation (only when past the start point) */}
-          {selectedVariation &&
-            currentMove >
-              (selectedVariation.start || selectedVariation.fromMoveIndex) && (
-              <div className="mt-2 text-sm text-blue-600 flex items-center">
-                <GitBranch className="w-4 h-4 mr-1" />
-                Viewing variation
-                <button
-                  onClick={handleReturnToMainLine}
-                  className="ml-2 underline hover:no-underline"
-                >
-                  Return to main line
-                </button>
-              </div>
-            )}
-        </div>
         {/* Navigation Controls */}
         <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:items-center sm:justify-between mt-4 px-4 sm:px-0">
           <div className="flex items-center justify-center space-x-3 sm:justify-start sm:space-x-0">
             <button
               onClick={handlePrevious}
               disabled={currentMove === 0}
-              className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed sm:mr-4"
+              className="flex items-center px-3 py-2 border border-neutral-300 text-neutral-900 hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed sm:mr-4 transition-colors"
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
               Previous
@@ -339,26 +315,50 @@ const ChessSlideshow = ({
             <button
               onClick={handleNext}
               disabled={currentMove === currentMoveSequence.length - 1}
-              className="flex items-center px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center px-3 py-2 border border-neutral-300 text-neutral-900 hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
               <ChevronRight className="w-4 h-4 ml-1" />
             </button>
           </div>
           <div className="flex items-center justify-center space-x-2">
-            <span className="text-sm text-gray-600">Move {currentMove}</span>
-            <div className="w-32 bg-gray-200 rounded-full h-2">
+            <span className="text-sm text-neutral-600">Move {currentMove}</span>
+            <div className="w-32 bg-neutral-200 h-1">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-neutral-900 h-1 transition-all duration-300"
                 style={{
                   width: `${(currentMove / (currentMoveSequence.length - 1)) * 100}%`,
                 }}
               ></div>
             </div>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-neutral-600">
               {currentMoveSequence.length - 1} moves
             </span>
           </div>
+        </div>
+        {/* Current Move Information */}
+        <div className="mt-4 p-3 px-4 sm:px-3">
+          <div className="font-semibold text-neutral-900 mb-2 text-lg">
+            {currentMoveSequence[currentMove]?.notation || "Starting Position"}
+          </div>
+          <div className="text-neutral-700">
+            {currentMoveSequence[currentMove]?.explanation || description}
+          </div>
+          {/* Show if we're in a variation (only when past the start point) */}
+          {selectedVariation &&
+            currentMove >
+              (selectedVariation.start || selectedVariation.fromMoveIndex) && (
+              <div className="mt-2 text-sm text-neutral-700 flex items-center">
+                <GitBranch className="w-4 h-4 mr-1" />
+                Viewing variation
+                <button
+                  onClick={handleReturnToMainLine}
+                  className="ml-2 text-neutral-900 underline hover:no-underline"
+                >
+                  Return to main line
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </div>
