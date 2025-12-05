@@ -43,7 +43,7 @@ export default async function NotePage({ params }) {
   const decodedSlug = decodeURIComponent(resolvedParams.slug);
   const slug = titleToSlug(decodedSlug);
   if (slug !== decodedSlug) {
-    return redirect(`/notes/${slug}`);
+    return redirect(`/knowledge/${slug}`);
   }
   const note = await getNoteBySlug(slug);
 

@@ -57,7 +57,7 @@ async function buildContentMap() {
 
 /**
  * Process wikilinks in content
- * Converts [[Note Title]] to [Note Title](/notes/note-slug)
+ * Converts [[Note Title]] to [Note Title](/knowledge/note-slug)
  * Supports [[Note Title|Display Text]] syntax
  */
 export async function processWikilinks(content) {
@@ -96,7 +96,7 @@ export async function processWikilinks(content) {
       const display = displayText ? displayText.trim() : link.trim();
 
       if (notes.has(linkSlug))
-        return `[${display}](/notes/${notes.get(linkSlug)})`;
+        return `[${display}](/knowledge/${notes.get(linkSlug)})`;
       if (posts.has(linkSlug))
         return `[${display}](/blog/${posts.get(linkSlug)})`;
 

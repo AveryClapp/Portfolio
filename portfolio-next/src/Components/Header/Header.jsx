@@ -29,6 +29,16 @@ const Header = () => {
 	  >
 	    Blog
 	  </Link>
+	  <Link
+	    href="/knowledge"
+		className={`py-2 font-display text-base transition-colors ${
+		  pathname?.startsWith('/knowledge')
+			? "text-neutral-900 border-b-2 border-neutral-900"
+		    : "text-neutral-600 hover:text-neutral-900"
+		}`}
+	  >
+	    Knowledge
+	  </Link>
         </div>
       </div>
     </nav>
