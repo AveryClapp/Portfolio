@@ -580,7 +580,7 @@ const BlogPost = ({ post, isNote = false }) => {
           <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
           <article className="prose max-w-none text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
-            {!isNote && <p className="text-sm mb-6">{post.date}</p>}
+            <p className="text-sm mb-6">{post.date}</p>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeRaw, rehypeKatex]}

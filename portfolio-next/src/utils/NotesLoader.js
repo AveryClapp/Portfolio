@@ -58,15 +58,20 @@ export async function getAllNotes() {
             }
           }
 
+          // Ensure date is always a string (gray-matter might parse it as Date object)
+          const dateString = data.date
+            ? (data.date instanceof Date ? data.date.toISOString().split("T")[0] : String(data.date))
+            : new Date().toISOString().split("T")[0];
+
           return {
             slug,
             filename: fileName,
             content,
             title,
-            date: data.date || new Date().toISOString().split("T")[0],
             preview:
               data.preview || content.slice(0, 150).replace(/[#*\[\]]/g, ""),
             ...data,
+            date: dateString, // Override after spreading to ensure it's always a string
           };
         } catch (error) {
           console.error(`Error reading note ${fileName}:`, error);
@@ -120,12 +125,17 @@ export async function getNoteBySlug(slug) {
       console.error("Error processing wikilinks:", error);
     }
 
+    // Ensure date is always a string
+    const dateString = data.date
+      ? (data.date instanceof Date ? data.date.toISOString().split("T")[0] : String(data.date))
+      : noteData.date;
+
     return {
       slug: noteData.slug,
       content: processedContent,
       title,
-      date: data.date || noteData.date,
       ...data,
+      date: dateString, // Override after spreading to ensure it's always a string
     };
   } catch (error) {
     console.error(`Error loading note ${slug}:`, error);

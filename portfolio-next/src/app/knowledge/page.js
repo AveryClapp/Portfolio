@@ -44,6 +44,9 @@ export default async function KnowledgePage() {
                         {moc.title}
                       </Link>
                     </h2>
+                    <p className="text-xs text-neutral-500 mb-2">
+                      {moc.date}
+                    </p>
                     {moc.description && (
                       <p className="text-sm text-neutral-700 leading-relaxed">
                         {moc.description}
