@@ -22,6 +22,24 @@ import {
 // Import KaTeX CSS
 import "katex/dist/katex.min.css";
 
+// Format date from YYYY-MM-DD to MM-DD-YYYY
+function formatDate(dateString) {
+  if (!dateString) return '';
+
+  // Check if already in MM-DD-YYYY format
+  if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) {
+    return dateString;
+  }
+
+  // Convert from YYYY-MM-DD to MM-DD-YYYY
+  if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [year, month, day] = dateString.split('-');
+    return `${month}-${day}-${year}`;
+  }
+
+  return dateString;
+}
+
 const BlogPost = ({ post, isNote = false }) => {
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
@@ -580,7 +598,7 @@ const BlogPost = ({ post, isNote = false }) => {
           <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
           <article className="prose max-w-none text-black">
             <h1 className="text-xl font-bold">{post.title}</h1>
-            <p className="text-sm mb-6">{post.date}</p>
+            <p className="text-sm mb-6">{formatDate(post.date)}</p>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeRaw, rehypeKatex]}

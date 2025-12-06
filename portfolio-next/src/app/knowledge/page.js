@@ -8,6 +8,24 @@ export const metadata = {
   description: "Technical notes, references, and collections on algorithms, systems, and more.",
 };
 
+// Format date from YYYY-MM-DD to MM-DD-YYYY
+function formatDate(dateString) {
+  if (!dateString) return '';
+
+  // Check if already in MM-DD-YYYY format
+  if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) {
+    return dateString;
+  }
+
+  // Convert from YYYY-MM-DD to MM-DD-YYYY
+  if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [year, month, day] = dateString.split('-');
+    return `${month}-${day}-${year}`;
+  }
+
+  return dateString;
+}
+
 export default async function KnowledgePage() {
   const allNotes = await getAllNotes();
 
@@ -45,7 +63,7 @@ export default async function KnowledgePage() {
                       </Link>
                     </h2>
                     <p className="text-xs text-neutral-500 mb-2">
-                      {moc.date}
+                      {formatDate(moc.date)}
                     </p>
                     {moc.description && (
                       <p className="text-sm text-neutral-700 leading-relaxed">
