@@ -71,7 +71,6 @@ export async function processWikilinks(content) {
   processedContent = processedContent.replace(
     wikiImageRegex,
     (match, imgName, altText) => {
-      console.log("wiki image match:", imgName);
       const display = altText ? altText.trim() : imgName.trim();
       // Keep original filename, just trim whitespace
       const filename = imgName.trim();
@@ -100,7 +99,6 @@ export async function processWikilinks(content) {
       if (posts.has(linkSlug))
         return `[${display}](/blog/${posts.get(linkSlug)})`;
 
-      console.warn(`Wikilink not found: ${link}`);
       return `${display} ⚠️`;
     },
   );

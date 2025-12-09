@@ -20,7 +20,6 @@ export async function getAllPosts() {
     const allPostsData = fileNames
       .filter(fileName => fileName.endsWith('.md'))
       .map(fileName => {
-        console.log(fileName);
         const slug = fileName.replace(/\.md$/, '');
 
         const fullPath = path.join(BLOGS_DIRECTORY, fileName);
@@ -56,7 +55,6 @@ export async function getPostBySlug(slug) {
 
     // Check if file exists before trying to read it
     if (!fs.existsSync(fullPath)) {
-      console.log(`Blog post not found: ${slug}`);
       return null;
     }
 
