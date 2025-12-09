@@ -11,6 +11,7 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
+import MusicalTuningExplorer from "@/Components/BlogComponents/Music/MusicalTuningExplorer";
 import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 import {
   kingsGambitBasic,
@@ -338,6 +339,12 @@ const BlogPost = ({ post, isNote = false }) => {
       }
     }
     // ===== END PGN DETECTION =====
+
+    // ===== MUSICAL TUNING DETECTION: Render MusicalTuningExplorer =====
+    if (language === "musicaltuning" && !inline) {
+      return <MusicalTuningExplorer />;
+    }
+    // ===== END MUSICAL TUNING DETECTION =====
 
     // Create a stable ID based on code content hash
     const codeId = React.useMemo(() => {
