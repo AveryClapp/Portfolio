@@ -12,6 +12,7 @@ import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
 import MusicalTuningExplorer from "@/Components/BlogComponents/Music/MusicalTuningExplorer";
+import ProteinCascadeSimulator from "@/Components/BlogComponents/Protein/ProteinCascadeSimulator";
 import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 import {
   kingsGambitBasic,
@@ -345,6 +346,12 @@ const BlogPost = ({ post, isNote = false }) => {
       return <MusicalTuningExplorer />;
     }
     // ===== END MUSICAL TUNING DETECTION =====
+
+    // ===== PROTEIN CASCADE DETECTION: Render ProteinCascadeSimulator =====
+    if (language === "proteincascade" && !inline) {
+      return <ProteinCascadeSimulator />;
+    }
+    // ===== END PROTEIN CASCADE DETECTION =====
 
     // Create a stable ID based on code content hash
     const codeId = React.useMemo(() => {
