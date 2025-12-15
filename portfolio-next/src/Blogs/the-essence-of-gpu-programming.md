@@ -154,7 +154,7 @@ This free switching is crucial because large-scale GPU computations are inherent
 
 After the scheduler selects a warp, it dispatches that warp's instruction to the appropriate execution units. Here's where SIMT happens in practice: all 32 threads in the warp execute the same instruction simultaneously, each operating on different data from their own registers.
 
-The SM contains multiple types of specialized cores^7[Specific structure varies by GPU model. The specifications below are for the Ampere architecture]:
+The SM contains multiple types of specialized cores^7[Specific structure varies by GPU model. The specifications below are for the [Ampere](https://www.nvidia.com/en-us/data-center/ampere-architecture/) architecture]:
 
 - **64 FP32 cores** for single-precision floating point
 - **64 INT32 cores** for integer operations
