@@ -69,11 +69,6 @@ export default async function KnowledgePage() {
                     <p className="text-xs text-neutral-500 mb-2">
                       {formatDate(moc.date)}
                     </p>
-                    {moc.description && (
-                      <p className="text-sm text-neutral-700 leading-relaxed">
-                        {moc.description}
-                      </p>
-                    )}
                   </article>
                 ))}
               </div>
