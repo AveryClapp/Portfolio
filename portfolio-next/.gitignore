@@ -36,6 +36,9 @@ yarn-error.log*
 # subscriber data (privacy)
 /data/subscribers.json
 
+# generated embeddings (build-time)
+/public/data/embeddings.json
+
 # notes synced from Obsidian vault
 /src/Notes
 /public/notes-assets

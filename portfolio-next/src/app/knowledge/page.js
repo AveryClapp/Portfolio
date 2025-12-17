@@ -1,10 +1,11 @@
 import { getAllNotes } from "@/utils/NotesLoader";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
+import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Knowledge Base - Avery Clapp",
+  title: "Avery Clapp",
   description: "Technical notes, references, and collections on algorithms, systems, and more.",
 };
 
@@ -42,9 +43,12 @@ export default async function KnowledgePage() {
             <h1 className="mb-3 text-2xl font-display font-bold text-neutral-900 tracking-tight">
               Knowledge Base
             </h1>
-            <p className="mb-12 text-sm text-neutral-700 leading-relaxed">
+            <p className="mb-8 text-sm text-neutral-700 leading-relaxed">
               Technical notes and references. Living documents that evolve as I learn.
             </p>
+
+            {/* Semantic Search */}
+            <SemanticSearch />
 
             {/* MOCs */}
             {mocs.length > 0 ? (

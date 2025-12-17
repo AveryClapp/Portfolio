@@ -4,7 +4,7 @@ import Footer from "@/Components/Footer/Footer";
 import { Download, ExternalLink, FileText } from "lucide-react";
 
 export const metadata = {
-  title: "Avery's Resume",
+  title: "Avery Clapp",
   icons: {
     icon: "/file.svg",
   },
