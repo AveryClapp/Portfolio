@@ -13,27 +13,44 @@ function ensureBlogsDirectoryExists() {
   }
 }
 
+function getAllMarkdownFiles(dir, fileList = []) {
+  const files = fs.readdirSync(dir);
+
+  files.forEach(file => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      // Skip todos directory in production
+      if (file === 'todos' && process.env.NODE_ENV === 'production') {
+        return;
+      }
+      getAllMarkdownFiles(filePath, fileList);
+    } else if (file.endsWith('.md')) {
+      fileList.push(filePath);
+    }
+  });
+
+  return fileList;
+}
+
 export async function getAllPosts() {
   ensureBlogsDirectoryExists();
   try {
-    const fileNames = fs.readdirSync(BLOGS_DIRECTORY);
+    const allFiles = getAllMarkdownFiles(BLOGS_DIRECTORY);
 
-    const allPostsData = fileNames
-      .filter(fileName => fileName.endsWith('.md'))
-      .map(fileName => {
-        const slug = fileName.replace(/\.md$/, '');
+    const allPostsData = allFiles.map(fullPath => {
+      const fileName = path.basename(fullPath);
+      const slug = fileName.replace(/\.md$/, '');
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data, content } = matter(fileContents);
 
-        const fullPath = path.join(BLOGS_DIRECTORY, fileName);
-        const fileContents = fs.readFileSync(fullPath, 'utf8');
-
-        const { data, content } = matter(fileContents);
-
-        return {
-          slug,
-          content,
-          ...data
-        };
-      });
+      return {
+        slug,
+        content,
+        ...data
+      };
+    });
 
     return allPostsData.sort((a, b) => {
       if (a.date < b.date) {
@@ -52,7 +69,13 @@ export async function getPostBySlug(slug) {
   ensureBlogsDirectoryExists();
 
   try {
-    const fullPath = path.join(BLOGS_DIRECTORY, `${slug}.md`);
+    // Try main directory first
+    let fullPath = path.join(BLOGS_DIRECTORY, `${slug}.md`);
+
+    // If not found and in development, check todos directory
+    if (!fs.existsSync(fullPath) && process.env.NODE_ENV === 'development') {
+      fullPath = path.join(BLOGS_DIRECTORY, 'todos', `${slug}.md`);
+    }
 
     // Check if file exists before trying to read it
     if (!fs.existsSync(fullPath)) {
