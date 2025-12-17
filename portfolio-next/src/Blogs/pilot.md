@@ -22,6 +22,6 @@ explore and create impactful solutions.</p>
 technology trends, and other areas that spark my curiosity. Beyond tech, I’m
 passionate about music (especially theory and guitar) and philosophy in its many
 forms.</p>
-<p>Thank you for taking the time to visit! I hope you enjoy the posts I’ll be
+<p>Thank you for taking the time to visit! I hope you enjoy the posts I'll be
 sharing, and I look forward to exploring a variety of fascinating topics.</p>
 </div>

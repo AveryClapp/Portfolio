@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { processWikilinks } from './WikilinkProcessor';
 
 const BLOGS_DIRECTORY = path.join(process.cwd(), 'src/Blogs');
 
@@ -63,10 +64,13 @@ export async function getPostBySlug(slug) {
     // Use gray-matter to parse the post metadata section
     const { data, content } = matter(fileContents);
 
+    // Process wikilinks in content
+    const processedContent = await processWikilinks(content);
+
     // Combine the data with the id and content
     return {
       slug,
-      content,
+      content: processedContent,
       ...data
     };
   } catch (error) {
