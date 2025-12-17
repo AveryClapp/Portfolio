@@ -21,8 +21,8 @@ function getAllMarkdownFiles(dir, fileList = []) {
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      // Skip todos directory in production
-      if (file === 'todos' && process.env.NODE_ENV === 'production') {
+      // Skip todos directory in production and removed directory always
+      if ((file === 'todos' && process.env.NODE_ENV === 'production') || file === 'removed') {
         return;
       }
       getAllMarkdownFiles(filePath, fileList);
