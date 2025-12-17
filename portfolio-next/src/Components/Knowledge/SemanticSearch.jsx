@@ -55,10 +55,10 @@ const SemanticSearch = () => {
 
       {/* Results */}
       {query.trim() && results.length > 0 && (
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 space-y-4 max-h-64 overflow-y-auto">
           {results.map((result) => (
-            <article key={result.slug} className="pb-4 border-b border-neutral-200 last:border-b-0">
-              <h3 className="text-sm font-display font-semibold mb-1">
+            <article key={result.slug} className="pb-2 border-b border-neutral-200 last:border-b-0">
+              <h3 className="text-sm font-display font-semibold">
                 <Link
                   href={`/knowledge/${result.slug}`}
                   className="hover:text-neutral-600 transition-colors"
@@ -66,9 +66,6 @@ const SemanticSearch = () => {
                   {result.title}
                 </Link>
               </h3>
-              <p className="text-xs text-neutral-700 leading-relaxed">
-                {result.preview}
-              </p>
             </article>
           ))}
         </div>

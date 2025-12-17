@@ -17,6 +17,36 @@ function titleToSlug(title) {
     .replace(/-+/g, "-");
 }
 
+function cleanMarkdown(text) {
+  return text
+    // Remove sidenotes: ^1[text] -> remove entirely
+    .replace(/\^\d+\[[^\]]*\]/g, '')
+    // Remove sidenote markers: ^1
+    .replace(/\^\d+/g, '')
+    // Remove wikilinks: [[link|text]] -> text or [[link]] -> link
+    .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')
+    // Remove any leftover pipes from wikilinks
+    .replace(/\|/g, '')
+    // Remove bold/italic: **text** or __text__ -> text
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    // Remove headers: # Title -> Title
+    .replace(/^#{1,6}\s+/gm, '')
+    // Remove code blocks and inline code
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`([^`]+)`/g, '$1')
+    // Remove HTML tags
+    .replace(/<[^>]+>/g, '')
+    // Remove brackets
+    .replace(/[\[\]]/g, '')
+    // Clean up extra whitespace
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 async function generateEmbeddings() {
   console.log('🔍 Generating semantic embeddings...');
 
@@ -70,9 +100,10 @@ async function generateEmbeddings() {
           if (headingMatch) title = headingMatch[1];
         }
 
-        // Extract preview for display
-        const preview = data.preview || data.description ||
-          content.slice(0, 150).replace(/[#*\[\]]/g, '').trim();
+        // Extract and clean preview for display
+        const rawPreview = data.preview || data.description ||
+          content.slice(0, 150);
+        const preview = cleanMarkdown(rawPreview).slice(0, 150);
 
         // Embed full content for better semantic search
         const textToEmbed = `${title}\n\n${content}`;

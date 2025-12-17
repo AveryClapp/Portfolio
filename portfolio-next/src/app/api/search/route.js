@@ -66,11 +66,11 @@ export async function POST(request) {
       similarity: cosineSimilarity(queryEmbedding, note.embedding)
     }));
 
-    // Sort by similarity and take top 5
+    // Sort by similarity and take top 20
     const topResults = scored
       .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, 5)
-      .filter(note => note.similarity > 0.3); // Relevance threshold
+      .slice(0, 20)
+      .filter(note => note.similarity > 0.2); // Relevance threshold
 
     return NextResponse.json({ results: topResults });
   } catch (error) {
