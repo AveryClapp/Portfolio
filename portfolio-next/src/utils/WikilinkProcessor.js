@@ -99,7 +99,7 @@ export async function processWikilinks(content) {
       if (posts.has(linkSlug))
         return `[${display}](/blog/${posts.get(linkSlug)})`;
 
-      return `${display} ⚠️`;
+      return display;
     },
   );
 
