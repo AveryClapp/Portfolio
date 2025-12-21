@@ -178,20 +178,35 @@ export async function getAllNotes() {
   }
 }
 
+export async function getNotesByDirectory(directorySlug) {
+  const allNotes = await getAllNotes();
+
+  return allNotes
+    .filter(note =>
+      note.directory === directorySlug &&
+      note.type === 'moc' &&
+      note.tier === 1
+    )
+    .sort((a, b) => {
+      if (a.date < b.date) return 1;
+      else return -1;
+    });
+}
+
 export async function getNoteBySlug(slug) {
   if (!ensureNotesDirectoryExists()) return null;
 
   try {
-    // Load all notes (they already have standardized slugs and filenames)
+    // Load all notes (they already have standardized slugs and relative paths)
     const allNotes = await getAllNotes();
 
     // Find the note that matches the slug
     const noteData = allNotes.find((n) => n.slug === slug);
     if (!noteData) return null;
 
-    // Use the original filename to read the file
-    const fullPath = path.join(NOTES_DIRECTORY, noteData.filename);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
+    // Use the relative path to read the file
+    const fullPath = path.join(NOTES_DIRECTORY, noteData.relativePath);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
     // Extract title from frontmatter or first heading or filename
@@ -217,10 +232,11 @@ export async function getNoteBySlug(slug) {
 
     return {
       slug: noteData.slug,
+      directory: noteData.directory,
       content: processedContent,
       title,
       ...data,
-      date: dateString, // Override after spreading to ensure it's always a string
+      date: dateString,
     };
   } catch (error) {
     console.error(`Error loading note ${slug}:`, error);
