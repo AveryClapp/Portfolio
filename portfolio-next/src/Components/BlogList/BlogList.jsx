@@ -9,7 +9,7 @@ import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 const BlogList = ({ blogPosts }) => {
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const allTags = [...new Set(blogPosts.flatMap((post) => post.tags || []))];
+  const allTags = [...new Set(blogPosts.flatMap((post) => post.tags || []))].filter(tag => tag && tag.trim());
   const filteredPosts =
     selectedTags.length === 0
       ? blogPosts
