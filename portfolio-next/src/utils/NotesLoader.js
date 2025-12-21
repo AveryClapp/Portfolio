@@ -53,6 +53,64 @@ function getAllMarkdownFiles(dir, baseDir = dir, fileList = []) {
   return fileList;
 }
 
+export async function getAllDirectories() {
+  if (!ensureNotesDirectoryExists()) return [];
+
+  try {
+    const items = fs.readdirSync(NOTES_DIRECTORY);
+
+    const directories = items
+      .filter(item => {
+        const fullPath = path.join(NOTES_DIRECTORY, item);
+        const stat = fs.statSync(fullPath);
+        // Include directories, exclude those starting with _ or .
+        return stat.isDirectory() && !item.startsWith('_') && !item.startsWith('.');
+      })
+      .map(dirName => {
+        const dirPath = path.join(NOTES_DIRECTORY, dirName);
+        const metadataPath = path.join(dirPath, '_directory.md');
+
+        // Default metadata if _directory.md doesn't exist
+        let metadata = {
+          title: dirName.split('-').map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' '),
+          description: '',
+          icon: '',
+          order: 999
+        };
+
+        // Read _directory.md if it exists
+        if (fs.existsSync(metadataPath)) {
+          try {
+            const fileContents = fs.readFileSync(metadataPath, 'utf8');
+            const { data } = matter(fileContents);
+            metadata = {
+              title: data.title || metadata.title,
+              description: data.description || '',
+              icon: data.icon || '',
+              order: data.order !== undefined ? data.order : 999
+            };
+          } catch (error) {
+            console.error(`Error reading directory metadata ${dirName}:`, error);
+          }
+        }
+
+        return {
+          slug: titleToSlug(dirName),
+          dirName,
+          ...metadata
+        };
+      })
+      .sort((a, b) => a.order - b.order);
+
+    return directories;
+  } catch (error) {
+    console.error('Error loading directories:', error);
+    return [];
+  }
+}
+
 export async function getAllNotes() {
   if (!ensureNotesDirectoryExists()) return [];
 
