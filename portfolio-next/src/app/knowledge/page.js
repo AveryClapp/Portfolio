@@ -1,4 +1,4 @@
-import { getAllNotes } from "@/utils/NotesLoader";
+import { getAllNotes, getAllDirectories } from "@/utils/NotesLoader";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
@@ -28,10 +28,7 @@ function formatDate(dateString) {
 }
 
 export default async function KnowledgePage() {
-  const allNotes = await getAllNotes();
-
-  // Filter MOCs (notes with type: moc in frontmatter)
-  const mocs = allNotes.filter(note => note.type === 'moc');
+  const directories = await getAllDirectories();
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
@@ -50,31 +47,34 @@ export default async function KnowledgePage() {
             {/* Semantic Search */}
             <SemanticSearch />
 
-            {/* MOCs */}
-            {mocs.length > 0 ? (
+            {/* Directories */}
+            {directories.length > 0 ? (
               <div className="space-y-8">
-                {mocs.map((moc, index) => (
+                {directories.map((directory, index) => (
                   <article
-                    key={moc.slug}
-                    className={index < mocs.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}
+                    key={directory.slug}
+                    className={index < directories.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}
                   >
                     <h2 className="text-lg font-display font-semibold mb-2">
                       <Link
-                        href={`/knowledge/${moc.slug}`}
+                        href={`/knowledge/${directory.slug}`}
                         className="hover:text-neutral-600 transition-colors"
                       >
-                        {moc.title}
+                        {directory.icon && <span className="mr-2">{directory.icon}</span>}
+                        {directory.title}
                       </Link>
                     </h2>
-                    <p className="text-xs text-neutral-500 mb-2">
-                      {formatDate(moc.date)}
-                    </p>
+                    {directory.description && (
+                      <p className="text-sm text-neutral-700 leading-relaxed">
+                        {directory.description}
+                      </p>
+                    )}
                   </article>
                 ))}
               </div>
             ) : (
               <p className="text-neutral-500 text-center py-8">
-                No collections yet.
+                No directories yet.
               </p>
             )}
           </div>
