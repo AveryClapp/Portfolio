@@ -115,28 +115,25 @@ export async function getAllNotes() {
   if (!ensureNotesDirectoryExists()) return [];
 
   try {
-    const fileNames = fs.readdirSync(NOTES_DIRECTORY);
+    const allFiles = getAllMarkdownFiles(NOTES_DIRECTORY);
 
-    const allNotesData = fileNames
-      .filter((fileName) => {
-        // Only include .md files, exclude system files and folders
-        return (
-          fileName.endsWith(".md") &&
-          !fileName.startsWith(".") &&
-          !fileName.startsWith("_")
-        );
-      })
-      .map((fileName) => {
-        const fullPath = path.join(NOTES_DIRECTORY, fileName);
-
+    const allNotesData = allFiles
+      .map(({ fullPath, relativePath, fileName }) => {
         try {
-          const fileContents = fs.readFileSync(fullPath, "utf8");
+          const fileContents = fs.readFileSync(fullPath, 'utf8');
           const { data, content } = matter(fileContents);
-          const rawSlug = data.slug || fileName.replace(/\.md$/, "");
-          const slug = titleToSlug(rawSlug);
+
+          // Extract directory from relative path
+          const pathParts = relativePath.split(path.sep);
+          const directory = pathParts.length > 1 ? pathParts[0] : '';
+
+          // Generate slug with directory prefix
+          const rawSlug = data.slug || fileName.replace(/\.md$/, '');
+          const baseSlug = titleToSlug(rawSlug);
+          const slug = directory ? `${titleToSlug(directory)}/${baseSlug}` : baseSlug;
 
           // Extract title from frontmatter or use first heading or filename
-          let title = rawSlug;
+          let title = data.title || rawSlug;
           if (!data.title && content) {
             const headingMatch = content.match(/^#\s+(.+)$/m);
             if (headingMatch) {
@@ -144,23 +141,25 @@ export async function getAllNotes() {
             }
           }
 
-          // Ensure date is always a string (gray-matter might parse it as Date object)
+          // Ensure date is always a string
           const dateString = data.date
             ? (data.date instanceof Date ? data.date.toISOString().split("T")[0] : String(data.date))
             : new Date().toISOString().split("T")[0];
 
           return {
             slug,
+            directory: titleToSlug(directory),
             filename: fileName,
+            relativePath,
             content,
             title,
             preview:
               data.preview || content.slice(0, 150).replace(/[#*\[\]]/g, ""),
             ...data,
-            date: dateString, // Override after spreading to ensure it's always a string
+            date: dateString,
           };
         } catch (error) {
-          console.error(`Error reading note ${fileName}:`, error);
+          console.error(`Error reading note ${relativePath}:`, error);
           return null;
         }
       })
