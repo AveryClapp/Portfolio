@@ -40,15 +40,41 @@ async function buildContentMap() {
   notesCache = new Map();
   postsCache = new Map();
 
+  // Track duplicate titles
+  const noteTitleCounts = new Map();
+  const postTitleCounts = new Map();
+
+  // Count occurrences of each title
   notes.forEach((note) => {
     const titleSlug = titleToSlug(note.title);
-    notesCache.set(titleSlug, note.slug);
-    notesCache.set(note.slug, note.slug); // Also map slug to itself
+    noteTitleCounts.set(titleSlug, (noteTitleCounts.get(titleSlug) || 0) + 1);
   });
 
   posts.forEach((post) => {
     const titleSlug = titleToSlug(post.title);
-    postsCache.set(titleSlug, post.slug);
+    postTitleCounts.set(titleSlug, (postTitleCounts.get(titleSlug) || 0) + 1);
+  });
+
+  // Build maps, excluding duplicate titles
+  notes.forEach((note) => {
+    const titleSlug = titleToSlug(note.title);
+
+    // Only map title to slug if it's unique
+    if (noteTitleCounts.get(titleSlug) === 1) {
+      notesCache.set(titleSlug, note.slug);
+    }
+
+    // Always map full slug to itself (for folder/path syntax)
+    notesCache.set(note.slug, note.slug);
+  });
+
+  posts.forEach((post) => {
+    const titleSlug = titleToSlug(post.title);
+
+    if (postTitleCounts.get(titleSlug) === 1) {
+      postsCache.set(titleSlug, post.slug);
+    }
+
     postsCache.set(post.slug, post.slug);
   });
 
@@ -87,18 +113,24 @@ export async function processWikilinks(content) {
   );
 
   // 3️⃣ Wiki-style note/blog links [[Note Title|Display]]
+  // Supports: [[Note Title]], [[folder/note-title]], [[Note Title|Display Text]]
   const wikilinkRegex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
   processedContent = processedContent.replace(
     wikilinkRegex,
     (match, link, displayText) => {
-      const linkSlug = titleToSlug(link.trim());
-      const display = displayText ? displayText.trim() : link.trim();
+      const linkTrimmed = link.trim();
+      const display = displayText ? displayText.trim() : linkTrimmed;
 
+      // Try matching as-is first (supports folder/path syntax like "computer-science/compilers")
+      const linkSlug = titleToSlug(linkTrimmed);
+
+      // Check if it matches a full slug (with folder prefix)
       if (notes.has(linkSlug))
         return `[${display}](/knowledge/${notes.get(linkSlug)})`;
       if (posts.has(linkSlug))
         return `[${display}](/blog/${posts.get(linkSlug)})`;
 
+      // If not found, return plain text (either doesn't exist or is a duplicate)
       return display;
     },
   );
