@@ -25,6 +25,34 @@ function ensureNotesDirectoryExists() {
   return true;
 }
 
+// Helper to recursively get all markdown files from a directory
+function getAllMarkdownFiles(dir, baseDir = dir, fileList = []) {
+  const files = fs.readdirSync(dir);
+
+  files.forEach(file => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      // Skip directories starting with _ or .
+      if (file.startsWith('_') || file.startsWith('.')) {
+        return;
+      }
+      getAllMarkdownFiles(filePath, baseDir, fileList);
+    } else if (file.endsWith('.md') && !file.startsWith('.') && !file.startsWith('_')) {
+      // Store relative path from base directory
+      const relativePath = path.relative(baseDir, filePath);
+      fileList.push({
+        fullPath: filePath,
+        relativePath: relativePath,
+        fileName: file
+      });
+    }
+  });
+
+  return fileList;
+}
+
 export async function getAllNotes() {
   if (!ensureNotesDirectoryExists()) return [];
 
