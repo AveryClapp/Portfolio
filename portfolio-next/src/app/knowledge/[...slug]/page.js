@@ -35,8 +35,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slugArray = resolvedParams.slug || [];
-  const slugPath = slugArray.join('/');
-  const slug = titleToSlug(slugPath);
+  const slug = slugArray.map(s => titleToSlug(decodeURIComponent(s))).join('/');
 
   // Try to load as note first
   const note = await getNoteBySlug(slug);
@@ -67,12 +66,11 @@ export async function generateMetadata({ params }) {
 export default async function DynamicKnowledgePage({ params }) {
   const resolvedParams = await params;
   const slugArray = resolvedParams.slug || [];
-  const slugPath = slugArray.map(s => decodeURIComponent(s)).join('/');
-  const slug = titleToSlug(slugPath);
+  const slug = slugArray.map(s => titleToSlug(decodeURIComponent(s))).join('/');
 
   // Redirect if slug doesn't match canonical format
   const canonicalPath = slugArray.map(s => titleToSlug(decodeURIComponent(s))).join('/');
-  if (slug !== canonicalPath && slugPath !== canonicalPath) {
+  if (slug !== canonicalPath) {
     return redirect(`/knowledge/${canonicalPath}`);
   }
 
