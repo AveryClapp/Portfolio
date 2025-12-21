@@ -41,7 +41,7 @@ function cosineSimilarity(vecA, vecB) {
 
 export async function POST(request) {
   try {
-    const { query } = await request.json();
+    const { query, directory } = await request.json();
 
     if (!query || query.trim().length === 0) {
       return NextResponse.json({ results: [] });
@@ -49,7 +49,12 @@ export async function POST(request) {
 
     // Load model and embeddings
     const model = await loadModel();
-    const notesData = loadEmbeddings();
+    let notesData = loadEmbeddings();
+
+    // Filter by directory if specified
+    if (directory) {
+      notesData = notesData.filter(note => note.directory === directory);
+    }
 
     // Generate embedding for query
     const output = await model(query, {

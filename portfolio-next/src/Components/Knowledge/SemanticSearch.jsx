@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const SemanticSearch = () => {
+const SemanticSearch = ({ directory = null }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -24,12 +24,17 @@ const SemanticSearch = () => {
   async function performSearch(searchQuery) {
     setIsSearching(true);
     try {
+      const body = { query: searchQuery };
+      if (directory) {
+        body.directory = directory;
+      }
+
       const response = await fetch('/api/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: searchQuery }),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();

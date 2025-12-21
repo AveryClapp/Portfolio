@@ -73,25 +73,44 @@ async function generateEmbeddings() {
     const embedder = await pipeline('feature-extraction', MODEL_NAME);
     console.log('✓ Model loaded');
 
-    // Read all markdown files
-    const files = fs.readdirSync(NOTES_DIR)
-      .filter(f => f.endsWith('.md') && !f.startsWith('.') && !f.startsWith('_'));
+    // Helper to recursively get all markdown files
+    function getAllMarkdownFiles(dir, baseDir = dir, fileList = []) {
+      const files = fs.readdirSync(dir);
+      files.forEach(file => {
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+        if (stat.isDirectory()) {
+          if (file.startsWith('_') || file.startsWith('.')) return;
+          getAllMarkdownFiles(filePath, baseDir, fileList);
+        } else if (file.endsWith('.md') && !file.startsWith('.') && !file.startsWith('_')) {
+          const relativePath = path.relative(baseDir, filePath);
+          fileList.push({ fullPath: filePath, relativePath: relativePath, fileName: file });
+        }
+      });
+      return fileList;
+    }
 
-    console.log(`📝 Found ${files.length} note files`);
+    // Read all markdown files recursively
+    const allFiles = getAllMarkdownFiles(NOTES_DIR);
+    console.log(`📝 Found ${allFiles.length} note files`);
 
     const embeddings = [];
 
-    for (let i = 0; i < files.length; i++) {
-      const filename = files[i];
-      const fullPath = path.join(NOTES_DIR, filename);
+    for (let i = 0; i < allFiles.length; i++) {
+      const { fullPath, relativePath, fileName } = allFiles[i];
 
       try {
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const { data, content } = matter(fileContents);
 
+        // Extract directory from relative path
+        const pathParts = relativePath.split(path.sep);
+        const directory = pathParts.length > 1 ? titleToSlug(pathParts[0]) : '';
+
         // Generate slug (same logic as NotesLoader.js)
-        const rawSlug = data.slug || filename.replace(/\.md$/, '');
-        const slug = titleToSlug(rawSlug);
+        const rawSlug = data.slug || fileName.replace(/\.md$/, '');
+        const baseSlug = titleToSlug(rawSlug);
+        const slug = directory ? `${directory}/${baseSlug}` : baseSlug;
 
         // Extract title
         let title = data.title || rawSlug;
@@ -114,20 +133,21 @@ async function generateEmbeddings() {
 
         embeddings.push({
           slug,
+          directory,
           title,
           preview,
           embedding,
           type: data.type || 'note',
+          tier: data.tier || null,
           date: data.date || new Date().toISOString().split('T')[0]
         });
 
         // Progress indicator
-        if ((i + 1) % 5 === 0 || i === files.length - 1) {
-          console.log(`  ✓ Processed ${i + 1}/${files.length} notes`);
+        if ((i + 1) % 5 === 0 || i === allFiles.length - 1) {
+          console.log(`  ✓ Processed ${i + 1}/${allFiles.length} notes`);
         }
       } catch (error) {
-        console.error(`  ✗ Error processing ${filename}:`, error.message);
-        // Continue processing other files
+        console.error(`  ✗ Error processing ${relativePath}:`, error.message);
       }
     }
 
