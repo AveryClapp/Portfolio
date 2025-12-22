@@ -14,6 +14,8 @@ import ChessSlideshow from "@/Components/BlogComponents/Chess/ChessSlideshow";
 import MusicalTuningExplorer from "@/Components/BlogComponents/Music/MusicalTuningExplorer";
 import ProteinCascadeSimulator from "@/Components/BlogComponents/Protein/ProteinCascadeSimulator";
 import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
+import NavigationTrail from "@/Components/NavigationTrail/NavigationTrail";
+import BlogTracker from "@/Components/BlogTracker/BlogTracker";
 import {
   kingsGambitBasic,
   kingsGambitAccepted,
@@ -42,7 +44,7 @@ function formatDate(dateString) {
   return dateString;
 }
 
-const BlogPost = ({ post, isNote = false }) => {
+const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
   const [processedContent, setProcessedContent] = useState("");
   const [notes, setNotes] = useState([]);
   const [notePositions, setNotePositions] = useState({});
@@ -605,12 +607,14 @@ const BlogPost = ({ post, isNote = false }) => {
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
+      {!isNote && <BlogTracker blogTitle={post.title} blogSlug={post.slug} />}
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
         <div className="flex flex-col lg:flex-row pb-6 border-b border-neutral-200">
           {/* Main content - flows naturally */}
           <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
           <article className="prose max-w-none text-black">
+            {isNote && <NavigationTrail currentTitle={post.title} currentSlug={post.slug} directoryInfo={directoryInfo} />}
             <h1 className="text-xl font-bold">{post.title}</h1>
             <p className="text-sm mb-6">{formatDate(post.date)}</p>
             <ReactMarkdown

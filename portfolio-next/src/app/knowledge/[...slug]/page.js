@@ -77,7 +77,13 @@ export default async function DynamicKnowledgePage({ params }) {
   // Try to load as a note first
   const note = await getNoteBySlug(slug);
   if (note) {
-    return <BlogPost post={note} isNote={true} />;
+    // Get directory info if note is in a directory
+    let directoryInfo = null;
+    if (note.directory) {
+      const directories = await getAllDirectories();
+      directoryInfo = directories.find(d => d.slug === note.directory);
+    }
+    return <BlogPost post={note} isNote={true} directoryInfo={directoryInfo} />;
   }
 
   // Try to load as a directory

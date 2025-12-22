@@ -2,6 +2,7 @@ import { getAllNotes, getAllDirectories } from "@/utils/NotesLoader";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
+import DirectoryTracker from "@/Components/NavigationTrail/TrailClearer";
 import Link from "next/link";
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default async function KnowledgePage() {
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
+      <DirectoryTracker />
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
         <div className="px-4 lg:ml-32">
@@ -45,7 +47,7 @@ export default async function KnowledgePage() {
             </p>
 
             {/* Semantic Search */}
-            <SemanticSearch />
+            {/* <SemanticSearch /> */}
 
             {/* Directories */}
             {directories.length > 0 ? (

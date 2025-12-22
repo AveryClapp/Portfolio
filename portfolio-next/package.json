@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "sync-assets": "node scripts/sync-assets-dev.js",
     "notify": "node scripts/notify.js",
     "notify:prod": "node scripts/notify.js --prod",
     "notify:latest": "node scripts/notify-latest.js",

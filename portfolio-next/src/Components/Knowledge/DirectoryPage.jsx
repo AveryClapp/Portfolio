@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
+import DirectoryTracker from "@/Components/NavigationTrail/TrailClearer";
 
 function formatDate(dateString) {
   if (!dateString) return '';
@@ -16,6 +17,7 @@ function formatDate(dateString) {
 export default function DirectoryPage({ directory, mocs }) {
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
+      <DirectoryTracker directoryTitle={directory.title} directorySlug={directory.slug} />
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
         <div className="px-4 lg:ml-32">
@@ -45,7 +47,7 @@ export default function DirectoryPage({ directory, mocs }) {
             </div>
 
             {/* Semantic Search - scoped to this directory */}
-            <SemanticSearch directory={directory.slug} />
+            {/* <SemanticSearch directory={directory.slug} /> */}
 
             {/* Tier 1 MOCs */}
             {mocs.length > 0 ? (

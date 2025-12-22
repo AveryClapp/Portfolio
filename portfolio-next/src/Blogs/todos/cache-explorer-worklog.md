@@ -20,3 +20,12 @@ Despite caching's critical role in performance, there's no interactive tool for 
 The rest of this blog details my progress completing this project, focusing on the interesting technical challenges: compiling user code to LLVM IR, simulating realistic cache behavior, and building useful visualizations. Let's do it.
 
 ## Phase 1: LLVM Rabbithole
+
+To start this project, there are a couple of unanswered questions:
+
+- What languages are we targeting?
+- How will we actually monitor and process memory access operations?
+
+As of writing this, the main idea is to support C/C++ code, as these languages have the most "market share" in high performance computing. Then, knowing that this is the goal, there is a clear way forward in tackling the problem. C/C++ are both compiled languages, which is important because to look at how programs intertwine with the hardware caches, the tool needs to "see" more than just the human-readable code. In simpler terms, we must compile the programs and have our engine somehow parse the compiled code into something that can simulate cache architecture.
+
+If you aren't familiar with [[Compilers]]
