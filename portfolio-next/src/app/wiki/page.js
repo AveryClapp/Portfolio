@@ -7,12 +7,13 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Avery Clapp",
-  description: "Technical notes, references, and collections on algorithms, systems, and more.",
+  description:
+    "Technical notes, references, and collections on algorithms, systems, and more.",
 };
 
 // Format date from YYYY-MM-DD to MM-DD-YYYY
 function formatDate(dateString) {
-  if (!dateString) return '';
+  if (!dateString) return "";
 
   // Check if already in MM-DD-YYYY format
   if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) {
@@ -21,7 +22,7 @@ function formatDate(dateString) {
 
   // Convert from YYYY-MM-DD to MM-DD-YYYY
   if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    const [year, month, day] = dateString.split('-');
+    const [year, month, day] = dateString.split("-");
     return `${month}-${day}-${year}`;
   }
 
@@ -43,7 +44,8 @@ export default async function KnowledgePage() {
               Wiki
             </h1>
             <p className="mb-8 text-sm text-neutral-700 leading-relaxed">
-              Technical notes and references. Living documents that evolve as I learn.
+              A collection of my notes and references. Living documents that
+              evolve as I learn.
             </p>
 
             {/* Semantic Search */}
@@ -55,14 +57,20 @@ export default async function KnowledgePage() {
                 {directories.map((directory, index) => (
                   <article
                     key={directory.slug}
-                    className={index < directories.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}
+                    className={
+                      index < directories.length - 1
+                        ? "border-b border-neutral-200 pb-6"
+                        : "pb-6"
+                    }
                   >
                     <h2 className="text-lg font-display font-semibold mb-2">
                       <Link
                         href={`/wiki/${directory.slug}`}
                         className="hover:text-neutral-600 transition-colors"
                       >
-                        {directory.icon && <span className="mr-2">{directory.icon}</span>}
+                        {directory.icon && (
+                          <span className="mr-2">{directory.icon}</span>
+                        )}
                         {directory.title}
                       </Link>
                     </h2>
