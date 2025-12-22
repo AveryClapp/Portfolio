@@ -53,11 +53,12 @@ export async function getAllPosts() {
     });
 
     return allPostsData.sort((a, b) => {
-      if (a.date < b.date) {
-        return 1;
-      } else {
-        return -1;
-      }
+      // Convert MM-DD-YYYY to Date object for proper comparison
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      // Sort descending (newest first)
+      return dateB - dateA;
     });
   } catch (error) {
     console.error("Error loading blog posts:", error);

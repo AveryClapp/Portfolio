@@ -1,6 +1,6 @@
 ---
 title: "Cache Explorer: A Worklog"
-date: ""
+date: "01-01-2026"
 preview: "A technical worklog building Cache Explorer, an interactive tool for visualizing CPU cache behavior in C/C++ code. Covers LLVM IR analysis, cache simulation, and the surprisingly hard problem of extracting memory access patterns from compiled code."
 slug: "cache-explorer-worklog"
 tags: ["Technical"]
@@ -28,4 +28,10 @@ To start this project, there are a couple of unanswered questions:
 
 As of writing this, the main idea is to support C/C++ code, as these languages have the most "market share" in high performance computing. Then, knowing that this is the goal, there is a clear way forward in tackling the problem. C/C++ are both compiled languages, which is important because to look at how programs intertwine with the hardware caches, the tool needs to "see" more than just the human-readable code. In simpler terms, we must compile the programs and have our engine somehow parse the compiled code into something that can simulate cache architecture.
 
-If you aren't familiar with [[Compilers]]
+If you aren't familiar with [[Compilers]], the very general purpose is to convert human readable code^3[C, C++, Rust. Any programming language] into machine code^4[1s and 0s] for the computer to execute. There are three distinct stages a compiler must handle:
+
+1. Frontend: Analyze and parse code. Ensure that it "makes sense"
+1. Optimizer: Take the result of the frontend process and run various _passes_ on the result to optimize the code
+1. Backend: Convert the optimized program into architecture specific machine instructions
+
+While this is generally how Compilers operate, different families of compilers go about this in different ways. For this blog, we'll mainly be focusing on [[LLVM]], or low-level virtual machine compilers^5[As opposed to older, more classic compilers like [[GCC]]]. One of the unique aspects of LLVM is its introduction of [[LLVM Intermediate Representation|IR]], or intermediate representation. The IR is what the optimizer performs passes over, and part of what makes LLVM so attractive is that the frontend can compile multiple different languages into the same IR^6[While not necessarily super important for this post, it is actually pretty interesting that you can compile Rust, C, Zig, etc to the same IR]. At this point, you might be wondering, "Why does this matter?". Well, since LLVM was designed so well and very modern, we can leverage the toolchain to help accomplish our goal. We'll do this by creating our own custom [[LLVM Pass|pass]] over the IR that will aid the other parts of our program in simulating cache activity.

@@ -37,7 +37,7 @@ const Header = () => {
                 : "text-neutral-600 hover:text-neutral-900"
             }`}
           >
-            Knowledge
+            Wiki
           </Link>
           */}
         </div>
