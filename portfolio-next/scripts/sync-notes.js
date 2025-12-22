@@ -71,28 +71,24 @@ try {
   // Create assets directory
   fs.mkdirSync(publicAssetsDir, { recursive: true });
 
-  // Copy assets directory
-  const assetDirs = ['_assets'];
-  let assetCount = 0;
-
-  assetDirs.forEach(dirName => {
-    const sourceDir = path.join(NOTES_DIR, dirName);
-    if (fs.existsSync(sourceDir)) {
-      const destDir = path.join(publicAssetsDir, dirName);
-      copyRecursive(sourceDir, destDir);
-      console.log(`  ✓ Copied ${dirName}/`);
-      assetCount++;
-    }
-  });
+  // Copy assets directory contents directly (not the _assets folder itself)
+  const sourceAssetsDir = path.join(NOTES_DIR, '_assets');
+  if (fs.existsSync(sourceAssetsDir)) {
+    const entries = fs.readdirSync(sourceAssetsDir);
+    entries.forEach(entry => {
+      copyRecursive(
+        path.join(sourceAssetsDir, entry),
+        path.join(publicAssetsDir, entry)
+      );
+    });
+    console.log(`  ✓ Copied ${entries.length} asset(s) from _assets/`);
+  }
 
   console.log('✅ Notes synced successfully!');
 
   // Count markdown files
   const files = fs.readdirSync(NOTES_DIR).filter(f => f.endsWith('.md'));
   console.log(`📝 Found ${files.length} note(s)`);
-  if (assetCount > 0) {
-    console.log(`🖼️  Synced ${assetCount} asset folder(s)`);
-  }
 
 } catch (error) {
   console.error('❌ Error syncing notes:', error.message);
