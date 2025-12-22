@@ -83,7 +83,7 @@ async function buildContentMap() {
 
 /**
  * Process wikilinks in content
- * Converts [[Note Title]] to [Note Title](/knowledge/note-slug)
+ * Converts [[Note Title]] to [Note Title](/wiki/note-slug)
  * Supports [[Note Title|Display Text]] syntax
  */
 export async function processWikilinks(content) {
@@ -126,7 +126,7 @@ export async function processWikilinks(content) {
 
       // Check if it matches a full slug (with folder prefix)
       if (notes.has(linkSlug))
-        return `[${display}](/knowledge/${notes.get(linkSlug)})`;
+        return `[${display}](/wiki/${notes.get(linkSlug)})`;
       if (posts.has(linkSlug))
         return `[${display}](/blog/${posts.get(linkSlug)})`;
 

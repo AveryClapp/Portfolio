@@ -21,7 +21,7 @@ export default function NavigationTrail({ currentTitle, currentSlug, directoryIn
     let existingTrail = storedTrail ? JSON.parse(storedTrail) : [];
 
     // Determine if we need to reset the trail
-    const isFromKnowledge = lastPath?.startsWith("/knowledge");
+    const isFromKnowledge = lastPath?.startsWith("/wiki");
     const isFromBlog = lastPath?.startsWith("/blog");
 
     // If coming from blog, start fresh trail with blog title
@@ -45,7 +45,7 @@ export default function NavigationTrail({ currentTitle, currentSlug, directoryIn
       if (lastDirStr) {
         const dirInfo = JSON.parse(lastDirStr);
         existingTrail = [
-          { title: "Knowledge", slug: "knowledge" },
+          { title: "Wiki", slug: "knowledge" },
           { title: dirInfo.title, slug: dirInfo.slug }
         ];
       }
@@ -60,7 +60,7 @@ export default function NavigationTrail({ currentTitle, currentSlug, directoryIn
     // If trail is still empty (direct URL, semantic search, etc.), build from directoryInfo
     if (existingTrail.length === 0 && directoryInfo) {
       existingTrail = [
-        { title: "Knowledge", slug: "knowledge" },
+        { title: "Wiki", slug: "knowledge" },
         { title: directoryInfo.title, slug: directoryInfo.slug }
       ];
     }
@@ -117,11 +117,11 @@ export default function NavigationTrail({ currentTitle, currentSlug, directoryIn
           // Determine the correct href based on the slug
           let href;
           if (!item.slug || item.slug === 'knowledge') {
-            href = '/knowledge';
+            href = '/wiki';
           } else if (item.slug.startsWith('blog/')) {
             href = `/${item.slug}`;
           } else {
-            href = `/knowledge/${item.slug}`;
+            href = `/wiki/${item.slug}`;
           }
 
           return (

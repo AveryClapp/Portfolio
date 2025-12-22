@@ -65,7 +65,7 @@ const SemanticSearch = ({ directory = null }) => {
             <article key={result.slug} className="pb-2 border-b border-neutral-200 last:border-b-0">
               <h3 className="text-sm font-display font-semibold">
                 <Link
-                  href={`/knowledge/${result.slug}`}
+                  href={`/wiki/${result.slug}`}
                   className="hover:text-neutral-600 transition-colors"
                 >
                   {result.title}

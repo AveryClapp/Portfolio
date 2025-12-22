@@ -30,9 +30,9 @@ const Header = () => {
           </Link>
           {/*
           <Link
-            href="/knowledge"
+            href="/wiki"
             className={`py-2 font-display text-base transition-colors ${
-              pathname?.startsWith("/knowledge")
+              pathname?.startsWith("/wiki")
                 ? "text-neutral-900 border-b-2 border-neutral-900"
                 : "text-neutral-600 hover:text-neutral-900"
             }`}

@@ -24,8 +24,8 @@ export default function DirectoryPage({ directory, mocs }) {
           <div className="w-full lg:w-[55%]">
             {/* Breadcrumb */}
             <div className="mb-4 text-xs text-neutral-500">
-              <Link href="/knowledge" className="hover:text-neutral-900 transition-colors">
-                Knowledge
+              <Link href="/wiki" className="hover:text-neutral-900 transition-colors">
+                Wiki
               </Link>
               <span className="mx-2">›</span>
               <span className="text-neutral-900">{directory.title}</span>
@@ -59,7 +59,7 @@ export default function DirectoryPage({ directory, mocs }) {
                   >
                     <h2 className="text-lg font-display font-semibold mb-2">
                       <Link
-                        href={`/knowledge/${moc.slug}`}
+                        href={`/wiki/${moc.slug}`}
                         className="hover:text-neutral-600 transition-colors"
                       >
                         {moc.title}

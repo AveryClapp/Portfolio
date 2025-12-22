@@ -40,7 +40,7 @@ export default async function KnowledgePage() {
           <div className="w-full lg:w-[55%]">
             {/* Title */}
             <h1 className="mb-3 text-2xl font-display font-bold text-neutral-900 tracking-tight">
-              Knowledge Base
+              Wiki
             </h1>
             <p className="mb-8 text-sm text-neutral-700 leading-relaxed">
               Technical notes and references. Living documents that evolve as I learn.
@@ -59,7 +59,7 @@ export default async function KnowledgePage() {
                   >
                     <h2 className="text-lg font-display font-semibold mb-2">
                       <Link
-                        href={`/knowledge/${directory.slug}`}
+                        href={`/wiki/${directory.slug}`}
                         className="hover:text-neutral-600 transition-colors"
                       >
                         {directory.icon && <span className="mr-2">{directory.icon}</span>}

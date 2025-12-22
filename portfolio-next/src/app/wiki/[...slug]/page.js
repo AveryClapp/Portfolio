@@ -71,7 +71,7 @@ export default async function DynamicKnowledgePage({ params }) {
   // Redirect if slug doesn't match canonical format
   const canonicalPath = slugArray.map(s => titleToSlug(decodeURIComponent(s))).join('/');
   if (slug !== canonicalPath) {
-    return redirect(`/knowledge/${canonicalPath}`);
+    return redirect(`/wiki/${canonicalPath}`);
   }
 
   // Try to load as a note first
