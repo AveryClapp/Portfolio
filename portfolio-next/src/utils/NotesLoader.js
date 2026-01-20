@@ -102,7 +102,7 @@ export async function getAllDirectories() {
           ...metadata
         };
       })
-      .sort((a, b) => a.order - b.order);
+      .sort((a, b) => a.title.localeCompare(b.title));
 
     return directories;
   } catch (error) {
