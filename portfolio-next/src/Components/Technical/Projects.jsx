@@ -24,7 +24,7 @@ const Projects = () => {
         </li>
         <li>
           <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
-            Emergent Sparsity Matrix Multiplication (On-going)
+            Emergent Sparsity Matrix Multiplication
           </h3>
           <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
             Research project exploiting emergent sparsity in transformer attention matrices to accelerate LLM inference. Implements dynamic threshold-based masking to identify and skip negligible activations at runtime, with custom CUDA kernels for efficient sparse-dense operations. Current benchmarks show faster end-to-end performance than cuBLAS at sparsity levels ≤50%, with ongoing work exploiting B matrix sparsity for runtime improvements.
