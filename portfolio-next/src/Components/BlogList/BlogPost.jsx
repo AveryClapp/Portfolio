@@ -17,6 +17,7 @@ import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 import NavigationTrail from "@/Components/NavigationTrail/NavigationTrail";
 import BlogTracker from "@/Components/BlogTracker/BlogTracker";
 import ReadingProgress from "@/Components/ReadingProgress/ReadingProgress";
+import { Link } from "next-view-transitions";
 import {
   kingsGambitBasic,
   kingsGambitAccepted,
@@ -685,6 +686,19 @@ const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
                 },
                 a: ({ node, children, ...props }) => {
                   const linkKey = getUniqueKey();
+                  const href = props.href || '';
+
+                  // Check if it's an internal link
+                  const isInternal = href.startsWith('/') || (!href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:'));
+
+                  if (isInternal && href) {
+                    return (
+                      <Link href={href} className="text-blue-600 hover:underline">
+                        {processChildren(children, linkKey)}
+                      </Link>
+                    );
+                  }
+
                   return (
                     <a className="text-blue-600 hover:underline" {...props}>
                       {processChildren(children, linkKey)}

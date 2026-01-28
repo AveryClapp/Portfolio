@@ -11,6 +11,12 @@ export default function LinkInterceptor() {
 
       if (!target) return;
 
+      // Skip if this is a Next.js Link component (has data-nv-* attributes from next-view-transitions)
+      // or if it's being handled by next-view-transitions
+      if (target.hasAttribute('data-link-id') || target.closest('[data-nv-link]')) {
+        return;
+      }
+
       const href = target.getAttribute("href");
 
       // Only intercept internal links
@@ -40,8 +46,8 @@ export default function LinkInterceptor() {
       }
     };
 
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener("click", handleClick, { capture: true });
+    return () => document.removeEventListener("click", handleClick, { capture: true });
   }, [router]);
 
   return null;

@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} bg-stone-100`}>
       <body className="bg-stone-100 min-h-screen">
-        <LinkInterceptor />
+        {/* <LinkInterceptor /> */}
         <ViewTransitions>
           <Suspense fallback={null}>
             {children}

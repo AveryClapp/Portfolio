@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import katex from "katex";
 import "katex/dist/katex.min.css";
+import NoteWrapperClient from "./NoteWrapperClient";
 
 const NoteWrapper = ({
   children,
@@ -257,7 +258,7 @@ const NoteWrapper = ({
     return (
       <div className="w-full lg:w-[55%]" ref={contentRef}>
         {content ? (
-          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+          <NoteWrapperClient htmlContent={processedContent} />
         ) : (
           children
         )}
@@ -271,7 +272,7 @@ const NoteWrapper = ({
       {/* Main content - flows naturally */}
       <div className="w-full lg:w-[55%]" ref={contentRef}>
         {content ? (
-          <div dangerouslySetInnerHTML={{ __html: processedContent }} />
+          <NoteWrapperClient htmlContent={processedContent} />
         ) : (
           children
         )}
