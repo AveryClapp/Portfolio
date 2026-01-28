@@ -107,24 +107,25 @@ html.dark .my-logo-icon {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d6d3d1 #f5f5f4;
+  scrollbar-color: #737373 #f5f5f4; /* neutral-500 on stone-100 */
 }
 
 /* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f5f4; /* stone-100 - matches site background */
+  background: transparent;
+  margin: 4px; /* Slight spacing from edges */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d6d3d1; /* stone-300 */
-  border-radius: 4px;
+  background: #737373; /* neutral-500 - matches progress bar */
+  border-radius: 2px; /* Minimal rounding */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e; /* stone-400 */
+  background: #525252; /* neutral-600 - subtle darker on hover */
 }
