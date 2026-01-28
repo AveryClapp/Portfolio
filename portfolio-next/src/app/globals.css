@@ -14,9 +14,13 @@
   }
 }
 
+html {
+  background: #f5f5f4; /* stone-100 */
+}
+
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: #f5f5f4; /* stone-100 */
   font-family: var(--font-inter), system-ui, sans-serif;
 }
 
@@ -96,4 +100,31 @@ html.dark .my-logo-icon {
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+
+/* ===== Custom Scrollbar ===== */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d3d1 #f5f5f4;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f4; /* stone-100 - matches site background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1; /* stone-300 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e; /* stone-400 */
 }

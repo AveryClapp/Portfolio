@@ -16,6 +16,7 @@ import ProteinCascadeSimulator from "@/Components/BlogComponents/Protein/Protein
 import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
 import NavigationTrail from "@/Components/NavigationTrail/NavigationTrail";
 import BlogTracker from "@/Components/BlogTracker/BlogTracker";
+import ReadingProgress from "@/Components/ReadingProgress/ReadingProgress";
 import {
   kingsGambitBasic,
   kingsGambitAccepted,
@@ -25,6 +26,9 @@ import {
 
 // Import KaTeX CSS
 import "katex/dist/katex.min.css";
+
+// Import read time utilities
+import { calculateReadTime, formatReadTime } from "@/utils/readTime";
 
 // Format date from YYYY-MM-DD to MM-DD-YYYY
 function formatDate(dateString) {
@@ -607,6 +611,7 @@ const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
+      {!isNote && <ReadingProgress />}
       {!isNote && <BlogTracker blogTitle={post.title} blogSlug={post.slug} />}
       <Header className="mb-6" />
       <main className="mb-6 relative z-20 flex-1">
@@ -625,7 +630,15 @@ const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
             >
               {post.title}
             </h1>
-            <p className="text-sm mb-6">{formatDate(post.date)}</p>
+            <p className="text-sm mb-6 text-neutral-600">
+              {formatDate(post.date)}
+              {!isNote && post.content && (
+                <>
+                  <span className="mx-2">·</span>
+                  {formatReadTime(calculateReadTime(post.content))}
+                </>
+              )}
+            </p>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeRaw, rehypeKatex]}

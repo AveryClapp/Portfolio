@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import { Link } from "next-view-transitions";
+import { calculateReadTime, formatReadTime } from "@/utils/readTime";
 
 const BlogList = ({ blogPosts }) => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -77,7 +78,15 @@ const BlogList = ({ blogPosts }) => {
                       </Link>
                     </h2>
                     <div className="flex items-center gap-3 text-xs text-neutral-500 mb-3">
-                      <span>{post.date}</span>
+                      <span>
+                        {post.date}
+                        {post.content && (
+                          <>
+                            <span className="mx-2">·</span>
+                            {formatReadTime(calculateReadTime(post.content))}
+                          </>
+                        )}
+                      </span>
                       {post.tags && post.tags.map((tag) => (
                         <span
                           key={tag}

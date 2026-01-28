@@ -20,8 +20,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="bg-stone-50 min-h-screen">
+    <html lang="en" className={`${inter.variable} bg-stone-100`}>
+      <body className="bg-stone-100 min-h-screen">
         <ViewTransitions>
           <Suspense fallback={null}>
             {children}
