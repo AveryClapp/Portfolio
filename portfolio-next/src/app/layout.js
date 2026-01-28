@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { ViewTransitions } from "next-view-transitions";
+import LinkInterceptor from "@/Components/ViewTransitions/LinkInterceptor";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} bg-stone-100`}>
       <body className="bg-stone-100 min-h-screen">
+        <LinkInterceptor />
         <ViewTransitions>
           <Suspense fallback={null}>
             {children}
