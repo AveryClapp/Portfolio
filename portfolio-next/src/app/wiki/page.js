@@ -3,7 +3,7 @@ import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
 import DirectoryTracker from "@/Components/NavigationTrail/TrailClearer";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export const metadata = {
   title: "Avery Clapp",
@@ -67,6 +67,7 @@ export default async function KnowledgePage() {
                       <Link
                         href={`/wiki/${directory.slug}`}
                         className="hover:text-neutral-600 transition-colors"
+                        style={{ viewTransitionName: `dir-title-${directory.slug}` }}
                       >
                         {directory.icon && (
                           <span className="mr-2">{directory.icon}</span>

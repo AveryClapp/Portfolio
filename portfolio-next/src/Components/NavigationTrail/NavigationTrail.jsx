@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 const MAX_TRAIL_LENGTH = 8;
 

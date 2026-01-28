@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
@@ -36,7 +36,10 @@ export default function DirectoryPage({ directory, mocs }) {
               {directory.icon && (
                 <div className="text-3xl mb-2">{directory.icon}</div>
               )}
-              <h1 className="mb-3 text-2xl font-display font-bold text-neutral-900 tracking-tight">
+              <h1
+                className="mb-3 text-2xl font-display font-bold text-neutral-900 tracking-tight"
+                style={{ viewTransitionName: `dir-title-${directory.slug}` }}
+              >
                 {directory.title}
               </h1>
               {directory.description && (
@@ -49,7 +52,7 @@ export default function DirectoryPage({ directory, mocs }) {
             {/* Semantic Search - scoped to this directory */}
             {/* <SemanticSearch directory={directory.slug} /> */}
 
-            {/* Tier 1 MOCs */}
+            {/* Tier 1 MOCs - No descriptions, just title and date */}
             {mocs.length > 0 ? (
               <div className="space-y-8">
                 {mocs.map((moc, index) => (
@@ -61,6 +64,7 @@ export default function DirectoryPage({ directory, mocs }) {
                       <Link
                         href={`/wiki/${moc.slug}`}
                         className="hover:text-neutral-600 transition-colors"
+                        style={{ viewTransitionName: `wiki-title-${moc.slug}` }}
                       >
                         {moc.title}
                       </Link>

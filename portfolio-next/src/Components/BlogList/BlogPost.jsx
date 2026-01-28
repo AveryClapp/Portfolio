@@ -615,7 +615,16 @@ const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
           <div className="px-4 lg:ml-32 w-full lg:w-[55%]" ref={contentRef}>
           <article className="prose max-w-none text-black">
             {isNote && <NavigationTrail currentTitle={post.title} currentSlug={post.slug} directoryInfo={directoryInfo} />}
-            <h1 className="text-xl font-bold">{post.title}</h1>
+            <h1
+              className="text-xl font-bold"
+              style={{
+                viewTransitionName: post.slug
+                  ? (isNote ? `wiki-title-${post.slug}` : `blog-title-${post.slug}`)
+                  : undefined
+              }}
+            >
+              {post.title}
+            </h1>
             <p className="text-sm mb-6">{formatDate(post.date)}</p>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}

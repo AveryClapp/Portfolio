@@ -1,6 +1,6 @@
 // src/app/not-found.js
 "use client";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import { Home, ArrowLeft, FileQuestion } from "lucide-react";
@@ -32,10 +32,9 @@ export default function NotFound() {
             <div className="mt-8 text-sm text-neutral-500">
               <p>
                 Looking for something interesting? Check out my{" "}
-                <a href="/blog" className="underline">
-                  {" "}
-                  blog{" "}
-                </a>
+                <Link href="/blog" className="underline">
+                  blog
+                </Link>
               </p>
             </div>
           </div>

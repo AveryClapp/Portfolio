@@ -1,5 +1,5 @@
 import { Linkedin, Mail, Github, FileText } from "lucide-react"
-import Link from "next/link"
+import { Link } from "next-view-transitions"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -29,7 +29,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="text-black pt-16 pb-10">
+    <footer className="text-black pt-16 pb-10" style={{ viewTransitionName: 'footer' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="flex space-x-4">

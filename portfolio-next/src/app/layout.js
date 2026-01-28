@@ -1,5 +1,7 @@
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import { ViewTransitions } from "next-view-transitions";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,7 +21,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-stone-50 min-h-screen">{children}</body>
+      <body className="bg-stone-50 min-h-screen">
+        <ViewTransitions>
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
+        </ViewTransitions>
+      </body>
     </html>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 const Header = () => {
   const pathname = usePathname();
   return (
-    <nav className="top-0 w-full mb-8 bg-stone-100 z-50">
+    <nav className="top-0 w-full mb-8 bg-stone-100 z-50" style={{ viewTransitionName: 'header' }}>
       <div className="h-16 flex items-center px-8">
         <div className="flex space-x-6">
           <Link

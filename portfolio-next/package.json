@@ -29,6 +29,7 @@
     "katex": "^0.16.22",
     "lucide-react": "^0.469.0",
     "next": "^16.0.7",
+    "next-view-transitions": "^0.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",

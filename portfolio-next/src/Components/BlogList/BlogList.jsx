@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
-import NoteWrapper from "@/Components/NoteSystem/NoteWrapper";
-import SubscribeForm from "@/Components/Subscribe/SubscribeForm";
+import { Link } from "next-view-transitions";
 
 const BlogList = ({ blogPosts }) => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -22,68 +21,6 @@ const BlogList = ({ blogPosts }) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
-  };
-
-  // Build just the blog posts content
-  const buildBlogPostsContent = () => {
-    return `
-      <div class="space-y-8">
-        ${
-          filteredPosts.length > 0
-            ? filteredPosts
-                .map(
-                  (post, index) => `
-            <article class="${index < filteredPosts.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}">
-              <h2 class="text-lg font-display font-semibold mb-2">
-                <a href="/blog/${post.slug}" class="hover:text-neutral-600 transition-colors">
-                  ${post.title}
-                </a>
-              </h2>
-              <div class="flex items-center gap-3 text-xs text-neutral-500 mb-3">
-                <span>${post.date}</span>
-                ${
-                  post.tags
-                    ? post.tags
-                        .map(
-                          (tag) => `
-                    <span class="px-2 py-1 bg-neutral-200 rounded-md text-xs mr-1">
-                      ${tag}
-                    </span>
-                  `,
-                        )
-                        .join("")
-                    : ""
-                }
-              </div>
-              ${
-                post.subtopics && post.subtopics.length > 0
-                  ? `
-                <div class="flex flex-wrap items-center gap-2 mb-3">
-                  <span class="text-xs text-neutral-400 font-medium">Topics:</span>
-                  ${post.subtopics
-                    .map(
-                      (subtopic) => `
-                    <span class="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600 whitespace-nowrap">
-                      ${subtopic}
-                    </span>
-                  `,
-                    )
-                    .join("")}
-                </div>
-              `
-                  : ""
-              }
-              <p class="text-neutral-700">${post.preview}</p>
-            </article>
-          `,
-                )
-                .join("")
-            : `<p class="text-neutral-500 text-center py-8">
-              No posts found with the selected tags.
-            </p>`
-        }
-      </div>
-    `;
   };
 
   return (
@@ -121,10 +58,58 @@ const BlogList = ({ blogPosts }) => {
                 </div>
               </div>
             )}
-          </div>
 
-          {/* Blog posts through NoteWrapper */}
-          <NoteWrapper content={buildBlogPostsContent()} />
+            {/* Blog posts */}
+            {filteredPosts.length > 0 ? (
+              <div className="space-y-8">
+                {filteredPosts.map((post, index) => (
+                  <article
+                    key={post.slug}
+                    className={index < filteredPosts.length - 1 ? 'border-b border-neutral-200 pb-6' : 'pb-6'}
+                  >
+                    <h2 className="text-lg font-display font-semibold mb-2">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="hover:text-neutral-600 transition-colors"
+                        style={{ viewTransitionName: `blog-title-${post.slug}` }}
+                      >
+                        {post.title}
+                      </Link>
+                    </h2>
+                    <div className="flex items-center gap-3 text-xs text-neutral-500 mb-3">
+                      <span>{post.date}</span>
+                      {post.tags && post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-neutral-200 rounded-md text-xs"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {post.subtopics && post.subtopics.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
+                        <span className="text-xs text-neutral-400 font-medium">Topics:</span>
+                        {post.subtopics.map((subtopic) => (
+                          <span
+                            key={subtopic}
+                            className="px-2 py-0.5 bg-neutral-100 border border-neutral-300 rounded text-xs text-neutral-600 whitespace-nowrap"
+                          >
+                            {subtopic}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <p className="text-neutral-700">{post.preview}</p>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="text-neutral-500 text-center py-8">
+                No posts found with the selected tags.
+              </p>
+            )}
+          </div>
         </div>
       </main>
       <Footer />
