@@ -8,22 +8,6 @@ const Projects = () => {
       <ul class="list-disc list-outside ml-4 space-y-6 text-neutral-400">
         <li>
           <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
-            TBJIT: Trace-based JIT Compiler
-          </h3>
-          <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
-              Trace-based JIT compiler implementing adaptive optimization through speculative compilation with runtime guards. Observes bytecode execution in a stack-based VM to identify hot loops, records linear instruction traces, and generates x64 machine code with guard instructions for type/value assumptions. Falls back to interpreter on guard failures, mimicking the core technology behind PyPy and LuaJIT for runtime performance through program behavior analysis.
-          </p>
-          <a
-            href="https://github.com/AveryClapp/TBJIT"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-block text-sm font-medium text-neutral-900 underline-grow"
-          >
-            View Project →
-          </a>
-        </li>
-        <li>
-          <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
             Emergent Sparsity Matrix Multiplication
           </h3>
           <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
