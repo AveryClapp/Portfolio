@@ -3,6 +3,7 @@ import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
 import DirectoryTracker from "@/Components/NavigationTrail/TrailClearer";
+import RandomNoteButton from "@/Components/Knowledge/RandomNoteButton";
 
 function formatDate(dateString) {
   if (!dateString) return '';
@@ -32,7 +33,7 @@ export default function DirectoryPage({ directory, mocs }) {
             </div>
 
             {/* Directory Header */}
-            <div className="mb-8">
+            <div className="mb-4">
               {directory.icon && (
                 <div className="text-3xl mb-2">{directory.icon}</div>
               )}
@@ -47,6 +48,11 @@ export default function DirectoryPage({ directory, mocs }) {
                   {directory.description}
                 </p>
               )}
+            </div>
+
+            {/* Random Note Button */}
+            <div className="mb-8">
+              <RandomNoteButton notes={mocs} scope={directory.title} />
             </div>
 
             {/* Semantic Search - scoped to this directory */}

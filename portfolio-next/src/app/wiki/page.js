@@ -3,6 +3,7 @@ import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
 import SemanticSearch from "@/Components/Knowledge/SemanticSearch";
 import DirectoryTracker from "@/Components/NavigationTrail/TrailClearer";
+import RandomNoteButton from "@/Components/Knowledge/RandomNoteButton";
 import { Link } from "next-view-transitions";
 
 export const metadata = {
@@ -31,6 +32,7 @@ function formatDate(dateString) {
 
 export default async function KnowledgePage() {
   const directories = await getAllDirectories();
+  const allNotes = await getAllNotes();
 
   return (
     <div className="relative min-h-screen bg-stone-100 text-neutral-900 font-sans">
@@ -43,10 +45,15 @@ export default async function KnowledgePage() {
             <h1 className="mb-3 text-2xl font-display font-bold text-neutral-900 tracking-tight">
               Wiki
             </h1>
-            <p className="mb-8 text-sm text-neutral-700 leading-relaxed">
+            <p className="mb-4 text-sm text-neutral-700 leading-relaxed">
               A collection of my notes and references. Living documents that
               evolve as I learn.
             </p>
+
+            {/* Random Note Button */}
+            <div className="mb-8">
+              <RandomNoteButton notes={allNotes} scope="all notes" />
+            </div>
 
             {/* Semantic Search */}
             {/* <SemanticSearch /> */}
