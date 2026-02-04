@@ -642,7 +642,10 @@ const BlogPost = ({ post, isNote = false, directoryInfo = null }) => {
             </p>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
-              rehypePlugins={[rehypeRaw, rehypeKatex]}
+              rehypePlugins={[
+                rehypeKatex,
+                rehypeRaw
+              ]}
               className="prose prose-blue"
               components={{
                 h1: createProcessedComponent(
