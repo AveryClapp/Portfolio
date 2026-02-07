@@ -6,6 +6,22 @@ const Projects = () => {
       <h2 class="mb-4 text-2xl font-display font-bold text-neutral-900 tracking-tight">Projects</h2>
 
       <ul class="list-disc list-outside ml-4 space-y-6 text-neutral-400">
+    <li>
+      <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
+        glance
+      </h3>
+      <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+        Terminal CSV inspection tool that avoids loading entire files into memory. Uses mmap for zero-copy file access with lazy parsing so only rows needed for display are actually parsed, combined with SIMD-accelerated newline counting (ARM NEON on Apple Silicon, SSE2 on x86-64) for fast row counting on unparsed data. Type inference samples the first 100 rows to classify columns as int64, float64, currency, date, bool, or enum, enabling numeric sorting and typed JSON export. Automatic delimiter detection scores candidates by field-count consistency. Includes SQL-like filtering, column selection, sorting, and multiple output formats. Interactive pager with vim keybindings, horizontal scrolling, and in-place search handles multi-million row files in under a second.
+      </p>
+      <a
+        href="https://github.com/AveryClapp/glance"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block text-sm font-medium text-neutral-900 underline-grow"
+      >
+        View Project →
+      </a>
+    </li>
         <li>
           <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
             Emergent Sparsity Matrix Multiplication
@@ -26,10 +42,10 @@ const Projects = () => {
           <h3 class="text-lg font-display font-semibold text-neutral-900 mb-2">
             Prediction Market Stat-Arb Bot
           </h3>
-<p class="text-sm text-neutral-700 leading-[1.7] mb-2">
-    Real-time arbitrage detection across prediction markets using hybrid event matching.
-  Leverages NLP via a two-phase approach with keyword filtering to pre-screen candidate pairs, then semantic similarity via sentence transformers (80%+ confidence) to identify equivalent events across platforms. Calculates net profit accounting for all fees (maker/taker, gas, bridge costs) and detects both standard and inverse arbitrage opportunities. Live terminal dashboard with Discord webhook alerts.
-  </p>
+            <p class="text-sm text-neutral-700 leading-[1.7] mb-2">
+              Real-time arbitrage detection across prediction markets using hybrid event matching.
+              Leverages NLP via a two-phase approach with keyword filtering to pre-screen candidate pairs, then semantic similarity via sentence transformers (80%+ confidence) to identify equivalent events across platforms. Calculates net profit accounting for all fees (maker/taker, gas, bridge costs) and detects both standard and inverse arbitrage opportunities. Live terminal dashboard with Discord webhook alerts.
+           </p>
           <a
             href="https://github.com/AveryClapp/Prediction-Market-Stat-Arb"
             target="_blank"
